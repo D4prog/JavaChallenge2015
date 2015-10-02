@@ -1,6 +1,6 @@
 package net.javachallenge;
 
-import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Bookmaker {
 	private static final int PLAYERS_NUM = 4;
@@ -9,7 +9,7 @@ public class Bookmaker {
 	private static final int FORCED_END_TURN = (int) 1e9;
 	private static final int PANEL_REBIRTH_TURN = 5;
 
-	private static final String READY = "Ready";
+	public static final String READY = "Ready";
 	private static final String UP = "U";
 	private static final String DOWN = "D";
 	private static final String RIGHT = "R";
@@ -17,35 +17,51 @@ public class Bookmaker {
 	private static final String ATTACK = "A";
 
 	private static Player[] players;
-	private static Scanner scanner;
 	private static int turn;
 	private static int[][] board = new int[MAP_WIDTH][MAP_WIDTH];
 
 	public static void main(String[] args) {
-		scanner = new Scanner(System.in);
 
 		init();
 		while (!isFinished()) {
 			turn++;
-			outputInput();
 			panelRebirthPhase();
+
+			ArrayList<Integer> lifeList = new ArrayList<Integer>();
+			ArrayList<String> whereList = new ArrayList<String>();
+
+			for (int i = 0; i < PLAYERS_NUM; i++) {
+				lifeList.add(players[i].life);
+				whereList.add(players[i].x + " " + players[i].y);
+			}
+			for (int i = 0; i < PLAYERS_NUM; i++) {
+				players[i].putInformation(i, turn, board, lifeList, whereList);
+			}
+
+			ArrayList<String> commandList = new ArrayList<String>();
+			for (int i = 0; i < PLAYERS_NUM; i++) {
+				commandList.add(players[i].getAction());
+			}
+			for (String string : commandList) {
+				System.out.print(string + " ");
+			}
+			System.out.println();
+
 			actionPhase();
 			dropPhase();
-
 		}
 
 	}
 
 	private static void init() {
-		turn = 0;
+		turn = 5000;
 		players = new Player[PLAYERS_NUM];
 		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player(INITIAL_LIFE);
+			players[i] = new Player(INITIAL_LIFE,
+					"/home/nkenkou/Desktop/tekitoAI");// TODO
+			players[i].x = 0;
+			players[i].y = 0;
 		}
-	}
-
-	private static void outputInput() {
-
 	}
 
 	private static void panelRebirthPhase() {
@@ -70,19 +86,4 @@ public class Bookmaker {
 		return livingCnt == 0;
 	}
 
-}
-
-class Player {
-	public int life;
-	public int x, y;
-	public boolean onBoard;
-
-	public Player(int life) {
-		this.life = life;
-		onBoard = true;
-	}
-
-	public void drop() {
-		life--;
-	}
 }
