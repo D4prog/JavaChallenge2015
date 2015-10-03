@@ -14,18 +14,24 @@ public class Player {
 	private PrintWriter writer;
 
 	public int life;
-	public int x, y;
-	public boolean onBoard;
+	public int x = -1, y = -1;
+	public int rebirthTurn = 0;
+	private int mutekiTurn = 0;
+
+	private boolean onBoard;
 
 	public Player(int life, String exec) {
 		this.life = life;
 		onBoard = true;
 		this.execCommand = exec;
-		runPlayer();
+		if (!runPlayer()) {
+			life = 0;
+			onBoard = false;
+		}
 	}
 
 	// AIを開始する
-	public boolean runPlayer() {
+	private boolean runPlayer() {
 		aiProcess = null;
 
 		try {
@@ -108,12 +114,42 @@ public class Player {
 		}
 	}
 
-	public void drop() {
+	// 落とす
+	public void drop(int turn) {
 		life--;
+		onBoard = false;
+		rebirthTurn = Bookmaker.PLAYER_REBIRTH_TURN + turn;
+		if (life == 0) {
+			stopSolution();
+		}
 	}
 
+	// 生きているか（プレイ続行可能か）
 	public boolean isAlive() {
 		return aiProcess != null && life > 0;
+	}
+
+	// 生きてボードの上に乗っているか
+	public boolean isOnBoard() {
+		return isAlive() && onBoard;
+	}
+
+	// 無敵状態か
+	public boolean isMuteki(int turn) {
+		return mutekiTurn >= turn;
+	}
+
+	// (x,y)に復活させる
+	public void reBirthOn(int x, int y, int turn) {
+		onBoard = true;
+		moveTo(x, y);
+		mutekiTurn = turn + Bookmaker.MUTEKI_TURN;
+	}
+
+	// (x,y)に移動させる
+	public void moveTo(int x, int y) {
+		this.x = x;
+		this.y = y;
 	}
 
 }
