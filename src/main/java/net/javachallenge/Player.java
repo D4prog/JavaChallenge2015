@@ -36,7 +36,6 @@ public class Player {
     // AIを開始する
     private boolean runPlayer() {
 	aiProcess = null;
-
 	try {
 	    aiProcess = Runtime.getRuntime().exec(execCommand);
 	} catch (Exception e) {
@@ -95,19 +94,20 @@ public class Player {
     // コマンドを受け取る
     public String getAction() {
 	if (!isAlive()) {
-	    return "N";
+	    return Bookmaker.NONE;
 	}
 	try {
 	    String string = reader.readLine();
 	    return string;
 	} catch (IOException e) {
 	    stopSolution();
-	    return "N";
+	    return Bookmaker.NONE;
 	}
     }
 
     // AIを終了する
     public void stopSolution() {
+	life = 0;
 	if (aiProcess != null) {
 	    try {
 		aiProcess.destroy();
@@ -129,7 +129,7 @@ public class Player {
 
     // 生きているか（プレイ続行可能か）
     public boolean isAlive() {
-	return aiProcess != null && life > 0;
+	return life > 0;
     }
 
     // 生きてボードの上に乗っているか

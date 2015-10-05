@@ -2,20 +2,22 @@ package net.javachallenge;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Bookmaker {
-    private static boolean DEBUG = false;
+    private static boolean DEBUG = true;
+    public static boolean HUMAN = false;
 
     private static final int PLAYERS_NUM = 4;
     private static final int INITIAL_LIFE = 5;
     private static final int MAP_WIDTH = 40;
-    private static final int BLOCK_WIDTH = 40;
+    private static final int BLOCK_WIDTH = 5;
     private static final int FORCED_END_TURN = 10000;
     private static final int PANEL_REBIRTH_TURN = 5;
     public static final int PLAYER_REBIRTH_TURN = 5;
     public static final int ATTACKED_PAUSE_TURN = 5;// 攻撃後の硬直している時間
     public static final int MUTEKI_TURN = 10;
-    private static final int REPULSION = 3;// プレイヤーの反発範囲
+    private static final int REPULSION = 7;// プレイヤーの反発範囲
 
     public static final String READY = "Ready";
     public static final String UP = "U";
@@ -30,39 +32,93 @@ public class Bookmaker {
     private static int turn;
     private static int[][] board = new int[MAP_WIDTH][MAP_WIDTH];
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws InterruptedException {
+	Scanner scanner = new Scanner(System.in);
+	if (DEBUG) {
+	    args = new String[] { "-ai", "/home/nkenkou/Desktop/tekitoAI",
+		    "-ai", "/home/nkenkou/Desktop/tekitoAI", "-ai",
+		    "/home/nkenkou/Desktop/tekitoAI", "-ai",
+		    "/home/nkenkou/Desktop/tekitoAI", };
+	}
+
 	String[] ais = new String[PLAYERS_NUM];
 	for (int i = 0; i < PLAYERS_NUM; i++) {
 	    ais[i] = "";
 	}
 	int cur = 0;
 	for (int i = 0; i < args.length; i++) {
-	    if (args[i].equals("-exec")) {
+	    if (args[i].equals("-ai")) {
 		if (cur == 4) {
 		    continue;
 		}
 		ais[cur++] = args[++i];
 	    } else if (args[i].equals("-debug")) {
 		DEBUG = true;
+	    } else if (args[i].equals("-human")) {
+		HUMAN = true;
 	    } else {
 		System.out
 			.println("WARNING: unknown argument " + args[i] + ".");
 	    }
 	}
-
 	rnd = new Random(System.currentTimeMillis());
 	turn = 0;
 	players = new Player[PLAYERS_NUM];
 	for (int i = 0; i < players.length; i++) {
 	    players[i] = new Player(INITIAL_LIFE, ais[i]);
-	    rebirthPhase();// プレイヤーを初期配置する
 	}
+	rebirthPhase();// プレイヤーを初期配置する
 
 	while (!isFinished()) {
 	    turn++;
+	    System.out.println(turn);
+	    for (Player player : players) {
+		System.out.println(player.life);
+	    }
 	    rebirthPhase();
+
 	    ArrayList<String> commands = infromationPhase();
+
+	    // 各AIのコマンドを表示
+	    for (String string : commands) {
+		System.out.print(string + ", ");
+	    }
+	    System.out.println();
+	    if (DEBUG) {
+		commands.remove(3);
+		commands.add(scanner.next());
+	    }
 	    actionPhase(commands);
+
+	    // ボードを表示
+	    for (int i = 0; i < MAP_WIDTH; i++) {
+		outer: for (int j = 0; j < MAP_WIDTH; j++) {
+		    for (int k = 0; k < PLAYERS_NUM; k++) {
+			Player player = players[k];
+			if (player.isOnBoard() && player.x == i
+				&& player.y == j) {
+			    char c = (char) (k + 'A');
+			    System.out.print(c + "" + c);
+			    continue outer;
+			}
+		    }
+		    if (String.valueOf(board[i][j]).length() == 1) {
+			System.out.print(" ");
+		    }
+		    System.out.print(board[i][j]);
+		}
+		System.out.println();
+	    }
+	    System.out.println();
+
+	    // いる座標を表示
+	    for (Player player : players) {
+		if (player.isOnBoard()) {
+		    System.out.println(player.x + " " + player.y);
+		} else {
+		    System.out.println((-1) + " " + (-1));
+		}
+	    }
 	}
     }
 
@@ -96,7 +152,12 @@ public class Bookmaker {
 		search: while (true) {
 		    int x = nextInt();
 		    int y = nextInt();
-		    for (Player other : players) {
+		    for (int j = 0; j < PLAYERS_NUM; j++) {
+			if (i == j) {
+			    continue;
+			}
+
+			Player other = players[j];
 			if (other.isOnBoard()
 				&& dist(x, y, other.x, other.y) <= REPULSION) {
 			    // 敵に近過ぎたらだめ
@@ -207,6 +268,7 @@ public class Bookmaker {
 	    }
 
 	    String command = commands.get(i);
+	    p.direction(command);
 	    int tox = -1, toy = -1;
 	    if (command.equals(UP)) {
 		tox = p.x - 1;
@@ -255,10 +317,17 @@ public class Bookmaker {
 		continue;
 	    }
 	    for (int j = 0; j < PLAYERS_NUM; j++) {
-		if (moved[j] && i == j) {
+		if (i == j) {
 		    continue;
 		}
-		if (dist(toxCache[i], toyCache[i], toxCache[j], toyCache[j]) < REPULSION) {
+		if (!moved[j]
+			&& dist(toxCache[i], toyCache[i], toxCache[j],
+				toyCache[j]) < REPULSION) {
+		    // ぶつかる場合は動けない
+		    continue move;
+		} else if (players[j].isOnBoard()
+			&& dist(toxCache[i], toyCache[i], players[j].x,
+				players[j].y) < REPULSION) {
 		    // ぶつかる場合は動けない
 		    continue move;
 		}
@@ -283,7 +352,8 @@ public class Bookmaker {
 
     private static int nextDir() {
 	// ランダムな向きを返す
-	return rnd.nextInt(4);
+	int rng = rnd.nextInt(4);
+	return rng;
     }
 
     private static boolean isInside(int x, int y) {
@@ -297,6 +367,6 @@ public class Bookmaker {
 		livingCnt++;
 	    }
 	}
-	return livingCnt == 0 || turn < FORCED_END_TURN;
+	return livingCnt == 0 || turn > FORCED_END_TURN;
     }
 }
