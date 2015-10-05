@@ -34,11 +34,11 @@ public class Bookmaker {
 
     public static void main(String[] args) throws InterruptedException {
 	Scanner scanner = new Scanner(System.in);
+	String tekitoAIcommand = "/home/nkenkou/Desktop/tekitoAI";
 	if (DEBUG) {
-	    args = new String[] { "-ai", "/home/nkenkou/Desktop/tekitoAI",
-		    "-ai", "/home/nkenkou/Desktop/tekitoAI", "-ai",
-		    "/home/nkenkou/Desktop/tekitoAI", "-ai",
-		    "/home/nkenkou/Desktop/tekitoAI", };
+	    args = new String[] { "-ai", tekitoAIcommand, "-ai",
+		    tekitoAIcommand, "-ai", tekitoAIcommand, "-ai",
+		    tekitoAIcommand, };
 	}
 
 	String[] ais = new String[PLAYERS_NUM];
@@ -120,6 +120,7 @@ public class Bookmaker {
 		}
 	    }
 	}
+	System.out.println("Game Finished!");
     }
 
     // パネルやプレーヤーを落としたり復活させたりする
