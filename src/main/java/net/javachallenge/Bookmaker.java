@@ -9,14 +9,14 @@ public class Bookmaker {
     public static boolean HUMAN = false;
 
     private static final int PLAYERS_NUM = 4;
-    private static final int INITIAL_LIFE = 5;
     private static final int MAP_WIDTH = 40;
     private static final int BLOCK_WIDTH = 5;
-    private static final int FORCED_END_TURN = 10000;
-    private static final int PANEL_REBIRTH_TURN = 5;
-    public static final int PLAYER_REBIRTH_TURN = 5;
+    private static final int INITIAL_LIFE = 5;// ゲーム開始時の残機
+    private static final int FORCED_END_TURN = 10000;// ゲームが強制終了するターン
+    private static final int PANEL_REBIRTH_TURN = 5;// パネルが再生するまでのターン数
+    public static final int PLAYER_REBIRTH_TURN = 5;// プレイヤーが再生するまでのターン数
     public static final int ATTACKED_PAUSE_TURN = 5;// 攻撃後の硬直している時間
-    public static final int MUTEKI_TURN = 10;
+    public static final int MUTEKI_TURN = 10;// 再生直後の無敵ターン数
     private static final int REPULSION = 7;// プレイヤーの反発範囲
 
     public static final String READY = "Ready";
