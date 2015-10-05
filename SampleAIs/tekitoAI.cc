@@ -1,4 +1,5 @@
 #include "bits/stdc++.h"
+
 using namespace std;
 
 #define FOR(i, a, b) for (int i = (a); i < (b); ++i)
@@ -14,17 +15,27 @@ int main() {
   cout << "Ready" << endl;
   while (true) {
     int my_num;
+    //自分のプレイヤーIDを受け取る
     cin >> my_num;
 
+    //ターン数を受け取る
     cin >> turn;
 
+    //残機情報を受け取る
     REP(i, 4) { cin >> life[i]; }
 
+    //盤面の情報を受け取る
     REP(i, 40) {
       REP(j, 40) { cin >> board[i][j]; }
     }
 
-    REP(i, 4) { cin >> y[i] >> x[i]; }
-    cout << "U" << endl;
-  }
+    //各AIの座標を受け取る
+                REP(i, 4)
+		{
+			cin >> y[i] >> x[i];
+		}
+
+		//コマンドを出力
+		cout << "U" << endl;
+	}
 }
