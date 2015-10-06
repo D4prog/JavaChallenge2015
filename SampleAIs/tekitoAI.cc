@@ -10,6 +10,7 @@ int life[4];
 int turn;
 int x[4];
 int y[4];
+string dir[4];
 
 int main() {
   cout << "Ready" << endl;
@@ -30,12 +31,9 @@ int main() {
     }
 
     //各AIの座標を受け取る
-                REP(i, 4)
-		{
-			cin >> y[i] >> x[i];
-		}
+    REP(i, 4) { cin >> y[i] >> x[i] >> dir[i]; }
 
-		//コマンドを出力
-		cout << "U" << endl;
-	}
+	//コマンドを出力
+	cout << dir[3] << endl;
+  }
 }

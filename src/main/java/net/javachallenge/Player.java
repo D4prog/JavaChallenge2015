@@ -170,14 +170,10 @@ public class Player {
 
     // 向きを決める
     public void direction(String s) {
-	if (s.equals(Bookmaker.UP)) {
-	    dir = 0;
-	} else if (s.equals(Bookmaker.RIGHT)) {
-	    dir = 1;
-	} else if (s.equals(Bookmaker.DOWN)) {
-	    dir = 2;
-	} else if (s.equals(Bookmaker.LEFT)) {
-	    dir = 3;
+	for (int i = 0; i < Bookmaker.DIRECTION.length; i++) {
+	    if (s.equals(Bookmaker.DIRECTION[i])) {
+		dir = i;
+	    }
 	}
     }
 

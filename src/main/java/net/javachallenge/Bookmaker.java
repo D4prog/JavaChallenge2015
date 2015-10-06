@@ -26,6 +26,7 @@ public class Bookmaker {
     public static final String LEFT = "L";
     public static final String ATTACK = "A";
     public static final String NONE = "N";
+    public static final String[] DIRECTION = { UP, LEFT, DOWN, RIGHT };
 
     private static Player[] players;
     private static Random rnd;
@@ -34,16 +35,17 @@ public class Bookmaker {
 
     public static void main(String[] args) throws InterruptedException {
 	Scanner scanner = new Scanner(System.in);
-	String tekitoAIcommand = "/home/nkenkou/Desktop/tekitoAI";
 	if (DEBUG) {
+	    String tekitoAIcommand = "/home/nkenkou/Desktop/Dropbox/workspace/Bookmaker/SampleAIs/tekitoAI";
 	    args = new String[] { "-ai", tekitoAIcommand, "-ai",
 		    tekitoAIcommand, "-ai", tekitoAIcommand, "-ai",
 		    tekitoAIcommand, };
 	}
 
-	String[] ais = new String[PLAYERS_NUM];
+	// AIの実行コマンドを引数から読み出す
+	String[] execAICommands = new String[PLAYERS_NUM];
 	for (int i = 0; i < PLAYERS_NUM; i++) {
-	    ais[i] = "";
+	    execAICommands[i] = "";
 	}
 	int cur = 0;
 	for (int i = 0; i < args.length; i++) {
@@ -51,7 +53,7 @@ public class Bookmaker {
 		if (cur == 4) {
 		    continue;
 		}
-		ais[cur++] = args[++i];
+		execAICommands[cur++] = args[++i];
 	    } else if (args[i].equals("-debug")) {
 		DEBUG = true;
 	    } else if (args[i].equals("-human")) {
@@ -61,66 +63,93 @@ public class Bookmaker {
 			.println("WARNING: unknown argument " + args[i] + ".");
 	    }
 	}
+
+	// 乱数・ターン数の初期化
 	rnd = new Random(System.currentTimeMillis());
 	turn = 0;
+
+	// AIの実行
 	players = new Player[PLAYERS_NUM];
 	for (int i = 0; i < players.length; i++) {
-	    players[i] = new Player(INITIAL_LIFE, ais[i]);
+	    players[i] = new Player(INITIAL_LIFE, execAICommands[i]);
 	}
-	rebirthPhase();// プレイヤーを初期配置する
 
+	// プレイヤーを初期配置する
+	rebirthPhase();
+
+	// ゲーム
 	while (!isFinished()) {
 	    turn++;
-	    System.out.println(turn);
-	    for (Player player : players) {
-		System.out.println(player.life);
-	    }
-	    rebirthPhase();
 
+	    // AIに情報を渡してコマンドを受け取る
 	    ArrayList<String> commands = infromationPhase();
 
-	    // 各AIのコマンドを表示
-	    for (String string : commands) {
-		System.out.print(string + ", ");
-	    }
-	    System.out.println();
+	    // デバッグ（独りプレー用でもある）
 	    if (DEBUG) {
+		debugPrint();
+
+		// 各AIのコマンドを表示
+		for (String string : commands) {
+		    System.out.print(string + " ");
+		}
+		System.out.println();
+
+		// AI-3のコマンドを書き換える
 		commands.remove(3);
 		commands.add(scanner.next());
 	    }
+
+	    // コマンドを実行する
 	    actionPhase(commands);
 
-	    // ボードを表示
-	    for (int i = 0; i < MAP_WIDTH; i++) {
-		outer: for (int j = 0; j < MAP_WIDTH; j++) {
-		    for (int k = 0; k < PLAYERS_NUM; k++) {
-			Player player = players[k];
-			if (player.isOnBoard() && player.x == i
-				&& player.y == j) {
-			    char c = (char) (k + 'A');
-			    System.out.print(c + "" + c);
-			    continue outer;
-			}
-		    }
-		    if (String.valueOf(board[i][j]).length() == 1) {
-			System.out.print(" ");
-		    }
-		    System.out.print(board[i][j]);
-		}
-		System.out.println();
-	    }
-	    System.out.println();
+	    // パネル・プレイヤーの落下と復活
+	    rebirthPhase();
 
-	    // いる座標を表示
-	    for (Player player : players) {
-		if (player.isOnBoard()) {
-		    System.out.println(player.x + " " + player.y);
-		} else {
-		    System.out.println((-1) + " " + (-1));
-		}
-	    }
 	}
 	System.out.println("Game Finished!");
+	scanner.close();
+    }
+
+    private static void debugPrint() {
+	// ターン数の出力
+	System.out.println(turn);
+
+	// 残機の出力
+	for (Player player : players) {
+	    System.out.println(player.life);
+	}
+
+	// ボードを表示
+	for (int x = 0; x < MAP_WIDTH; x++) {
+	    outer: for (int y = 0; y < MAP_WIDTH; y++) {
+		// プレイヤーがいるならそれを表示
+		for (int playerID = 0; playerID < PLAYERS_NUM; playerID++) {
+		    Player player = players[playerID];
+		    if (player.isOnBoard() && player.x == x && player.y == y) {
+			char c = (char) (playerID + 'A');
+			System.out.print(c + "" + c);
+			continue outer;
+		    }
+		}
+
+		if (String.valueOf(board[x][y]).length() == 1) {
+		    System.out.print(" ");
+		}
+		System.out.print(board[x][y]);
+	    }
+	    System.out.println();
+	}
+
+	// いる座標と向きを表示
+	for (Player player : players) {
+	    if (player.isOnBoard()) {
+		System.out.println(player.x + " " + player.y + " "
+			+ Bookmaker.DIRECTION[player.dir]);
+	    } else {
+		System.out.println((-1) + " " + (-1) + " "
+			+ Bookmaker.DIRECTION[player.dir]);
+	    }
+	}
     }
 
     // パネルやプレーヤーを落としたり復活させたりする
@@ -183,7 +212,8 @@ public class Bookmaker {
 	for (int i = 0; i < PLAYERS_NUM; i++) {
 	    lifes.add(players[i].life);
 	    if (players[i].isOnBoard()) {
-		wheres.add(players[i].x + " " + players[i].y);
+		wheres.add(players[i].x + " " + players[i].y + " "
+			+ Bookmaker.DIRECTION[players[i].dir]);
 	    } else {
 		wheres.add((-1) + " " + (-1));
 	    }
@@ -218,35 +248,35 @@ public class Bookmaker {
 		continue;
 	    }
 	    // 今いるブロックを出す
-	    int xBlock = p.x / BLOCK_WIDTH;
-	    int yBlock = p.y / BLOCK_WIDTH;
+	    int xNow = p.x / BLOCK_WIDTH;
+	    int yNow = p.y / BLOCK_WIDTH;
 	    for (int x = 0; x < MAP_WIDTH; x++) {
 		for (int y = 0; y < MAP_WIDTH; y++) {
-		    int xB = x / BLOCK_WIDTH;
-		    int yB = y / BLOCK_WIDTH;
+		    int xBlock = x / BLOCK_WIDTH;
+		    int yBlock = y / BLOCK_WIDTH;
 		    if (p.dir == 0) {
 			// 上向きの時
 			// xが減っていく
 			// yは同じ
-			if (yB == yBlock && xB < xBlock && board[x][y] == 0) {
-			    board[x][y] = dist(xB, yB, xBlock, yBlock);
+			if (yBlock == yNow && xBlock < xNow && board[x][y] == 0) {
+			    board[x][y] = dist(xBlock, yBlock, xNow, yNow);
 			}
 		    } else if (p.dir == 1) {
 			// 右向きの時
 			// yは増えていき、xは同じ
-			if (xB == xBlock && yB > yBlock && board[x][y] == 0) {
-			    board[x][y] = dist(xB, yB, xBlock, yBlock);
+			if (xBlock == xNow && yBlock < yNow && board[x][y] == 0) {
+			    board[x][y] = dist(xBlock, yBlock, xNow, yNow);
 			}
 		    } else if (p.dir == 2) {
 			// 下向きの時
 			// xは増え、yは同じ
-			if (yB == yBlock && xB > xBlock && board[x][y] == 0) {
-			    board[x][y] = dist(xB, yB, xBlock, yBlock);
+			if (yBlock == yNow && xBlock > xNow && board[x][y] == 0) {
+			    board[x][y] = dist(xBlock, yBlock, xNow, yNow);
 			}
 		    } else if (p.dir == 3) {
 			// 左向きの時
-			if (xB == xBlock && yB < yBlock && board[x][y] == 0) {
-			    board[x][y] = dist(xB, yB, xBlock, yBlock);
+			if (xBlock == xNow && yBlock > yNow && board[x][y] == 0) {
+			    board[x][y] = dist(xBlock, yBlock, xNow, yNow);
 			}
 		    }
 		}
