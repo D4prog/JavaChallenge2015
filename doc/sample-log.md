@@ -114,7 +114,6 @@ R<sub>1</sub> C<sub>1</sub> D<sub>1</sub>
 R<sub>2</sub> C<sub>2</sub> D<sub>2</sub>
 R<sub>3</sub> C<sub>3</sub> D<sub>3</sub>
 O<sub>0</sub> O<sub>1</sub> O<sub>2</sub> O<sub>3</sub>
-...
 </pre>
 
 * T: ターン数
