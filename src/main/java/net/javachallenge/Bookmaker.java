@@ -116,8 +116,9 @@ public class Bookmaker {
 
 	// 残機の出力
 	for (Player player : players) {
-	    System.out.println(player.life);
+	    System.out.print(player.life + " ");
 	}
+	System.out.println();
 
 	// ボードを表示
 	for (int x = 0; x < MAP_WIDTH; x++) {
