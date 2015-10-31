@@ -49,6 +49,7 @@ public class Bookmaker {
 		if (cur == 4) {
 		    continue;
 		}
+
 		execAICommands[cur] = args[++i];
 		if (!args[++i].equals("-ai")) {
 		    pauseAICommands[cur] = args[i];
@@ -56,6 +57,7 @@ public class Bookmaker {
 		if (!args[++i].equals("-ai")) {
 		    unpauseAICommands[cur] = args[i];
 		}
+		cur++;
 	    } else if (args[i].equals("--debug")) {
 		DEBUG = true;
 	    }
