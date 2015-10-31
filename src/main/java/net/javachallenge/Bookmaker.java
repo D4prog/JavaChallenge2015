@@ -207,12 +207,14 @@ public class Bookmaker {
 	    }
 	}
 
-	// 情報をAIに渡す
-	players[turnPlayer].putInformation(turnPlayer, turn, board, lifes,
-		wheres);
+	// TODO: unpauseCommand
+	// 情報をAIに渡してコマンドを受け取る
+	String command = players[turnPlayer].getAction(turnPlayer, turn, board,
+		lifes, wheres);
 
-	// コマンドを受け取る
-	return players[turnPlayer].getAction();
+	// TODO: pauseCommand
+
+	return command;
     }
 
     // AIから受け取ったアクションを実行する

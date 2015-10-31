@@ -26,9 +26,7 @@ public class Player {
 	this.life = life;
 	onBoard = false;// 一番最初は載ってない
 	this.execCommand = exec;
-	if (exec.length() == 0) {
-	    life = 0;
-	} else if (!runPlayer()) {
+	if (exec.length() == 0 || !runPlayer()) {
 	    life = 0;
 	}
     }
@@ -39,9 +37,8 @@ public class Player {
 	try {
 	    aiProcess = Runtime.getRuntime().exec(execCommand);
 	} catch (Exception e) {
-	    System.err
-		    .println("ERROR: Unable to execute your solution using the provided command: "
-			    + execCommand + ".");
+	    System.err.println("ERROR: Unable to execute the command: "
+		    + execCommand + ".");
 	    aiProcess = null;
 	    return false;
 	}
@@ -60,8 +57,8 @@ public class Player {
 	return false;
     }
 
-    // AIに情報を送る
-    public void putInformation(int playerID, int turn, int[][] board,
+    // AIに情報を送るって行動コマンドを得る
+    public String getAction(int playerID, int turn, int[][] board,
 	    ArrayList<Integer> lifeList, ArrayList<String> whereList) {
 	// プレイヤーID・ターン数を出力
 	writer.println(playerID);
@@ -95,10 +92,7 @@ public class Player {
 	// 末尾にEODを出力
 	writer.println("EOD");
 	writer.flush();
-    }
 
-    // コマンドを受け取る
-    public String getAction() {
 	if (!isAlive()) {
 	    return Bookmaker.NONE;
 	}
@@ -182,7 +176,6 @@ public class Player {
 	    }
 	}
     }
-
 }
 
 class ErrorStreamRedirector extends Thread {
