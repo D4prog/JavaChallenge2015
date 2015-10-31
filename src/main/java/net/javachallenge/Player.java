@@ -9,6 +9,8 @@ import java.util.ArrayList;
 
 public class Player {
     private String execCommand = null;
+    private String pauseCommand = null;
+    private String unpauseCommand = null;
     private Process aiProcess;
     private BufferedReader reader;
     private PrintWriter writer;
@@ -22,10 +24,12 @@ public class Player {
 
     private boolean onBoard;
 
-    public Player(int life, String exec) {
+    public Player(int life, String exec, String pause, String unpause) {
 	this.life = life;
 	onBoard = false;// 一番最初は載ってない
 	this.execCommand = exec;
+	this.pauseCommand = pause;
+	this.unpauseCommand = unpause;
 	if (exec.length() == 0 || !runPlayer()) {
 	    life = 0;
 	}
@@ -62,6 +66,17 @@ public class Player {
 	    ArrayList<Integer> lifeList, ArrayList<String> whereList) {
 	if (!isAlive()) {
 	    return Bookmaker.NONE;
+	}
+
+	// pause
+	if (pauseCommand == null) {
+	    try {
+		Runtime.getRuntime().exec(pauseCommand);
+	    } catch (Exception e) {
+		System.err.println("ERROR: Unable to execute the command: "
+			+ pauseCommand + ".");
+		return Bookmaker.NONE;
+	    }
 	}
 
 	// プレイヤーID・ターン数を出力
@@ -102,17 +117,27 @@ public class Player {
 	thread.start();
 	try {
 	    thread.join(Bookmaker.ACTION_TIME_LIMIT);
-	    if (!strings.isEmpty()) {
-		return strings.get(0);
-	    } else {
+	    if (strings.isEmpty()) {
 		killPlayer();
-		return Bookmaker.NONE;
+		strings.add(Bookmaker.NONE);
 	    }
 	} catch (InterruptedException e1) {
 	    killPlayer();
-	    return Bookmaker.NONE;
+	    strings.add(Bookmaker.NONE);
 	}
 
+	// unpause
+	if (unpauseCommand != null) {
+	    try {
+		Runtime.getRuntime().exec(unpauseCommand);
+	    } catch (Exception e) {
+		System.err.println("ERROR: Unable to execute the command: "
+			+ unpauseCommand + ".");
+		return Bookmaker.NONE;
+	    }
+	}
+
+	return strings.get(0);
     }
 
     // AIを終了する

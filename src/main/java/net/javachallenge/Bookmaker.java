@@ -36,8 +36,12 @@ public class Bookmaker {
     public static void main(String[] args) throws InterruptedException {
 	// AIの実行コマンドを引数から読み出す
 	String[] execAICommands = new String[PLAYERS_NUM];
+	String[] pauseAICommands = new String[PLAYERS_NUM];
+	String[] unpauseAICommands = new String[PLAYERS_NUM];
 	for (int i = 0; i < PLAYERS_NUM; i++) {
 	    execAICommands[i] = "";
+	    pauseAICommands[i] = null;
+	    unpauseAICommands[i] = null;
 	}
 	int cur = 0;
 	for (int i = 0; i < args.length; i++) {
@@ -45,7 +49,13 @@ public class Bookmaker {
 		if (cur == 4) {
 		    continue;
 		}
-		execAICommands[cur++] = args[++i];
+		execAICommands[cur] = args[++i];
+		if (!args[++i].equals("-ai")) {
+		    pauseAICommands[cur] = args[i];
+		}
+		if (!args[++i].equals("-ai")) {
+		    unpauseAICommands[cur] = args[i];
+		}
 	    } else if (args[i].equals("--debug")) {
 		DEBUG = true;
 	    }
@@ -58,7 +68,8 @@ public class Bookmaker {
 	// AIの実行
 	players = new Player[PLAYERS_NUM];
 	for (int i = 0; i < players.length; i++) {
-	    players[i] = new Player(INITIAL_LIFE, execAICommands[i]);
+	    players[i] = new Player(INITIAL_LIFE, execAICommands[i],
+		    pauseAICommands[i], unpauseAICommands[i]);
 	}
 
 	// プレイヤーを初期配置する
@@ -208,12 +219,9 @@ public class Bookmaker {
 	    }
 	}
 
-	// TODO: unpauseCommand
 	// 情報をAIに渡してコマンドを受け取る
 	String command = players[turnPlayer].getAction(turnPlayer, turn, board,
 		lifes, wheres);
-
-	// TODO: pauseCommand
 
 	return command;
     }
