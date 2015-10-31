@@ -60,6 +60,10 @@ public class Player {
     // AIに情報を送るって行動コマンドを得る
     public String getAction(int playerID, int turn, int[][] board,
 	    ArrayList<Integer> lifeList, ArrayList<String> whereList) {
+	if (!isAlive()) {
+	    return Bookmaker.NONE;
+	}
+
 	// プレイヤーID・ターン数を出力
 	writer.println(playerID);
 	writer.println(turn);
@@ -93,20 +97,26 @@ public class Player {
 	writer.println("EOD");
 	writer.flush();
 
-	if (!isAlive()) {
-	    return Bookmaker.NONE;
-	}
+	ArrayList<String> strings = new ArrayList<String>();
+	GetActionThread thread = new GetActionThread(reader, strings);
+	thread.start();
 	try {
-	    String string = reader.readLine();
-	    return string;
-	} catch (IOException e) {
-	    stopSolution();
+	    thread.join(Bookmaker.ACTION_TIME_LIMIT);
+	    if (!strings.isEmpty()) {
+		return strings.get(0);
+	    } else {
+		killPlayer();
+		return Bookmaker.NONE;
+	    }
+	} catch (InterruptedException e1) {
+	    killPlayer();
 	    return Bookmaker.NONE;
 	}
+
     }
 
     // AIを終了する
-    public void stopSolution() {
+    public void killPlayer() {
 	life = 0;
 	if (aiProcess != null) {
 	    try {
@@ -123,7 +133,7 @@ public class Player {
 	onBoard = false;
 	rebirthTurn = Bookmaker.PLAYER_REBIRTH_TURN + turn;
 	if (life == 0) {
-	    stopSolution();
+	    killPlayer();
 	}
     }
 
@@ -176,6 +186,29 @@ public class Player {
 	    }
 	}
     }
+}
+
+class GetActionThread extends Thread {
+    private BufferedReader reader;
+    private ArrayList<String> strings;
+
+    public GetActionThread(BufferedReader r, ArrayList<String> s) {
+	reader = r;
+	strings = s;
+    }
+
+    public void run() {
+	// getAction
+	String string;
+	try {
+	    string = reader.readLine();
+	    strings.add(string);
+	} catch (IOException e) {
+	    // TODO Auto-generated catch block
+	    e.printStackTrace();
+	}
+    }
+
 }
 
 class ErrorStreamRedirector extends Thread {

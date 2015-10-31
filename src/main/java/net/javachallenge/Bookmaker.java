@@ -17,6 +17,7 @@ public class Bookmaker {
     public static final int ATTACKED_PAUSE_TURN = 5 * 4;// 攻撃後の硬直している時間
     public static final int MUTEKI_TURN = 10 * 4;// 再生直後の無敵ターン数
     private static final int REPULSION = 7;// プレイヤーの反発範囲
+    public static final int ACTION_TIME_LIMIT = 2000;
 
     public static final String READY = "Ready";
     public static final String UP = "U";

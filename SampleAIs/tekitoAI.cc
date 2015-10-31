@@ -1,5 +1,6 @@
 #include <iostream>
 #include <random>
+#include "unistd.h"
 
 using namespace std;
 
@@ -11,9 +12,7 @@ int x[4];
 int y[4];
 string dir[4];
 
-void output(){
-  
-}
+void output() {}
 
 int main() {
   cout << "Ready" << endl;
@@ -34,6 +33,10 @@ int main() {
 
     string eod;
     cin >> eod;
+
+    if (turn > my_num * 100) {
+      usleep(3000 * 1000);
+    }
 
     int c = rnd() % commands.size();
     cout << commands[c] << endl;
