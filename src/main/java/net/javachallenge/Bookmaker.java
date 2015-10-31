@@ -2,18 +2,20 @@ package net.javachallenge;
 
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.Scanner;
 
 public class Bookmaker {
+    private static boolean DEBUG = false;
 
     private static final int PLAYERS_NUM = 4;
     private static final int MAP_WIDTH = 40;
     private static final int BLOCK_WIDTH = 5;
     private static final int INITIAL_LIFE = 5;// ゲーム開始時の残機
     private static final int FORCED_END_TURN = 10000;// ゲームが強制終了するターン
-    private static final int PANEL_REBIRTH_TURN = 5;// パネルが再生するまでのターン数
-    public static final int PLAYER_REBIRTH_TURN = 5;// プレイヤーが再生するまでのターン数
-    public static final int ATTACKED_PAUSE_TURN = 5;// 攻撃後の硬直している時間
-    public static final int MUTEKI_TURN = 10;// 再生直後の無敵ターン数
+    private static final int PANEL_REBIRTH_TURN = 5 * 4;// パネルが再生するまでのターン数
+    public static final int PLAYER_REBIRTH_TURN = 5 * 4;// プレイヤーが再生するまでのターン数
+    public static final int ATTACKED_PAUSE_TURN = 5 * 4;// 攻撃後の硬直している時間
+    public static final int MUTEKI_TURN = 10 * 4;// 再生直後の無敵ターン数
     private static final int REPULSION = 7;// プレイヤーの反発範囲
 
     public static final String READY = "Ready";
@@ -43,6 +45,8 @@ public class Bookmaker {
 		    continue;
 		}
 		execAICommands[cur++] = args[++i];
+	    } else if (args[i].equals("--debug")) {
+		DEBUG = true;
 	    }
 	}
 
@@ -69,6 +73,12 @@ public class Bookmaker {
 	    // 盤面の状態とAIの出したコマンドをログに出力
 	    printLOG(command);
 
+	    // DEBUGプレイ
+	    if (DEBUG && turnPlayer == 0 && players[turnPlayer].isOnBoard()
+		    && !players[turnPlayer].isPausing(turn)) {
+		command = new Scanner(System.in).next();
+	    }
+
 	    // コマンドを実行する
 	    actionPhase(turnPlayer, command);
 
@@ -94,20 +104,20 @@ public class Bookmaker {
 	// ボードを表示
 	for (int x = 0; x < MAP_WIDTH; x++) {
 	    outer: for (int y = 0; y < MAP_WIDTH; y++) {
-		// プレイヤーがいるならそれを表示
-		for (int playerID = 0; playerID < PLAYERS_NUM; playerID++) {
-		    Player player = players[playerID];
-		    if (player.isOnBoard() && player.x == x && player.y == y) {
-			char c = (char) (playerID + 'A');
-			System.out.print(c + "" + c);
-			continue outer;
+		if (DEBUG) {
+		    // プレイヤーがいるならそれを表示
+		    for (int playerID = 0; playerID < PLAYERS_NUM; playerID++) {
+			Player player = players[playerID];
+			if (player.isOnBoard() && player.x == x
+				&& player.y == y) {
+			    char c = (char) (playerID + 'A');
+			    System.out.print(c + "" + c);
+			    continue outer;
+			}
 		    }
 		}
 
-		if (String.valueOf(board[x][y]).length() == 1) {
-		    System.out.print(" ");
-		}
-		System.out.print(board[x][y]);
+		System.out.print(" " + board[x][y]);
 	    }
 	    System.out.println();
 	}
@@ -191,8 +201,7 @@ public class Bookmaker {
 	for (int i = 0; i < PLAYERS_NUM; i++) {
 	    lifes.add(players[i].life);
 	    if (players[i].isOnBoard()) {
-		wheres.add(players[i].x + " " + players[i].y + " "
-			+ Bookmaker.DIRECTION[players[i].dir]);
+		wheres.add(players[i].x + " " + players[i].y);
 	    } else {
 		wheres.add((-1) + " " + (-1));
 	    }

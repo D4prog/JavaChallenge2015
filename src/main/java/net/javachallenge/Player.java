@@ -16,8 +16,8 @@ public class Player {
     public int life;
     public int x = -1, y = -1;
     public int rebirthTurn = 0;
-    private int mutekiTurn = 0;
-    private int pauseTurn = 0;
+    private int mutekiTurn = -1;
+    private int pauseTurn = -1;
     public int dir = 0;
 
     private boolean onBoard;
@@ -68,9 +68,13 @@ public class Player {
 	writer.println(turn);
 
 	// 残機を出力
-	for (Integer life : lifeList) {
-	    writer.println(life);
+	for (int i = 0; i < lifeList.size(); i++) {
+	    if (i != 0) {
+		writer.print(" ");
+	    }
+	    writer.print(lifeList.get(i));
 	}
+	writer.println();
 
 	// ボード情報を出力
 	for (int i = 0; i < board.length; i++) {
