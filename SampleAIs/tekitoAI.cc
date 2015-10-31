@@ -33,6 +33,10 @@ int main() {
     //各AIの座標を受け取る
     REP(i, 4) { cin >> y[i] >> x[i] >> dir[i]; }
 
+    // EOD
+    string eod;
+    cin >> eod;
+
 	//コマンドを出力
 	cout << dir[3] << endl;
   }

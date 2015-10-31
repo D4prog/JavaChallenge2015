@@ -88,6 +88,8 @@ public class Player {
 	    writer.println(string);
 	}
 
+	// 末尾にEODを出力
+	writer.println("EOD");
 	writer.flush();
     }
 
@@ -169,7 +171,7 @@ public class Player {
     }
 
     // 向きを決める
-    public void direction(String s) {
+    public void directTo(String s) {
 	for (int i = 0; i < Bookmaker.DIRECTION.length; i++) {
 	    if (s.equals(Bookmaker.DIRECTION[i])) {
 		dir = i;

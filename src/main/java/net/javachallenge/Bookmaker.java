@@ -2,11 +2,8 @@ package net.javachallenge;
 
 import java.util.ArrayList;
 import java.util.Random;
-import java.util.Scanner;
 
 public class Bookmaker {
-    private static boolean DEBUG = true;
-    public static boolean HUMAN = false;
 
     private static final int PLAYERS_NUM = 4;
     private static final int MAP_WIDTH = 40;
@@ -34,14 +31,6 @@ public class Bookmaker {
     private static int[][] board = new int[MAP_WIDTH][MAP_WIDTH];
 
     public static void main(String[] args) throws InterruptedException {
-	Scanner scanner = new Scanner(System.in);
-	if (DEBUG) {
-	    String tekitoAIcommand = "/home/nkenkou/Desktop/Dropbox/workspace/Bookmaker/SampleAIs/tekitoAI";
-	    args = new String[] { "-ai", tekitoAIcommand, "-ai",
-		    tekitoAIcommand, "-ai", tekitoAIcommand, "-ai",
-		    tekitoAIcommand, };
-	}
-
 	// AIの実行コマンドを引数から読み出す
 	String[] execAICommands = new String[PLAYERS_NUM];
 	for (int i = 0; i < PLAYERS_NUM; i++) {
@@ -54,13 +43,6 @@ public class Bookmaker {
 		    continue;
 		}
 		execAICommands[cur++] = args[++i];
-	    } else if (args[i].equals("-debug")) {
-		DEBUG = true;
-	    } else if (args[i].equals("-human")) {
-		HUMAN = true;
-	    } else {
-		System.out
-			.println("WARNING: unknown argument " + args[i] + ".");
 	    }
 	}
 
@@ -79,38 +61,27 @@ public class Bookmaker {
 
 	// ゲーム
 	while (!isFinished()) {
-	    turn++;
+	    int turnPlayer = turn % PLAYERS_NUM;
 
 	    // AIに情報を渡してコマンドを受け取る
-	    ArrayList<String> commands = infromationPhase();
+	    String command = infromationPhase(turnPlayer);
 
-	    // デバッグ（独りプレー用でもある）
-	    if (DEBUG) {
-		debugPrint();
-
-		// 各AIのコマンドを表示
-		for (String string : commands) {
-		    System.out.print(string + " ");
-		}
-		System.out.println();
-
-		// AI-3のコマンドを書き換える
-		commands.remove(3);
-		commands.add(scanner.next());
-	    }
+	    // 盤面の状態とAIの出したコマンドをログに出力
+	    printLOG(command);
 
 	    // コマンドを実行する
-	    actionPhase(commands);
+	    actionPhase(turnPlayer, command);
 
 	    // パネル・プレイヤーの落下と復活
 	    rebirthPhase();
 
+	    turn++;
 	}
+
 	System.out.println("Game Finished!");
-	scanner.close();
     }
 
-    private static void debugPrint() {
+    private static void printLOG(String command) {
 	// ターン数の出力
 	System.out.println(turn);
 
@@ -151,6 +122,9 @@ public class Bookmaker {
 			+ Bookmaker.DIRECTION[player.dir]);
 	    }
 	}
+
+	// そのターンに行動したプレーヤーの出すコマンドを出力
+	System.out.println(command);
     }
 
     // パネルやプレーヤーを落としたり復活させたりする
@@ -206,10 +180,14 @@ public class Bookmaker {
     }
 
     // AIに情報を渡してコマンドを受け取る
-    private static ArrayList<String> infromationPhase() {
+    private static String infromationPhase(int turnPlayer) {
+	if (!players[turnPlayer].isAlive()) {
+	    return NONE;
+	}
+
+	// AIに渡すための情報を整形
 	ArrayList<Integer> lifes = new ArrayList<Integer>();
 	ArrayList<String> wheres = new ArrayList<String>();
-
 	for (int i = 0; i < PLAYERS_NUM; i++) {
 	    lifes.add(players[i].life);
 	    if (players[i].isOnBoard()) {
@@ -221,33 +199,23 @@ public class Bookmaker {
 	}
 
 	// 情報をAIに渡す
-	for (int id = 0; id < PLAYERS_NUM; id++) {
-	    if (!players[id].isAlive()) {
-		continue;
-	    }
-	    players[id].putInformation(id, turn, board, lifes, wheres);
-	}
+	players[turnPlayer].putInformation(turnPlayer, turn, board, lifes,
+		wheres);
 
 	// コマンドを受け取る
-	ArrayList<String> commandList = new ArrayList<String>();
-	for (Player p : players) {
-	    if (!p.isAlive()) {
-		commandList.add(NONE);
-	    }
-	    commandList.add(p.getAction());
-	}
-	return commandList;
+	return players[turnPlayer].getAction();
     }
 
     // AIから受け取ったアクションを実行する
-    private static void actionPhase(ArrayList<String> commands) {
+    private static void actionPhase(int turnPlayer, String command) {
+	Player p = players[turnPlayer];
+
+	if (!p.isOnBoard() || p.isPausing(turn) || command.equals(NONE)) {
+	    return;
+	}
+
 	// 攻撃を処理
-	for (int i = 0; i < PLAYERS_NUM; i++) {
-	    Player p = players[i];
-	    if (!p.isOnBoard() || p.isPausing(turn)
-		    || !commands.get(i).equals(ATTACK)) {
-		continue;
-	    }
+	if (command.equals(ATTACK)) {
 	    // 今いるブロックを出す
 	    int xNow = p.x / BLOCK_WIDTH;
 	    int yNow = p.y / BLOCK_WIDTH;
@@ -285,22 +253,11 @@ public class Bookmaker {
 
 	    // 攻撃すると硬直する
 	    p.attackedPause(turn);
+	    return;
 	}
-	// 攻撃処理終了
 
 	// 移動処理
-	boolean[] moved = new boolean[PLAYERS_NUM];
-	int[] toxCache = new int[PLAYERS_NUM];
-	int[] toyCache = new int[PLAYERS_NUM];
-	for (int i = 0; i < PLAYERS_NUM; i++) {
-	    Player p = players[i];
-	    moved[i] = true;
-	    if (!p.isOnBoard() || p.isPausing(turn)) {
-		continue;
-	    }
-
-	    String command = commands.get(i);
-	    p.direction(command);
+	{
 	    int tox = -1, toy = -1;
 	    if (command.equals(UP)) {
 		tox = p.x - 1;
@@ -315,60 +272,30 @@ public class Bookmaker {
 		tox = p.x;
 		toy = p.y - 1;
 	    } else {
-		continue;
+		return;
 	    }
 
 	    // ボード外への移動を指定している場合はスルー
 	    if (!isInside(tox, toy)) {
-		continue;
+		return;
 	    }
 
+	    p.directTo(command);
 	    // 移動先でぶつからないかどうかチェック
-	    for (int j = 0; j < PLAYERS_NUM; j++) {
-		if (!players[j].isOnBoard() || j == i) {
+	    for (int i = 0; i < PLAYERS_NUM; i++) {
+		if (!players[i].isOnBoard() || i == turnPlayer) {
 		    continue;
 		}
 
-		if (dist(tox, toy, players[j].x, players[j].y) < REPULSION - 1) {
-		    // 移動先でぶつかりそうな時
-		    moved[i] = false;
-		    toxCache[i] = tox;
-		    toyCache[i] = toy;
+		if (dist(tox, toy, players[i].x, players[i].y) < REPULSION) {
+		    // 移動先でぶつかる時
+		    return;
 		}
 	    }
 
-	    // 移動
-	    if (moved[i]) {
-		p.moveTo(tox, toy);
-	    }
+	    // ぶつからなければ移動
+	    p.moveTo(tox, toy);
 	}
-
-	// ぶつかりそうな人たちを処理する
-	move: for (int i = 0; i < PLAYERS_NUM; i++) {
-	    if (moved[i]) {
-		continue;
-	    }
-	    for (int j = 0; j < PLAYERS_NUM; j++) {
-		if (i == j) {
-		    continue;
-		}
-		if (!moved[j]
-			&& dist(toxCache[i], toyCache[i], toxCache[j],
-				toyCache[j]) < REPULSION) {
-		    // ぶつかる場合は動けない
-		    continue move;
-		} else if (players[j].isOnBoard()
-			&& dist(toxCache[i], toyCache[i], players[j].x,
-				players[j].y) < REPULSION) {
-		    // ぶつかる場合は動けない
-		    continue move;
-		}
-	    }
-
-	    // なんだかんだぶつからなかった時
-	    players[i].moveTo(toxCache[i], toyCache[i]);
-	}
-
     }
 
     // マンハッタン距離計算
@@ -376,14 +303,14 @@ public class Bookmaker {
 	return Math.abs(x1 - x2) + Math.abs(y1 - y2);
     }
 
+    // ランダムな座標を返す
     private static int nextInt() {
-	// ランダムな座標を返す
 	int ret = (int) (rnd.nextDouble() * MAP_WIDTH);
 	return ret;
     }
 
+    // ランダムな向きを返す
     private static int nextDir() {
-	// ランダムな向きを返す
 	int rng = rnd.nextInt(4);
 	return rng;
     }
@@ -399,6 +326,6 @@ public class Bookmaker {
 		livingCnt++;
 	    }
 	}
-	return livingCnt == 0 || turn > FORCED_END_TURN;
+	return livingCnt == 1 || turn > FORCED_END_TURN;
     }
 }
