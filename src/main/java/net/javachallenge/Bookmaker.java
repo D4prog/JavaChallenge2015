@@ -18,6 +18,7 @@ public class Bookmaker {
     public static final int MUTEKI_TURN = 10 * 4;// 再生直後の無敵ターン数
     private static final int REPULSION = 7;// プレイヤーの反発範囲
     public static final int ACTION_TIME_LIMIT = 2000;
+    private static final int TIME_TO_FALL = 1 * 4;// 攻撃を受けたマスが落ちるまでの時間（これに距離をかけたものが落ちるまでの時間になる）
 
     public static final String READY = "Ready";
     public static final String UP = "U";
@@ -250,24 +251,28 @@ public class Bookmaker {
 			// xが減っていく
 			// yは同じ
 			if (yBlock == yNow && xBlock < xNow && board[x][y] == 0) {
-			    board[x][y] = dist(xBlock, yBlock, xNow, yNow);
+			    board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+				    * TIME_TO_FALL;
 			}
 		    } else if (p.dir == 1) {
 			// 右向きの時
 			// yは増えていき、xは同じ
 			if (xBlock == xNow && yBlock < yNow && board[x][y] == 0) {
-			    board[x][y] = dist(xBlock, yBlock, xNow, yNow);
+			    board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+				    * TIME_TO_FALL;
 			}
 		    } else if (p.dir == 2) {
 			// 下向きの時
 			// xは増え、yは同じ
 			if (yBlock == yNow && xBlock > xNow && board[x][y] == 0) {
-			    board[x][y] = dist(xBlock, yBlock, xNow, yNow);
+			    board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+				    * TIME_TO_FALL;
 			}
 		    } else if (p.dir == 3) {
 			// 左向きの時
 			if (xBlock == xNow && yBlock > yNow && board[x][y] == 0) {
-			    board[x][y] = dist(xBlock, yBlock, xNow, yNow);
+			    board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+				    * TIME_TO_FALL;
 			}
 		    }
 		}
