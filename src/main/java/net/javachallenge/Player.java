@@ -69,7 +69,7 @@ public class Player {
 	}
 
 	// pause
-	if (pauseCommand == null) {
+	if (pauseCommand != null) {
 	    try {
 		Runtime.getRuntime().exec(pauseCommand);
 	    } catch (Exception e) {
