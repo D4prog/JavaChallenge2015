@@ -58,7 +58,7 @@ public class Player {
 	} catch (IOException e) {
 	    return false;
 	}
-	return false;
+	return commandExec(pauseCommand);
     }
 
     // AIに情報を送るって行動コマンドを得る
@@ -68,15 +68,9 @@ public class Player {
 	    return Bookmaker.NONE;
 	}
 
-	// pause
-	if (pauseCommand != null) {
-	    try {
-		Runtime.getRuntime().exec(pauseCommand);
-	    } catch (Exception e) {
-		System.err.println("ERROR: Unable to execute the command: "
-			+ pauseCommand + ".");
-		return Bookmaker.NONE;
-	    }
+	// unpause
+	if (!commandExec(unpauseCommand)) {
+	    return Bookmaker.NONE;
 	}
 
 	// プレイヤーID・ターン数を出力
@@ -126,15 +120,9 @@ public class Player {
 	    strings.add(Bookmaker.NONE);
 	}
 
-	// unpause
-	if (unpauseCommand != null) {
-	    try {
-		Runtime.getRuntime().exec(unpauseCommand);
-	    } catch (Exception e) {
-		System.err.println("ERROR: Unable to execute the command: "
-			+ unpauseCommand + ".");
-		return Bookmaker.NONE;
-	    }
+	// pause
+	if (!commandExec(pauseCommand)) {
+	    return Bookmaker.NONE;
 	}
 
 	return strings.get(0);
@@ -150,6 +138,23 @@ public class Player {
 		// do nothing
 	    }
 	}
+    }
+
+    private boolean commandExec(String command) {
+	Process process = null;
+
+	if (command != null) {
+	    try {
+		process = Runtime.getRuntime().exec(command);
+		int c = process.waitFor();
+		System.out.println(command + c);
+	    } catch (Exception e) {
+		System.err.println("ERROR: Unable to execute the command: "
+			+ command + ".");
+		return false;
+	    }
+	}
+	return true;
     }
 
     // 落とす
