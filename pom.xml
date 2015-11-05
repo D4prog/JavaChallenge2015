@@ -43,7 +43,7 @@
 					</descriptorRefs>
 					<archive>
 						<manifest>
-							<mainClass>net.aicomp.Bookmaker</mainClass>
+							<mainClass>net.aicomp.javachallenge2015.Bookmaker</mainClass>
 						</manifest>
 					</archive>
 				</configuration>

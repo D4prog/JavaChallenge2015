@@ -1,4 +1,4 @@
-package net.aicomp;
+package net.aicomp.javachallenge2015;
 
 import java.io.BufferedReader;
 import java.io.IOException;
