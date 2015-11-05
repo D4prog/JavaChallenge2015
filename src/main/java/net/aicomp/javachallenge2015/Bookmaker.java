@@ -1,4 +1,4 @@
-package net.aicomp;
+package net.aicomp.javachallenge2015;
 
 import java.util.ArrayList;
 import java.util.Random;
