@@ -11,6 +11,16 @@
 	<description>Bookmaker is a game engine for JavaChallenge2015.</description>
 	<url>https://github.com/AI-comp/JavaChallenge2015</url>
 	<inceptionYear>2015</inceptionYear>
+
+	<!-- General settings -->
+	<properties>
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.encoding>UTF-8</maven.compiler.encoding>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<encoding>UTF-8</encoding>
+	</properties>
 	
 	<build>
 		<plugins>
