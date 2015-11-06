@@ -49,10 +49,18 @@ public class Bookmaker {
 			ParseException {
 		// AIの実行コマンドを引数から読み出す
 		Options options = new Options()
-				.addOption(EXEC_COMMAND, true, "Commands to execute AI program")
-				.addOption(PAUSE_COMMAND, true, "Commands to pause AI program")
-				.addOption(UNPAUSE_COMMAND, true,
-						"Commands to unpause AI program");
+				.addOption(
+						EXEC_COMMAND,
+						true,
+						"The command and arguments with double quotation marks to execute AI program (e.g. -a \"java MyAI\")")
+				.addOption(
+						PAUSE_COMMAND,
+						true,
+						"The command and arguments with double quotation marks to pause AI program (e.g. -a \"echo pause\")")
+				.addOption(
+						UNPAUSE_COMMAND,
+						true,
+						"The command and arguments with double quotation marks to unpause AI program (e.g. -a \"echo unpause\")");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine line = parser.parse(options, args);
