@@ -56,11 +56,11 @@ public class Bookmaker {
 				.addOption(
 						PAUSE_COMMAND,
 						true,
-						"The command and arguments with double quotation marks to pause AI program (e.g. -a \"echo pause\")")
+						"The command and arguments with double quotation marks to pause AI program (e.g. -p \"echo pause\")")
 				.addOption(
 						UNPAUSE_COMMAND,
 						true,
-						"The command and arguments with double quotation marks to unpause AI program (e.g. -a \"echo unpause\")");
+						"The command and arguments with double quotation marks to unpause AI program (e.g. -u \"echo unpause\")");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine line = parser.parse(options, args);
