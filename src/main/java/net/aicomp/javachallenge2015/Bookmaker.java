@@ -121,8 +121,8 @@ public class Bookmaker {
 	private static boolean hasCompleteArgs(CommandLine line) {
 		return line != null
 				&& line.getOptionValues(EXEC_COMMAND).length == PLAYERS_NUM
-				|| line.getOptionValues(PAUSE_COMMAND).length == PLAYERS_NUM
-				|| line.getOptionValues(UNPAUSE_COMMAND).length == PLAYERS_NUM;
+				&& line.getOptionValues(PAUSE_COMMAND).length == PLAYERS_NUM
+				&& line.getOptionValues(UNPAUSE_COMMAND).length == PLAYERS_NUM;
 	}
 
 	private static void printLOG(String command) {
