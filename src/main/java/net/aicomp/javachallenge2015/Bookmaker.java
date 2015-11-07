@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
 
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
+
 public class Bookmaker {
 	private static boolean DEBUG = false;
 
@@ -34,35 +41,40 @@ public class Bookmaker {
 	private static int turn;
 	private static int[][] board = new int[MAP_WIDTH][MAP_WIDTH];
 
-	public static void main(String[] args) throws InterruptedException {
-		// AIの実行コマンドを引数から読み出す
-		String[] execAICommands = new String[PLAYERS_NUM];
-		String[] pauseAICommands = new String[PLAYERS_NUM];
-		String[] unpauseAICommands = new String[PLAYERS_NUM];
-		for (int i = 0; i < PLAYERS_NUM; i++) {
-			execAICommands[i] = "";
-			pauseAICommands[i] = null;
-			unpauseAICommands[i] = null;
-		}
-		int cur = 0;
-		for (int i = 0; i < args.length; i++) {
-			if (args[i].equals("-ai")) {
-				if (cur == 4) {
-					continue;
-				}
+	private static final String EXEC_COMMAND = "a";
+	private static final String PAUSE_COMMAND = "p";
+	private static final String UNPAUSE_COMMAND = "u";
 
-				execAICommands[cur] = args[++i];
-				if (!args[++i].equals("-ai")) {
-					pauseAICommands[cur] = args[i];
-				}
-				if (!args[++i].equals("-ai")) {
-					unpauseAICommands[cur] = args[i];
-				}
-				cur++;
-			} else if (args[i].equals("--debug")) {
-				DEBUG = true;
-			}
+	public static void main(String[] args) throws InterruptedException,
+			ParseException {
+		// AIの実行コマンドを引数から読み出す
+		Options options = new Options()
+				.addOption(
+						EXEC_COMMAND,
+						true,
+						"The command and arguments with double quotation marks to execute AI program (e.g. -a \"java MyAI\")")
+				.addOption(
+						PAUSE_COMMAND,
+						true,
+						"The command and arguments with double quotation marks to pause AI program (e.g. -p \"echo pause\")")
+				.addOption(
+						UNPAUSE_COMMAND,
+						true,
+						"The command and arguments with double quotation marks to unpause AI program (e.g. -u \"echo unpause\")");
+
+		CommandLineParser parser = new DefaultParser();
+		CommandLine line = parser.parse(options, args);
+
+		if (!hasCompleteArgs(line)) {
+			HelpFormatter help = new HelpFormatter();
+			help.printHelp("java -jar JavaChallenge2015.jar [OPTIONS]\n"
+					+ "[OPTIONS]: ", "", options, "", true);
+			return;
 		}
+
+		String[] execAICommands = line.getOptionValues(EXEC_COMMAND);
+		String[] pauseAICommands = line.getOptionValues(PAUSE_COMMAND);
+		String[] unpauseAICommands = line.getOptionValues(UNPAUSE_COMMAND);
 
 		// 乱数・ターン数の初期化
 		rnd = new Random(System.currentTimeMillis());
@@ -71,7 +83,8 @@ public class Bookmaker {
 		// AIの実行
 		players = new Player[PLAYERS_NUM];
 		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player(INITIAL_LIFE, execAICommands[i], pauseAICommands[i], unpauseAICommands[i]);
+			players[i] = new Player(INITIAL_LIFE, execAICommands[i],
+					pauseAICommands[i], unpauseAICommands[i]);
 		}
 
 		// プレイヤーを初期配置する
@@ -88,7 +101,8 @@ public class Bookmaker {
 			printLOG(command);
 
 			// DEBUGプレイ
-			if (DEBUG && turnPlayer == 0 && players[turnPlayer].isOnBoard() && !players[turnPlayer].isPausing(turn)) {
+			if (DEBUG && turnPlayer == 0 && players[turnPlayer].isOnBoard()
+					&& !players[turnPlayer].isPausing(turn)) {
 				command = new Scanner(System.in).next();
 			}
 
@@ -102,6 +116,21 @@ public class Bookmaker {
 		}
 
 		System.out.println("Game Finished!");
+	}
+
+	/**
+	 * コマンドライン引数の確認。
+	 * 
+	 * @param line
+	 * @author J.Kobayashi
+	 * @return コマンドライン引数が存在し、実行コマンド、ポーズコマンド、アンポーズコマンドが全て4つずつ与えられている場合にのみ
+	 *         {@code true}、それ以外の場合は{@code false}
+	 */
+	private static boolean hasCompleteArgs(CommandLine line) {
+		return line != null
+				&& line.getOptionValues(EXEC_COMMAND).length == PLAYERS_NUM
+				&& line.getOptionValues(PAUSE_COMMAND).length == PLAYERS_NUM
+				&& line.getOptionValues(UNPAUSE_COMMAND).length == PLAYERS_NUM;
 	}
 
 	private static void printLOG(String command) {
@@ -121,7 +150,8 @@ public class Bookmaker {
 					// プレイヤーがいるならそれを表示
 					for (int playerID = 0; playerID < PLAYERS_NUM; playerID++) {
 						Player player = players[playerID];
-						if (player.isOnBoard() && player.x == x && player.y == y) {
+						if (player.isOnBoard() && player.x == x
+								&& player.y == y) {
 							char c = (char) (playerID + 'A');
 							System.out.print(c + "" + c);
 							continue outer;
@@ -137,9 +167,11 @@ public class Bookmaker {
 		// いる座標と向きを表示
 		for (Player player : players) {
 			if (player.isOnBoard()) {
-				System.out.println(player.x + " " + player.y + " " + Bookmaker.DIRECTION[player.dir]);
+				System.out.println(player.x + " " + player.y + " "
+						+ Bookmaker.DIRECTION[player.dir]);
 			} else {
-				System.out.println((-1) + " " + (-1) + " " + Bookmaker.DIRECTION[player.dir]);
+				System.out.println((-1) + " " + (-1) + " "
+						+ Bookmaker.DIRECTION[player.dir]);
 			}
 		}
 
@@ -183,7 +215,8 @@ public class Bookmaker {
 						}
 
 						Player other = players[j];
-						if (other.isOnBoard() && dist(x, y, other.x, other.y) <= REPULSION) {
+						if (other.isOnBoard()
+								&& dist(x, y, other.x, other.y) <= REPULSION) {
 							// 敵に近過ぎたらだめ
 							continue search;
 						}
@@ -217,7 +250,8 @@ public class Bookmaker {
 		}
 
 		// 情報をAIに渡してコマンドを受け取る
-		String command = players[turnPlayer].getAction(turnPlayer, turn, board, lifes, wheres);
+		String command = players[turnPlayer].getAction(turnPlayer, turn, board,
+				lifes, wheres);
 
 		return command;
 	}
@@ -244,24 +278,28 @@ public class Bookmaker {
 						// xが減っていく
 						// yは同じ
 						if (yBlock == yNow && xBlock < xNow && board[x][y] == 0) {
-							board[x][y] = dist(xBlock, yBlock, xNow, yNow) * TIME_TO_FALL;
+							board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+									* TIME_TO_FALL;
 						}
 					} else if (p.dir == 1) {
 						// 右向きの時
 						// yは増えていき、xは同じ
 						if (xBlock == xNow && yBlock < yNow && board[x][y] == 0) {
-							board[x][y] = dist(xBlock, yBlock, xNow, yNow) * TIME_TO_FALL;
+							board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+									* TIME_TO_FALL;
 						}
 					} else if (p.dir == 2) {
 						// 下向きの時
 						// xは増え、yは同じ
 						if (yBlock == yNow && xBlock > xNow && board[x][y] == 0) {
-							board[x][y] = dist(xBlock, yBlock, xNow, yNow) * TIME_TO_FALL;
+							board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+									* TIME_TO_FALL;
 						}
 					} else if (p.dir == 3) {
 						// 左向きの時
 						if (xBlock == xNow && yBlock > yNow && board[x][y] == 0) {
-							board[x][y] = dist(xBlock, yBlock, xNow, yNow) * TIME_TO_FALL;
+							board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+									* TIME_TO_FALL;
 						}
 					}
 				}
