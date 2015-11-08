@@ -127,10 +127,22 @@ public class Bookmaker {
 	 *         {@code true}、それ以外の場合は{@code false}
 	 */
 	private static boolean hasCompleteArgs(CommandLine line) {
-		return line != null
-				&& line.getOptionValues(EXEC_COMMAND).length == PLAYERS_NUM
-				&& line.getOptionValues(PAUSE_COMMAND).length == PLAYERS_NUM
-				&& line.getOptionValues(UNPAUSE_COMMAND).length == PLAYERS_NUM;
+		if (line == null) {
+			return false;
+		}
+		if (line.getOptionValues(EXEC_COMMAND) == null
+				|| line.getOptionValues(EXEC_COMMAND).length != PLAYERS_NUM) {
+			return false;
+		}
+		if (line.getOptionValues(PAUSE_COMMAND) == null
+				|| line.getOptionValues(PAUSE_COMMAND).length != PLAYERS_NUM) {
+			return false;
+		}
+		if (line.getOptionValues(UNPAUSE_COMMAND) == null
+				|| line.getOptionValues(UNPAUSE_COMMAND).length != PLAYERS_NUM) {
+			return false;
+		}
+		return true;
 	}
 
 	private static void printLOG(String command) {
