@@ -73,8 +73,10 @@ public class Bookmaker {
 		}
 
 		String[] execAICommands = line.getOptionValues(EXEC_COMMAND);
-		String[] pauseAICommands = line.getOptionValues(PAUSE_COMMAND);
-		String[] unpauseAICommands = line.getOptionValues(UNPAUSE_COMMAND);
+		String[] pauseAICommands = line.hasOption(PAUSE_COMMAND) ? line
+				.getOptionValues(PAUSE_COMMAND) : new String[PLAYERS_NUM];
+		String[] unpauseAICommands = line.hasOption(UNPAUSE_COMMAND) ? line
+				.getOptionValues(UNPAUSE_COMMAND) : new String[PLAYERS_NUM];
 
 		// 乱数・ターン数の初期化
 		rnd = new Random(System.currentTimeMillis());
