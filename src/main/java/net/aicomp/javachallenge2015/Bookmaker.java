@@ -73,8 +73,10 @@ public class Bookmaker {
 		}
 
 		String[] execAICommands = line.getOptionValues(EXEC_COMMAND);
-		String[] pauseAICommands = line.getOptionValues(PAUSE_COMMAND);
-		String[] unpauseAICommands = line.getOptionValues(UNPAUSE_COMMAND);
+		String[] pauseAICommands = line.hasOption(PAUSE_COMMAND) ? line
+				.getOptionValues(PAUSE_COMMAND) : new String[PLAYERS_NUM];
+		String[] unpauseAICommands = line.hasOption(UNPAUSE_COMMAND) ? line
+				.getOptionValues(UNPAUSE_COMMAND) : new String[PLAYERS_NUM];
 
 		// 乱数・ターン数の初期化
 		rnd = new Random(System.currentTimeMillis());
@@ -119,18 +121,34 @@ public class Bookmaker {
 	}
 
 	/**
-	 * コマンドライン引数の確認。
+	 * コマンドライン引数の確認。与えられたコマンドライン引数がnullでなく、実行コマンドは必ず4つ、
+	 * ポーズコマンドとアンポーズコマンドは1つも無いか4つ与えられているかを確認する。
 	 * 
 	 * @param line
 	 * @author J.Kobayashi
-	 * @return コマンドライン引数が存在し、実行コマンド、ポーズコマンド、アンポーズコマンドが全て4つずつ与えられている場合にのみ
-	 *         {@code true}、それ以外の場合は{@code false}
+	 * @return 条件が満たされるならば {@code true}、それ以外の場合は{@code false}
 	 */
 	private static boolean hasCompleteArgs(CommandLine line) {
-		return line != null
-				&& line.getOptionValues(EXEC_COMMAND).length == PLAYERS_NUM
-				&& line.getOptionValues(PAUSE_COMMAND).length == PLAYERS_NUM
-				&& line.getOptionValues(UNPAUSE_COMMAND).length == PLAYERS_NUM;
+		if (line == null) {
+			return false;
+		}
+		if (!line.hasOption(EXEC_COMMAND)
+				|| line.getOptionValues(EXEC_COMMAND).length != PLAYERS_NUM) {
+			return false;
+		}
+		if (!line.hasOption(PAUSE_COMMAND)) {
+			return true;
+		}
+		if (line.getOptionValues(PAUSE_COMMAND).length != PLAYERS_NUM) {
+			return false;
+		}
+		if (!line.hasOption(UNPAUSE_COMMAND)) {
+			return true;
+		}
+		if (line.getOptionValues(UNPAUSE_COMMAND).length != PLAYERS_NUM) {
+			return false;
+		}
+		return true;
 	}
 
 	private static void printLOG(String command) {
