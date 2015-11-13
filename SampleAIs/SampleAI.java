@@ -36,7 +36,7 @@ public class Sample {
 		random = new Random();
 		scanner = new Scanner(System.in);
 		writer = new PrintWriter(System.out, true);
-		writer.println("Ready");
+		writer.println("READY");
 		writer.flush();
 
 		while(true) {
