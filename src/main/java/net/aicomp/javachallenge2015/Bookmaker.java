@@ -27,7 +27,7 @@ public class Bookmaker {
 	public static final int ACTION_TIME_LIMIT = 2000;
 	private static final int TIME_TO_FALL = 1 * 4;// 攻撃を受けたマスが落ちるまでの時間（これに距離をかけたものが落ちるまでの時間になる）
 
-	public static final String READY = "Ready";
+	public static final String READY = "READY";
 	public static final String UP = "U";
 	public static final String DOWN = "D";
 	public static final String RIGHT = "R";
