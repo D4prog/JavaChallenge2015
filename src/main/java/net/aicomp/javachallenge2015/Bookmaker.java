@@ -1,8 +1,9 @@
 package net.aicomp.javachallenge2015;
 
-import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+
+import net.aicomp.javachallenge2015.entities.Field;
 
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -15,8 +16,6 @@ public class Bookmaker {
 	private static boolean DEBUG = false;
 
 	private static final int PLAYERS_NUM = 4;
-	private static final int MAP_WIDTH = 40;
-	private static final int BLOCK_WIDTH = 5;
 	private static final int INITIAL_LIFE = 5;// ゲーム開始時の残機
 	private static final int FORCED_END_TURN = 10000;// ゲームが強制終了するターン
 	private static final int PANEL_REBIRTH_TURN = 5 * 4;// パネルが再生するまでのターン数
@@ -24,7 +23,6 @@ public class Bookmaker {
 	public static final int ATTACKED_PAUSE_TURN = 5 * 4;// 攻撃後の硬直している時間
 	public static final int MUTEKI_TURN = 10 * 4;// 再生直後の無敵ターン数
 	private static final int REPULSION = 7;// プレイヤーの反発範囲
-	public static final int ACTION_TIME_LIMIT = 2000;
 	private static final int TIME_TO_FALL = 1 * 4;// 攻撃を受けたマスが落ちるまでの時間（これに距離をかけたものが落ちるまでの時間になる）
 
 	public static final String READY = "READY";
@@ -39,11 +37,12 @@ public class Bookmaker {
 	private static Player[] players;
 	private static Random rnd;
 	private static int turn;
-	private static int[][] board = new int[MAP_WIDTH][MAP_WIDTH];
 
 	private static final String EXEC_COMMAND = "a";
 	private static final String PAUSE_COMMAND = "p";
 	private static final String UNPAUSE_COMMAND = "u";
+
+	private static Field field;
 
 	public static void main(String[] args) throws InterruptedException,
 			ParseException {
@@ -82,6 +81,8 @@ public class Bookmaker {
 		rnd = new Random(System.currentTimeMillis());
 		turn = 0;
 
+		field = new Field();
+
 		// AIの実行
 		players = new Player[PLAYERS_NUM];
 		for (int i = 0; i < players.length; i++) {
@@ -97,10 +98,10 @@ public class Bookmaker {
 			int turnPlayer = turn % PLAYERS_NUM;
 
 			// AIに情報を渡してコマンドを受け取る
-			String command = infromationPhase(turnPlayer);
+			informationPhase(turnPlayer);
 
 			// 盤面の状態とAIの出したコマンドをログに出力
-			printLOG(command);
+			printLOG();
 
 			// DEBUGプレイ
 			if (DEBUG && turnPlayer == 0 && players[turnPlayer].isOnBoard()
@@ -151,7 +152,7 @@ public class Bookmaker {
 		return true;
 	}
 
-	private static void printLOG(String command) {
+	private static void printLOG() {
 		// ターン数の出力
 		System.out.println(turn);
 
@@ -162,35 +163,19 @@ public class Bookmaker {
 		System.out.println();
 
 		// ボードを表示
-		for (int x = 0; x < MAP_WIDTH; x++) {
-			outer: for (int y = 0; y < MAP_WIDTH; y++) {
-				if (DEBUG) {
-					// プレイヤーがいるならそれを表示
-					for (int playerID = 0; playerID < PLAYERS_NUM; playerID++) {
-						Player player = players[playerID];
-						if (player.isOnBoard() && player.x == x
-								&& player.y == y) {
-							char c = (char) (playerID + 'A');
-							System.out.print(c + "" + c);
-							continue outer;
-						}
-					}
-				}
-
-				System.out.print(" " + board[x][y]);
-			}
-			System.out.println();
+		String[] board;
+		if (DEBUG) {
+			board = field.getStatus(players);
+		} else {
+			board = field.getStatus();
+		}
+		for (int i = 0; i < board.length; i++) {
+			System.out.println(board[i]);
 		}
 
 		// いる座標と向きを表示
 		for (Player player : players) {
-			if (player.isOnBoard()) {
-				System.out.println(player.x + " " + player.y + " "
-						+ Bookmaker.DIRECTION[player.dir]);
-			} else {
-				System.out.println((-1) + " " + (-1) + " "
-						+ Bookmaker.DIRECTION[player.dir]);
-			}
+			player.printPlayerInfo();
 		}
 
 		// そのターンに行動したプレーヤーの出すコマンドを出力
@@ -242,7 +227,7 @@ public class Bookmaker {
 
 					// x,yに復活させる
 					p.reBirthOn(x, y, turn);
-					p.dir = nextDir();
+					p.setRandomDir();
 					break;
 				}
 			}
@@ -250,28 +235,13 @@ public class Bookmaker {
 	}
 
 	// AIに情報を渡してコマンドを受け取る
-	private static String infromationPhase(int turnPlayer) {
-		if (!players[turnPlayer].isAlive()) {
-			return NONE;
-		}
+	private static void informationPhase(int turnPlayer) {
+		sendInformation(turnPlayer);
+		players[turnPlayer].getCommand();
+	}
 
-		// AIに渡すための情報を整形
-		ArrayList<Integer> lifes = new ArrayList<Integer>();
-		ArrayList<String> wheres = new ArrayList<String>();
-		for (int i = 0; i < PLAYERS_NUM; i++) {
-			lifes.add(players[i].life);
-			if (players[i].isOnBoard()) {
-				wheres.add(players[i].x + " " + players[i].y);
-			} else {
-				wheres.add((-1) + " " + (-1));
-			}
-		}
-
-		// 情報をAIに渡してコマンドを受け取る
-		String command = players[turnPlayer].getAction(turnPlayer, turn, board,
-				lifes, wheres);
-
-		return command;
+	private static void sendInformation(int playerId) {
+		players[playerId].sendInformation(playerId, turn, field, players);
 	}
 
 	// AIから受け取ったアクションを実行する
@@ -329,45 +299,48 @@ public class Bookmaker {
 		}
 
 		// 移動処理
-		{
-			int tox = -1, toy = -1;
-			if (command.equals(UP)) {
-				tox = p.x - 1;
-				toy = p.y;
-			} else if (command.equals(RIGHT)) {
-				tox = p.x;
-				toy = p.y + 1;
-			} else if (command.equals(DOWN)) {
-				tox = p.x + 1;
-				toy = p.y;
-			} else if (command.equals(LEFT)) {
-				tox = p.x;
-				toy = p.y - 1;
-			} else {
-				return;
-			}
+		movePlayer(turnPlayer, command, p);
 
-			// ボード外への移動を指定している場合はスルー
-			if (!isInside(tox, toy)) {
-				return;
-			}
+	}
 
-			p.directTo(command);
-			// 移動先でぶつからないかどうかチェック
-			for (int i = 0; i < PLAYERS_NUM; i++) {
-				if (!players[i].isOnBoard() || i == turnPlayer) {
-					continue;
-				}
-
-				if (dist(tox, toy, players[i].x, players[i].y) < REPULSION) {
-					// 移動先でぶつかる時
-					return;
-				}
-			}
-
-			// ぶつからなければ移動
-			p.moveTo(tox, toy);
+	private static void movePlayer(int turnPlayer, String command, Player p) {
+		int tox = -1, toy = -1;
+		if (command.equals(UP)) {
+			tox = p.x - 1;
+			toy = p.y;
+		} else if (command.equals(RIGHT)) {
+			tox = p.x;
+			toy = p.y + 1;
+		} else if (command.equals(DOWN)) {
+			tox = p.x + 1;
+			toy = p.y;
+		} else if (command.equals(LEFT)) {
+			tox = p.x;
+			toy = p.y - 1;
+		} else {
+			return;
 		}
+
+		// ボード外への移動を指定している場合はスルー
+		if (field.isInside(tox, toy)) {
+			return;
+		}
+
+		p.directTo(command);
+		// 移動先でぶつからないかどうかチェック
+		for (int i = 0; i < PLAYERS_NUM; i++) {
+			if (!players[i].isOnBoard() || i == turnPlayer) {
+				continue;
+			}
+
+			if (dist(tox, toy, players[i].x, players[i].y) < REPULSION) {
+				// 移動先でぶつかる時
+				return;
+			}
+		}
+
+		// ぶつからなければ移動
+		p.moveTo(tox, toy);
 	}
 
 	// マンハッタン距離計算
@@ -379,16 +352,6 @@ public class Bookmaker {
 	private static int nextInt() {
 		int ret = (int) (rnd.nextDouble() * MAP_WIDTH);
 		return ret;
-	}
-
-	// ランダムな向きを返す
-	private static int nextDir() {
-		int rng = rnd.nextInt(4);
-		return rng;
-	}
-
-	private static boolean isInside(int x, int y) {
-		return 0 <= x && x < MAP_WIDTH && 0 <= y && y < MAP_WIDTH;
 	}
 
 	private static boolean isFinished() {
