@@ -28,6 +28,7 @@ public class Bookmaker {
 	private static final int TIME_TO_FALL = 1 * 4;// 攻撃を受けたマスが落ちるまでの時間（これに距離をかけたものが落ちるまでの時間になる）
 
 	public static final String READY = "READY";
+	public static final String EOD = "EOD";
 	public static final String UP = "U";
 	public static final String DOWN = "D";
 	public static final String RIGHT = "R";
@@ -47,6 +48,7 @@ public class Bookmaker {
 
 	public static void main(String[] args) throws InterruptedException,
 			ParseException {
+
 		// AIの実行コマンドを引数から読み出す
 		Options options = new Options()
 				.addOption(
@@ -67,7 +69,7 @@ public class Bookmaker {
 
 		if (!hasCompleteArgs(line)) {
 			HelpFormatter help = new HelpFormatter();
-			help.printHelp("java -jar JavaChallenge2015.jar [OPTIONS]\n"
+			help.printHelp("java -jar Bookmaker.jar [OPTIONS]\n"
 					+ "[OPTIONS]: ", "", options, "", true);
 			return;
 		}
@@ -278,7 +280,8 @@ public class Bookmaker {
 	private static void actionPhase(int turnPlayer, String command) {
 		Player p = players[turnPlayer];
 
-		if (!p.isOnBoard() || p.isPausing(turn) || command.equals(NONE)) {
+		if (!p.isOnBoard() || p.isPausing(turn) || command == null
+				|| command.equals(NONE)) {
 			return;
 		}
 

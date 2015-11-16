@@ -101,7 +101,7 @@ public class Player {
 		}
 
 		// 末尾にEODを出力
-		writer.println("EOD");
+		writer.println(Bookmaker.EOD);
 		writer.flush();
 
 		ArrayList<String> strings = new ArrayList<String>();
