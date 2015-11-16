@@ -11,6 +11,7 @@ import net.aicomp.javachallenge2015.commands.CommandBuilder;
 import net.aicomp.javachallenge2015.commands.ICommand;
 import net.aicomp.javachallenge2015.entities.Field;
 import net.aicomp.javachallenge2015.entities.Point;
+import net.exkazuu.gameaiarena.api.Direction4;
 
 public class Player {
 	public static final int ACTION_TIME_LIMIT = 2000;
@@ -28,7 +29,7 @@ public class Player {
 	public int rebirthTurn = 0;
 	private int mutekiTurn = -1;
 	private int pauseTurn = -1;
-	private Direction dir;
+	private Direction4 dir;
 
 	private ICommand command;
 
@@ -180,7 +181,7 @@ public class Player {
 	 * @param direction
 	 *            決める向き
 	 */
-	public void directTo(Direction direction) {
+	public void directTo(Direction4 direction) {
 		dir = direction;
 	}
 
@@ -192,7 +193,7 @@ public class Player {
 	 * 
 	 */
 	public void setRandomDir() {
-		dir = Direction.getRandomDir();
+		dir = Direction4.getRandomDir();
 	}
 
 	/**
