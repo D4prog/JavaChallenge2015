@@ -18,7 +18,7 @@ public class Bookmaker {
 	private static final int MAP_WIDTH = 40;
 	private static final int BLOCK_WIDTH = 5;
 	private static final int INITIAL_LIFE = 5;// ゲーム開始時の残機
-	private static final int FORCED_END_TURN = 10000;// ゲームが強制終了するターン
+	private static final int FORCED_END_TURN = 100;// ゲームが強制終了するターン
 	private static final int PANEL_REBIRTH_TURN = 5 * 4;// パネルが再生するまでのターン数
 	public static final int PLAYER_REBIRTH_TURN = 5 * 4;// プレイヤーが再生するまでのターン数
 	public static final int ATTACKED_PAUSE_TURN = 5 * 4;// 攻撃後の硬直している時間
@@ -37,10 +37,10 @@ public class Bookmaker {
 	public static final String NONE = "N";
 	public static final String[] DIRECTION = { UP, LEFT, DOWN, RIGHT };
 
-	private static Player[] players;
-	private static Random rnd;
-	private static int turn;
-	private static int[][] board = new int[MAP_WIDTH][MAP_WIDTH];
+	private Player[] players;
+	private Random rnd;
+	private int turn;
+	private int[][] board = new int[MAP_WIDTH][MAP_WIDTH];
 
 	private static final String EXEC_COMMAND = "a";
 	private static final String PAUSE_COMMAND = "p";
@@ -49,6 +49,10 @@ public class Bookmaker {
 
 	public static void main(String[] args) throws InterruptedException,
 			ParseException {
+		new Bookmaker().run(args);
+	}
+
+	public void run(String[] args) throws InterruptedException, ParseException {
 
 		// AIの実行コマンドを引数から読み出す
 		Options options = new Options()
@@ -129,7 +133,7 @@ public class Bookmaker {
 		System.out.println("Game Finished!");
 	}
 
-	private static void killAllPlayer() {
+	private void killAllPlayer() {
 		for (Player player : players) {
 			if (player.isAlive()) {
 				player.killPlayer();
@@ -145,7 +149,7 @@ public class Bookmaker {
 	 * @author J.Kobayashi
 	 * @return 条件が満たされるならば {@code true}、それ以外の場合は{@code false}
 	 */
-	private static boolean hasCompleteArgs(CommandLine line) {
+	private boolean hasCompleteArgs(CommandLine line) {
 		if (line == null) {
 			return false;
 		}
@@ -168,7 +172,7 @@ public class Bookmaker {
 		return true;
 	}
 
-	private static void printLOG(String command) {
+	private void printLOG(String command) {
 		// ターン数の出力
 		System.out.println(turn);
 
@@ -215,7 +219,7 @@ public class Bookmaker {
 	}
 
 	// パネルやプレーヤーを落としたり復活させたりする
-	private static void rebirthPhase() {
+	private void rebirthPhase() {
 		// パネルを落としたり復活させたりする
 		for (int i = 0; i < MAP_WIDTH; i++) {
 			for (int j = 0; j < MAP_WIDTH; j++) {
@@ -267,7 +271,7 @@ public class Bookmaker {
 	}
 
 	// AIに情報を渡してコマンドを受け取る
-	private static String infromationPhase(int turnPlayer) {
+	private String infromationPhase(int turnPlayer) {
 		if (!players[turnPlayer].isAlive()) {
 			return NONE;
 		}
@@ -292,7 +296,7 @@ public class Bookmaker {
 	}
 
 	// AIから受け取ったアクションを実行する
-	private static void actionPhase(int turnPlayer, String command) {
+	private void actionPhase(int turnPlayer, String command) {
 		Player p = players[turnPlayer];
 
 		if (!p.isOnBoard() || p.isPausing(turn) || command == null
@@ -389,18 +393,18 @@ public class Bookmaker {
 	}
 
 	// マンハッタン距離計算
-	private static int dist(int x1, int y1, int x2, int y2) {
+	private int dist(int x1, int y1, int x2, int y2) {
 		return Math.abs(x1 - x2) + Math.abs(y1 - y2);
 	}
 
 	// ランダムな座標を返す
-	private static int nextInt() {
+	private int nextInt() {
 		int ret = (int) (rnd.nextDouble() * MAP_WIDTH);
 		return ret;
 	}
 
 	// ランダムな向きを返す
-	private static int nextDir() {
+	private int nextDir() {
 		int rng = rnd.nextInt(4);
 		return rng;
 	}
@@ -409,7 +413,7 @@ public class Bookmaker {
 		return 0 <= x && x < MAP_WIDTH && 0 <= y && y < MAP_WIDTH;
 	}
 
-	private static boolean isFinished() {
+	private boolean isFinished() {
 		int livingCnt = 0;
 		for (int i = 0; i < players.length; i++) {
 			if (players[i].life > 0) {
