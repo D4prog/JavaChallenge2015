@@ -1,3 +1,4 @@
+# Maven
 target/
 pom.xml.tag
 pom.xml.releaseBackup
@@ -8,3 +9,8 @@ dependency-reduced-pom.xml
 buildNumber.properties
 /test.txt
 *.jar
+
+# Eclipse
+.settings
+.classpath
+.project
