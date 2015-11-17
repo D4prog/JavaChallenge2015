@@ -1,12 +1,12 @@
 # JavaChallenge2015
 
 ## Build
-```
+```bash
 mvn package
 ```
 
 ## Run
-```
+```bash
 java -jar target/Bookmaker-0.0.1-SNAPSHOT.jar \
 -ai "Your AI command1" "pause command1" "unpause command1" \
 -ai "Your AI command2" "pause command2" "unpause command2" \

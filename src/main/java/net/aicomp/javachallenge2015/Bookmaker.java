@@ -45,6 +45,7 @@ public class Bookmaker {
 	private static final String EXEC_COMMAND = "a";
 	private static final String PAUSE_COMMAND = "p";
 	private static final String UNPAUSE_COMMAND = "u";
+	private static final String SEED_COMMAND = "s";
 
 	public static void main(String[] args) throws InterruptedException,
 			ParseException {
@@ -62,7 +63,8 @@ public class Bookmaker {
 				.addOption(
 						UNPAUSE_COMMAND,
 						true,
-						"The command and arguments with double quotation marks to unpause AI program (e.g. -u \"echo unpause\")");
+						"The command and arguments with double quotation marks to unpause AI program (e.g. -u \"echo unpause\")")
+				.addOption(SEED_COMMAND, true, "The seed of the game");
 
 		CommandLineParser parser = new DefaultParser();
 		CommandLine line = parser.parse(options, args);
@@ -81,7 +83,11 @@ public class Bookmaker {
 				.getOptionValues(UNPAUSE_COMMAND) : new String[PLAYERS_NUM];
 
 		// 乱数・ターン数の初期化
-		rnd = new Random(System.currentTimeMillis());
+		if (line.hasOption(SEED_COMMAND)) {
+			rnd = new Random(Long.parseLong(line.getOptionValue(SEED_COMMAND)));
+		} else {
+			rnd = new Random();
+		}
 		turn = 0;
 
 		// AIの実行

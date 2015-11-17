@@ -30,7 +30,13 @@ public class SampleAI {
 		D = new String[4];
 		O = new String[4];
 
-		random = new Random();
+		if (args.length >= 2) {
+			if (args[0].equals("-s")) {
+				random = new Random(Long.parseLong(args[1]));
+			}
+		} else {
+			random = new Random();
+		}
 		scanner = new Scanner(System.in);
 		writer = new PrintWriter(System.out, true);
 		writer.println("READY");
