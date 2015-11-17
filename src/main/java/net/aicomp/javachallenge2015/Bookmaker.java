@@ -20,7 +20,7 @@ public class Bookmaker {
 
 	private static final int PLAYERS_NUM = 4;
 	private static final int INITIAL_LIFE = 5;// ゲーム開始時の残機
-	private static final int FORCED_END_TURN = 10000;// ゲームが強制終了するターン
+	private static final int FORCED_END_TURN = 100;// ゲームが強制終了するターン
 	private static final int PANEL_REBIRTH_TURN = 5 * 4;// パネルが再生するまでのターン数
 	public static final int PLAYER_REBIRTH_TURN = 5 * 4;// プレイヤーが再生するまでのターン数
 	public static final int ATTACKED_PAUSE_TURN = 5 * 4;// 攻撃後の硬直している時間
@@ -38,20 +38,38 @@ public class Bookmaker {
 	public static final String NONE = "N";
 	public static final String[] DIRECTION = { UP, LEFT, DOWN, RIGHT };
 
-	private static Player[] players;
-	private static Random rnd;
-	private static int turn;
+	private Player[] players;
+	private Random rnd;
+	private int turn;
+	private int[][] board = new int[MAP_WIDTH][MAP_WIDTH];
 
 	private static final String EXEC_COMMAND = "a";
 	private static final String PAUSE_COMMAND = "p";
 	private static final String UNPAUSE_COMMAND = "u";
+	private static final String SEED_COMMAND = "s";
 
-	private static Field field;
+	public static void main(String[] args) throws InterruptedException,
+			ParseException {
+		new Bookmaker().run(args);
+	}
 
-	public static void main(String[] args) throws InterruptedException {
+	public void run(String[] args) throws InterruptedException, ParseException {
 
 		// AIの実行コマンドを引数から読み出す
-		Options options = buildOptions();
+		Options options = new Options()
+				.addOption(
+						EXEC_COMMAND,
+						true,
+						"The command and arguments with double quotation marks to execute AI program (e.g. -a \"java MyAI\")")
+				.addOption(
+						PAUSE_COMMAND,
+						true,
+						"The command and arguments with double quotation marks to pause AI program (e.g. -p \"echo pause\")")
+				.addOption(
+						UNPAUSE_COMMAND,
+						true,
+						"The command and arguments with double quotation marks to unpause AI program (e.g. -u \"echo unpause\")")
+				.addOption(SEED_COMMAND, true, "The seed of the game");
 
 		CommandLineParser parser = new DefaultParser();
 		try {
@@ -73,7 +91,11 @@ public class Bookmaker {
 				.getOptionValues(UNPAUSE_COMMAND) : new String[PLAYERS_NUM];
 
 		// 乱数・ターン数の初期化
-		rnd = new Random(System.currentTimeMillis());
+		if (line.hasOption(SEED_COMMAND)) {
+			rnd = new Random(Long.parseLong(line.getOptionValue(SEED_COMMAND)));
+		} else {
+			rnd = new Random();
+		}
 		turn = 0;
 
 		field = new Field();
@@ -113,6 +135,7 @@ public class Bookmaker {
 			turn++;
 		}
 
+		killAllPlayer();
 		System.out.println("Game Finished!");
 	}
 
@@ -137,6 +160,13 @@ public class Bookmaker {
 						true,
 						"The command and arguments with double quotation marks to unpause AI program (e.g. -u \"echo unpause\")");
 	}
+	private void killAllPlayer() {
+		for (Player player : players) {
+			if (player.isAlive()) {
+				player.killPlayer();
+			}
+		}
+	}
 
 	/**
 	 * コマンドライン引数の確認。与えられたコマンドライン引数がnullでなく、実行コマンドは必ず4つ、
@@ -146,7 +176,7 @@ public class Bookmaker {
 	 * @author J.Kobayashi
 	 * @return 条件が満たされるならば {@code true}、それ以外の場合は{@code false}
 	 */
-	private static boolean hasCompleteArgs(CommandLine line) {
+	private boolean hasCompleteArgs(CommandLine line) {
 		if (line == null) {
 			return false;
 		}
@@ -169,7 +199,7 @@ public class Bookmaker {
 		return true;
 	}
 
-	private static void printLOG() {
+	private void printLOG(String command) {
 		// ターン数の出力
 		System.out.println(turn);
 
@@ -200,62 +230,62 @@ public class Bookmaker {
 	}
 
 	// パネルやプレーヤーを落としたり復活させたりする
-	private static void rebirthPhase() {
-		// // パネルを落としたり復活させたりする
-		// for (int i = 0; i < MAP_WIDTH; i++) {
-		// for (int j = 0; j < MAP_WIDTH; j++) {
-		// if (board[i][j] < 0) {
-		// board[i][j]++;
-		// } else if (board[i][j] == 1) {
-		// board[i][j] = -PANEL_REBIRTH_TURN;
-		// } else if (board[i][j] > 1) {
-		// board[i][j]--;
-		// }
-		// }
-		// }
-		//
-		// // プレイヤーを落としたり復活させたりする
-		// for (int i = 0; i < PLAYERS_NUM; i++) {
-		// Player p = players[i];
-		// // 落とす
-		// if (p.isOnBoard() && !p.isMuteki(turn)) {
-		// if (board[p.x][p.y] < 0) {
-		// p.drop(turn);
-		// }
-		// } else if (p.isAlive() && !p.isOnBoard() && p.rebirthTurn == turn) {
-		// // 復活させる
-		//
-		// // 復活場所を探す
-		// search: while (true) {
-		// int x = nextInt();
-		// int y = nextInt();
-		// for (int j = 0; j < PLAYERS_NUM; j++) {
-		// if (i == j) {
-		// continue;
-		// }
-		//
-		// Player other = players[j];
-		// if (other.isOnBoard()
-		// && dist(x, y, other.x, other.y) <= REPULSION) {
-		// // 敵に近過ぎたらだめ
-		// continue search;
-		// }
-		// }
-		//
-		// // x,yに復活させる
-		// p.reBirthOn(x, y, turn);
-		// p.setRandomDir();
-		// break;
-		// }
-		// }
-		// }
+	private void rebirthPhase() {
+		// パネルを落としたり復活させたりする
+		for (int i = 0; i < MAP_WIDTH; i++) {
+			for (int j = 0; j < MAP_WIDTH; j++) {
+				if (board[i][j] < 0) {
+					board[i][j]++;
+				} else if (board[i][j] == 1) {
+					board[i][j] = -PANEL_REBIRTH_TURN;
+				} else if (board[i][j] > 1) {
+					board[i][j]--;
+				}
+			}
+		}
+
+		// プレイヤーを落としたり復活させたりする
+		for (int i = 0; i < PLAYERS_NUM; i++) {
+			Player p = players[i];
+			// 落とす
+			if (p.isOnBoard() && !p.isMuteki(turn)) {
+				if (board[p.x][p.y] < 0) {
+					p.drop(turn);
+				}
+			} else if (p.isAlive() && !p.isOnBoard() && p.rebirthTurn == turn) {
+				// 復活させる
+
+				// 復活場所を探す
+				search: while (true) {
+					int x = nextInt();
+					int y = nextInt();
+					for (int j = 0; j < PLAYERS_NUM; j++) {
+						if (i == j) {
+							continue;
+						}
+
+						Player other = players[j];
+						if (other.isOnBoard()
+								&& dist(x, y, other.x, other.y) <= REPULSION) {
+							// 敵に近過ぎたらだめ
+							continue search;
+						}
+					}
+
+					// x,yに復活させる
+					p.reBirthOn(x, y, turn);
+					p.dir = nextDir();
+					break;
+				}
+			}
+		}
 	}
 
 	// AIに情報を渡してコマンドを受け取る
-	private static void informationPhase(int turnPlayer) {
-		sendInformation(turnPlayer);
-		players[turnPlayer].getCommand();
-	}
+	private String infromationPhase(int turnPlayer) {
+		if (!players[turnPlayer].isAlive()) {
+			return NONE;
+		}
 
 	private static void sendInformation(int playerId) {
 		players[playerId].sendInformation(playerId, turn, field, players);
@@ -321,44 +351,9 @@ public class Bookmaker {
 
 	}
 
-	private static void movePlayer(int turnPlayer, String command, Player p) {
-		// int tox = -1, toy = -1;
-		// if (command.equals(UP)) {
-		// tox = p.x - 1;
-		// toy = p.y;
-		// } else if (command.equals(RIGHT)) {
-		// tox = p.x;
-		// toy = p.y + 1;
-		// } else if (command.equals(DOWN)) {
-		// tox = p.x + 1;
-		// toy = p.y;
-		// } else if (command.equals(LEFT)) {
-		// tox = p.x;
-		// toy = p.y - 1;
-		// } else {
-		// return;
-		// }
-		//
-		// // ボード外への移動を指定している場合はスルー
-		// if (field.isInside(tox, toy)) {
-		// return;
-		// }
-		//
-		// p.directTo(command);
-		// // 移動先でぶつからないかどうかチェック
-		// for (int i = 0; i < PLAYERS_NUM; i++) {
-		// if (!players[i].isOnBoard() || i == turnPlayer) {
-		// continue;
-		// }
-		//
-		// if (dist(tox, toy, players[i].x, players[i].y) < REPULSION) {
-		// // 移動先でぶつかる時
-		// return;
-		// }
-		// }
-		//
-		// // ぶつからなければ移動
-		// p.moveTo(tox, toy);
+	// AIから受け取ったアクションを実行する
+	private void actionPhase(int turnPlayer, String command) {
+		Player p = players[turnPlayer];
 	}
 
 	// マンハッタン距離計算
@@ -401,6 +396,7 @@ class AIInitializer extends GameManipulator {
 		_com = com;
 	}
 
+<<<<<<< HEAD
 	@Override
 	protected void runPreProcessing(Game input) {
 		_lines = new ArrayList<String>();
@@ -433,6 +429,16 @@ class AIInitializer extends GameManipulator {
 		for (int i = 0; i < ret.length; i++) {
 			ret[i] = _lines.get(i);
 		}
+=======
+	// マンハッタン距離計算
+	private int dist(int x1, int y1, int x2, int y2) {
+		return Math.abs(x1 - x2) + Math.abs(y1 - y2);
+	}
+
+	// ランダムな座標を返す
+	private int nextInt() {
+		int ret = (int) (rnd.nextDouble() * MAP_WIDTH);
+>>>>>>> master
 		return ret;
 	}
 }
@@ -441,9 +447,16 @@ class AIManipulator extends GameManipulator {
 	private ExternalComputerPlayer _com;
 	private String _line;
 
+<<<<<<< HEAD
 	public AIManipulator(ExternalComputerPlayer com, int index) {
 		super(index);
 		_com = com;
+=======
+	// ランダムな向きを返す
+	private int nextDir() {
+		int rng = rnd.nextInt(4);
+		return rng;
+>>>>>>> master
 	}
 
 	@Override
@@ -462,6 +475,7 @@ class AIManipulator extends GameManipulator {
 		_line = "";
 	}
 
+<<<<<<< HEAD
 	@Override
 	protected void runProcessing() {
 		_line = _com.readLine();
@@ -473,6 +487,14 @@ class AIManipulator extends GameManipulator {
 			Logger.getInstance().outputLog(
 					"AI" + _index + ">>STDERR: " + _com.getErrorLog(),
 					Logger.LOG_LEVEL_DETAILS);
+=======
+	private boolean isFinished() {
+		int livingCnt = 0;
+		for (int i = 0; i < players.length; i++) {
+			if (players[i].life > 0) {
+				livingCnt++;
+			}
+>>>>>>> master
 		}
 		Logger.getInstance().outputLog("AI" + _index + ">>STDOUT: " + _line,
 				Logger.LOG_LEVEL_DETAILS);
