@@ -70,6 +70,11 @@ public class Field {
 		return ret;
 	}
 
+	public void initialize() {
+		// TODO Auto-generated method stub
+
+	}
+
 }
 
 class Block {

@@ -1,6 +1,8 @@
 package net.aicomp.javachallenge2015;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.PrintWriter;
 
 class Logger {
@@ -8,32 +10,29 @@ class Logger {
 	public static final int LOG_LEVEL_STATUS = 1;
 	public static final int LOG_LEVEL_DETAILS = 2;
 
-	private static Logger _instance;
-	private PrintWriter _writer;
-	private int _logLevel;
-	private boolean _silent;
+	private static PrintWriter _writer;
+	private static int _logLevel;
 
 	private Logger() {
-		// do nothing
 	}
 
-	public static Logger getInstance() {
-		if (_instance == null) {
-			_instance = new Logger();
-		}
-		return _instance;
-	}
-
-	public void initialize(int logLevel, boolean silent) {
+	public static void initialize(int logLevel) {
 		_logLevel = logLevel;
-		_silent = silent;
 
-		if (!_silent) {
-			File file = new File("./log.txt");
-			if (!file.exists()) {
+		File file = new File("./log.txt");
+		if (!file.exists()) {
+			try {
 				file.createNewFile();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+		}
+		try {
 			_writer = new PrintWriter(file.getAbsoluteFile());
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
@@ -44,12 +43,10 @@ class Logger {
 		}
 	}
 
-	public void outputLog(String message, int targetLogLevel) {
+	public static void outputLog(String message, int targetLogLevel) {
 		if (_logLevel >= targetLogLevel) {
 			System.out.println(message.trim());
-			if (!_silent) {
-				_writer.println(message.trim());
-			}
+			_writer.println(message.trim());
 		}
 	}
 }
