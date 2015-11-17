@@ -119,7 +119,16 @@ public class Bookmaker {
 			turn++;
 		}
 
+		killAllPlayer();
 		System.out.println("Game Finished!");
+	}
+
+	private static void killAllPlayer() {
+		for (Player player : players) {
+			if (player.isAlive()) {
+				player.killPlayer();
+			}
+		}
 	}
 
 	/**
