@@ -169,7 +169,7 @@ class AIInitializer extends GameManipulator {
 				line = line.trim();
 				_lines.add(line);
 			}
-		} while (line != null && line.equals(READY));
+		} while (line == null || !line.equals(READY));
 	}
 
 	@Override
@@ -202,14 +202,11 @@ class AIManipulator extends GameManipulator {
 		Logger.outputLog("AI" + _index
 				+ ">>Writing to stdin, waiting for stdout",
 				Logger.LOG_LEVEL_DETAILS);
-		String input = "";
-		if (game.isInitialState()) {
-			input += game.getInitialInformation();
-		}
-		input += game.getTurnInformation(_index);
-
-		Logger.outputLog(input, Logger.LOG_LEVEL_DETAILS);
+		String input = game.getTurnInformation(_index);
 		_com.writeLine(input);
+
+		String log = game.getLogInformation(_index);
+		Logger.outputLog(log, Logger.LOG_LEVEL_DETAILS);
 		_line = "";
 	}
 
