@@ -11,12 +11,14 @@ import net.exkazuu.gameaiarena.api.Point2;
 public class Player {
 	private static final int INITIAL_LIFE = 5;
 	private static final int DEFAULT_REBIRTH_TIME = 5;
+	private static final int DEFAULT_INVINCIBLE_TIME = 5;
 	private static final int ATTACK_WAIT_TIME = 2;
 
 	private int life;
 	private Point2 point;
 	private int rebirthTime = 0;
 	private int waitTime = 0;
+	private int invincibleTime = 0;
 
 	private Direction4 dir;
 
@@ -106,11 +108,21 @@ public class Player {
 	}
 
 	public void refresh() {
+		if (invincibleTime > 0) {
+			invincibleTime--;
+		}
 		if (rebirthTime > 0) {
 			rebirthTime--;
+			if (rebirthTime == 0) {
+				invincibleTime = DEFAULT_INVINCIBLE_TIME;
+			}
 		}
 		if (waitTime > 0) {
 			waitTime--;
 		}
+	}
+
+	public boolean isInvincible() {
+		return invincibleTime > 0;
 	}
 }

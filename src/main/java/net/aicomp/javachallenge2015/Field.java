@@ -108,7 +108,9 @@ class Block {
 			if (life == 0) {
 				life = -REBIRTH_TIME * Bookmaker.PLAYERS_NUM;
 				for (Player player : players) {
-					player.fall();
+					if (player.isInvincible()) {
+						player.fall();
+					}
 				}
 			}
 		}
