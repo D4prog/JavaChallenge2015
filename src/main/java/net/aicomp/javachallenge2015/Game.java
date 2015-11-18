@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Game {
-	private static final int FORCED_END_TURN = 1000;
+	private static final int FORCED_END_TURN = 100;
 	private static final String EOD = "EOD";
 	private Random rnd;
 	private int turn;

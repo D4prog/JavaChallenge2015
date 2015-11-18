@@ -30,7 +30,7 @@ public class Player {
 	 */
 	public void setRandomDir(Random rnd) {
 		int d = rnd.nextInt(Direction4.values().length);
-		dir = Direction4.values()[d];
+		dir = Direction4.values()[(d + 1) % 4];
 	}
 
 	public boolean isThere(int x, int y) {
