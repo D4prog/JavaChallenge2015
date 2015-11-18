@@ -29,7 +29,7 @@ public class Game {
 	public boolean isFinished() {
 		int livingCnt = 0;
 		for (int i = 0; i < players.length; i++) {
-			if (players[i].life > 0) {
+			if (players[i].isAlive()) {
 				livingCnt++;
 			}
 		}
@@ -40,7 +40,8 @@ public class Game {
 		Player turnPlayer = players[turn % players.length];
 		turnPlayer.setCommand(commands[0]);
 		turnPlayer.doCommand(field);
-		field.refresh();
+		field.refresh(players);
+		turnPlayer.refresh();
 		turn++;
 	}
 
@@ -83,7 +84,7 @@ public class Game {
 			if (i != 0) {
 				ret += " ";
 			}
-			ret += players[i].life;
+			ret += players[i].getLife();
 		}
 		return ret;
 	}

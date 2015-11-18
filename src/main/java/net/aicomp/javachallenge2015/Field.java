@@ -77,10 +77,18 @@ public class Field {
 		return field[blcy][blcx].isAlive();
 	}
 
-	public void refresh() {
-		for (Block[] col : field) {
-			for (Block block : col) {
-				block.refresh();
+	public void refresh(Player[] players) {
+		for (int i = 0; i < FIELD_SIZE; i++) {
+			for (int j = 0; j < FIELD_SIZE; j++) {
+				Block block = field[i][j];
+				List<Player> playersInBlock = new ArrayList<Player>();
+				for (Player player : players) {
+					if (player.isThere(j * BLOCK_SIZE, i * BLOCK_SIZE, (j + 1)
+							* BLOCK_SIZE, (i + 1) * BLOCK_SIZE)) {
+						playersInBlock.add(player);
+					}
+				}
+				block.refresh(playersInBlock);
 			}
 		}
 	}
@@ -94,12 +102,14 @@ class Block {
 		life = 0;
 	}
 
-	public void refresh() {
-		// TODO Auto-generated method stub
+	public void refresh(List<Player> players) {
 		if (life > 0) {
 			life--;
 			if (life == 0) {
 				life = -REBIRTH_TIME * Bookmaker.PLAYERS_NUM;
+				for (Player player : players) {
+					player.fall();
+				}
 			}
 		}
 		if (life < 0) {
