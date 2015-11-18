@@ -198,7 +198,7 @@ public class Bookmaker {
 					}
 				}
 
-				System.out.print(" " + board[x][y]);
+				System.out.print(" " + board[y][x]);
 			}
 			System.out.println();
 		}
@@ -238,7 +238,7 @@ public class Bookmaker {
 			Player p = players[i];
 			// 落とす
 			if (p.isOnBoard() && !p.isMuteki(turn)) {
-				if (board[p.x][p.y] < 0) {
+				if (board[p.y][p.x] < 0) {
 					p.drop(turn);
 				}
 			} else if (p.isAlive() && !p.isOnBoard() && p.rebirthTurn == turn) {
@@ -317,28 +317,28 @@ public class Bookmaker {
 						// 上向きの時
 						// xが減っていく
 						// yは同じ
-						if (yBlock == yNow && xBlock < xNow && board[x][y] == 0) {
-							board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+						if (xBlock == xNow && yBlock > yNow && board[y][x] == 0) {
+							board[y][x] = dist(xBlock, yBlock, xNow, yNow)
 									* TIME_TO_FALL;
 						}
 					} else if (p.dir == 1) {
 						// 右向きの時
 						// yは増えていき、xは同じ
-						if (xBlock == xNow && yBlock < yNow && board[x][y] == 0) {
-							board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+						if (yBlock == yNow && xBlock > xNow && board[y][x] == 0) {
+							board[y][x] = dist(xBlock, yBlock, xNow, yNow)
 									* TIME_TO_FALL;
 						}
 					} else if (p.dir == 2) {
 						// 下向きの時
 						// xは増え、yは同じ
-						if (yBlock == yNow && xBlock > xNow && board[x][y] == 0) {
-							board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+						if (xBlock == xNow && yBlock < yNow && board[y][x] == 0) {
+							board[y][x] = dist(xBlock, yBlock, xNow, yNow)
 									* TIME_TO_FALL;
 						}
 					} else if (p.dir == 3) {
 						// 左向きの時
-						if (xBlock == xNow && yBlock > yNow && board[x][y] == 0) {
-							board[x][y] = dist(xBlock, yBlock, xNow, yNow)
+						if (yBlock == yNow && xBlock < xNow && board[y][x] == 0) {
+							board[y][x] = dist(xBlock, yBlock, xNow, yNow)
 									* TIME_TO_FALL;
 						}
 					}
