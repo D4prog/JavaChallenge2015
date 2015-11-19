@@ -39,7 +39,7 @@ public class Game {
 	public void processTurn(String[] commands) {
 		Player turnPlayer = players[turn % players.length];
 		turnPlayer.setCommand(commands[0]);
-		turnPlayer.doCommand(field);
+		turnPlayer.doCommand(field, players);
 		field.refresh(players);
 		turnPlayer.refresh();
 		turn++;

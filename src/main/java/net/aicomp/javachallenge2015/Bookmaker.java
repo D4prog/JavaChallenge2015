@@ -53,7 +53,7 @@ public class Bookmaker {
 		String[] unpauseAICommands = line.hasOption(UNPAUSE_COMMAND) ? line
 				.getOptionValues(UNPAUSE_COMMAND) : new String[PLAYERS_NUM];
 
-		Logger.initialize(Logger.LOG_LEVEL_DETAILS);
+		Logger.initialize(Logger.LOG_LEVEL_STATUS);
 
 		List<RunManipulators> ais = new ArrayList<RunManipulators>();
 		for (int i = 0; i < PLAYERS_NUM; i++) {
@@ -206,7 +206,7 @@ class AIManipulator extends GameManipulator {
 		_com.writeLine(input);
 
 		String log = game.getLogInformation(_index);
-		Logger.outputLog(log, Logger.LOG_LEVEL_DETAILS);
+		Logger.outputLog(log, Logger.LOG_LEVEL_STATUS);
 		_line = "";
 	}
 

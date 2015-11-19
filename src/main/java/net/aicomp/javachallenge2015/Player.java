@@ -13,12 +13,14 @@ public class Player {
 	private static final int DEFAULT_REBIRTH_TIME = 5;
 	private static final int DEFAULT_INVINCIBLE_TIME = 5;
 	private static final int ATTACK_WAIT_TIME = 2;
+	private static final int COLLISION_DISTANCE = 7;
 
 	private int life;
 	private Point2 point;
 	private int rebirthTime = 0;
 	private int waitTime = 0;
 	private int invincibleTime = 0;
+	private Player[] players;
 
 	private Direction4 dir;
 
@@ -34,7 +36,7 @@ public class Player {
 
 	public void setRandomDir(Random rnd) {
 		int d = rnd.nextInt(Direction4.values().length);
-		dir = Direction4.values()[(d + 1) % 4];
+		dir = Direction4.values()[d];
 	}
 
 	public int getLife() {
@@ -83,16 +85,29 @@ public class Player {
 		return isOnBoard() && waitTime == 0;
 	}
 
-	public void doCommand(Field field) {
+	public void doCommand(Field field, Player[] players) {
+		this.players = players;
 		command.doCommand(this, field);
 	}
 
 	public void move(Direction4 direction, Field field) {
 		Point2 tpoint = direction.move(point);
-		if (field.canMove(tpoint)) {
+		if (field.canMove(tpoint) && !isCollideOtherPlayers()) {
 			point = tpoint;
 		}
 		dir = direction;
+	}
+
+	private boolean isCollideOtherPlayers() {
+		for (Player player : players) {
+			if (!player.isAlive()) {
+				continue;
+			}
+			if (point.getManhattanDistance(player.point) <= COLLISION_DISTANCE) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public void attack(Field field) {
@@ -103,8 +118,6 @@ public class Player {
 	public void fall() {
 		life--;
 		rebirthTime = DEFAULT_REBIRTH_TIME;
-		// TODO Auto-generated method stub
-
 	}
 
 	public void refresh() {

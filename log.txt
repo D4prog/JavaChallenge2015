@@ -1,8 +1,3 @@
-AI0>>STDOUT: READY
-AI1>>STDOUT: READY
-AI2>>STDOUT: READY
-AI3>>STDOUT: READY
-AI0>>Writing to stdin, waiting for stdout
 0
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -45,13 +40,11 @@ AI0>>Writing to stdin, waiting for stdout
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
-29 9 D
-12 4 R
-13 15 R
-39 0 U
+29 9 L
+12 4 D
+13 15 D
+39 0 R
 N N N N
-AI0>>STDOUT: U
-AI1>>Writing to stdin, waiting for stdout
 1
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -95,12 +88,10 @@ AI1>>Writing to stdin, waiting for stdout
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 29 8 U
-12 4 R
-13 15 R
-39 0 U
+12 4 D
+13 15 D
+39 0 R
 U N N N
-AI1>>STDOUT: U
-AI2>>Writing to stdin, waiting for stdout
 2
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -145,11 +136,9 @@ AI2>>Writing to stdin, waiting for stdout
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
 29 8 U
 12 3 U
-13 15 R
-39 0 U
+13 15 D
+39 0 R
 U U N N
-AI2>>STDOUT: U
-AI3>>Writing to stdin, waiting for stdout
 3
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -195,10 +184,8 @@ AI3>>Writing to stdin, waiting for stdout
 29 8 U
 12 3 U
 13 14 U
-39 0 U
+39 0 R
 U U U N
-AI3>>STDOUT: U
-AI0>>Writing to stdin, waiting for stdout
 4
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -246,8 +233,6 @@ AI0>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 U U U U
-AI0>>STDOUT: A
-AI1>>Writing to stdin, waiting for stdout
 5
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 3 3 3 3 3 0 0 0 0 0 0 0 0 0 0
@@ -295,8 +280,6 @@ AI1>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 A U U U
-AI1>>STDOUT: A
-AI2>>Writing to stdin, waiting for stdout
 6
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 2 2 2 2 2 0 0 0 0 0 0 0 0 0 0
@@ -344,8 +327,6 @@ AI2>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 A A U U
-AI2>>STDOUT: A
-AI3>>Writing to stdin, waiting for stdout
 7
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 7 7 7 7 7 0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0
@@ -393,8 +374,6 @@ AI3>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 A A A U
-AI3>>STDOUT: A
-AI0>>Writing to stdin, waiting for stdout
 8
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 6 6 6 6 6 0 0 0 0 0 0 0 0 0 0 -19 -19 -19 -19 -19 0 0 0 0 0 0 0 0 0 0
@@ -442,8 +421,6 @@ AI0>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 A A A A
-AI0>>STDOUT: R
-AI1>>Writing to stdin, waiting for stdout
 9
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 5 5 5 5 5 0 0 0 0 0 0 0 0 0 0 -18 -18 -18 -18 -18 0 0 0 0 0 0 0 0 0 0
@@ -491,8 +468,6 @@ AI1>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N A A A
-AI1>>STDOUT: R
-AI2>>Writing to stdin, waiting for stdout
 10
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 4 4 4 4 4 0 0 0 0 0 0 0 0 0 0 -17 -17 -17 -17 -17 0 0 0 0 0 0 0 0 0 0
@@ -540,8 +515,6 @@ AI2>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N A A
-AI2>>STDOUT: R
-AI3>>Writing to stdin, waiting for stdout
 11
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 3 3 3 3 3 0 0 0 0 0 0 0 0 0 0 -16 -16 -16 -16 -16 0 0 0 0 0 0 0 0 0 0
@@ -589,8 +562,6 @@ AI3>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N A
-AI3>>STDOUT: R
-AI0>>Writing to stdin, waiting for stdout
 12
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 2 2 2 2 2 0 0 0 0 0 0 0 0 0 0 -15 -15 -15 -15 -15 0 0 0 0 0 0 0 0 0 0
@@ -638,8 +609,6 @@ AI0>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI0>>STDOUT: N
-AI1>>Writing to stdin, waiting for stdout
 13
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 1 1 1 1 1 0 0 0 0 0 0 0 0 0 0 -14 -14 -14 -14 -14 0 0 0 0 0 0 0 0 0 0
@@ -687,8 +656,6 @@ AI1>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI1>>STDOUT: N
-AI2>>Writing to stdin, waiting for stdout
 14
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -19 -19 -19 -19 -19 0 0 0 0 0 0 0 0 0 0 -13 -13 -13 -13 -13 0 0 0 0 0 0 0 0 0 0
@@ -736,8 +703,6 @@ AI2>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI2>>STDOUT: N
-AI3>>Writing to stdin, waiting for stdout
 15
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -18 -18 -18 -18 -18 0 0 0 0 0 0 0 0 0 0 -12 -12 -12 -12 -12 0 0 0 0 0 0 0 0 0 0
@@ -785,8 +750,6 @@ AI3>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI3>>STDOUT: N
-AI0>>Writing to stdin, waiting for stdout
 16
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -17 -17 -17 -17 -17 0 0 0 0 0 0 0 0 0 0 -11 -11 -11 -11 -11 0 0 0 0 0 0 0 0 0 0
@@ -834,8 +797,6 @@ AI0>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI0>>STDOUT: N
-AI1>>Writing to stdin, waiting for stdout
 17
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -16 -16 -16 -16 -16 0 0 0 0 0 0 0 0 0 0 -10 -10 -10 -10 -10 0 0 0 0 0 0 0 0 0 0
@@ -883,8 +844,6 @@ AI1>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI1>>STDOUT: N
-AI2>>Writing to stdin, waiting for stdout
 18
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -15 -15 -15 -15 -15 0 0 0 0 0 0 0 0 0 0 -9 -9 -9 -9 -9 0 0 0 0 0 0 0 0 0 0
@@ -932,8 +891,6 @@ AI2>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI2>>STDOUT: N
-AI3>>Writing to stdin, waiting for stdout
 19
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -14 -14 -14 -14 -14 0 0 0 0 0 0 0 0 0 0 -8 -8 -8 -8 -8 0 0 0 0 0 0 0 0 0 0
@@ -981,8 +938,6 @@ AI3>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI3>>STDOUT: N
-AI0>>Writing to stdin, waiting for stdout
 20
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -13 -13 -13 -13 -13 0 0 0 0 0 0 0 0 0 0 -7 -7 -7 -7 -7 0 0 0 0 0 0 0 0 0 0
@@ -1030,8 +985,6 @@ AI0>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI0>>STDOUT: N
-AI1>>Writing to stdin, waiting for stdout
 21
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -12 -12 -12 -12 -12 0 0 0 0 0 0 0 0 0 0 -6 -6 -6 -6 -6 0 0 0 0 0 0 0 0 0 0
@@ -1079,8 +1032,6 @@ AI1>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI1>>STDOUT: N
-AI2>>Writing to stdin, waiting for stdout
 22
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -11 -11 -11 -11 -11 0 0 0 0 0 0 0 0 0 0 -5 -5 -5 -5 -5 0 0 0 0 0 0 0 0 0 0
@@ -1128,8 +1079,6 @@ AI2>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI2>>STDOUT: N
-AI3>>Writing to stdin, waiting for stdout
 23
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -10 -10 -10 -10 -10 0 0 0 0 0 0 0 0 0 0 -4 -4 -4 -4 -4 0 0 0 0 0 0 0 0 0 0
@@ -1177,8 +1126,6 @@ AI3>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI3>>STDOUT: N
-AI0>>Writing to stdin, waiting for stdout
 24
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -9 -9 -9 -9 -9 0 0 0 0 0 0 0 0 0 0 -3 -3 -3 -3 -3 0 0 0 0 0 0 0 0 0 0
@@ -1226,8 +1173,6 @@ AI0>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI0>>STDOUT: N
-AI1>>Writing to stdin, waiting for stdout
 25
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -8 -8 -8 -8 -8 0 0 0 0 0 0 0 0 0 0 -2 -2 -2 -2 -2 0 0 0 0 0 0 0 0 0 0
@@ -1275,8 +1220,6 @@ AI1>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI1>>STDOUT: N
-AI2>>Writing to stdin, waiting for stdout
 26
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -7 -7 -7 -7 -7 0 0 0 0 0 0 0 0 0 0 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 0
@@ -1324,8 +1267,6 @@ AI2>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI2>>STDOUT: N
-AI3>>Writing to stdin, waiting for stdout
 27
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -6 -6 -6 -6 -6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1373,8 +1314,6 @@ AI3>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI3>>STDOUT: N
-AI0>>Writing to stdin, waiting for stdout
 28
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -5 -5 -5 -5 -5 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1422,8 +1361,6 @@ AI0>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 N N N N
-AI0>>STDOUT: L
-AI1>>Writing to stdin, waiting for stdout
 29
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -4 -4 -4 -4 -4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1471,8 +1408,6 @@ AI1>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 L N N N
-AI1>>STDOUT: L
-AI2>>Writing to stdin, waiting for stdout
 30
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -3 -3 -3 -3 -3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1520,8 +1455,6 @@ AI2>>Writing to stdin, waiting for stdout
 13 14 U
 39 0 U
 L L N N
-AI2>>STDOUT: L
-AI3>>Writing to stdin, waiting for stdout
 31
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -2 -2 -2 -2 -2 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1569,8 +1502,6 @@ AI3>>Writing to stdin, waiting for stdout
 12 14 L
 39 0 U
 L L L N
-AI3>>STDOUT: L
-AI0>>Writing to stdin, waiting for stdout
 32
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 -1 -1 -1 -1 -1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1618,8 +1549,6 @@ AI0>>Writing to stdin, waiting for stdout
 12 14 L
 38 0 L
 L L L L
-AI0>>STDOUT: L
-AI1>>Writing to stdin, waiting for stdout
 33
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1667,8 +1596,6 @@ AI1>>Writing to stdin, waiting for stdout
 12 14 L
 38 0 L
 L L L L
-AI1>>STDOUT: L
-AI2>>Writing to stdin, waiting for stdout
 34
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1716,8 +1643,6 @@ AI2>>Writing to stdin, waiting for stdout
 12 14 L
 38 0 L
 L L L L
-AI2>>STDOUT: L
-AI3>>Writing to stdin, waiting for stdout
 35
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1765,8 +1690,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 14 L
 38 0 L
 L L L L
-AI3>>STDOUT: L
-AI0>>Writing to stdin, waiting for stdout
 36
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1814,8 +1737,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 14 L
 37 0 L
 L L L L
-AI0>>STDOUT: D
-AI1>>Writing to stdin, waiting for stdout
 37
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1863,8 +1784,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 14 L
 37 0 L
 D L L L
-AI1>>STDOUT: D
-AI2>>Writing to stdin, waiting for stdout
 38
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1912,8 +1831,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 14 L
 37 0 L
 D D L L
-AI2>>STDOUT: D
-AI3>>Writing to stdin, waiting for stdout
 39
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -1961,8 +1878,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 15 D
 37 0 L
 D D D L
-AI3>>STDOUT: D
-AI0>>Writing to stdin, waiting for stdout
 40
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2010,8 +1925,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 D D D D
-AI0>>STDOUT: N
-AI1>>Writing to stdin, waiting for stdout
 41
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2059,8 +1972,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N D D D
-AI1>>STDOUT: N
-AI2>>Writing to stdin, waiting for stdout
 42
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2108,8 +2019,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N D D
-AI2>>STDOUT: N
-AI3>>Writing to stdin, waiting for stdout
 43
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2157,8 +2066,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N D
-AI3>>STDOUT: N
-AI0>>Writing to stdin, waiting for stdout
 44
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2206,8 +2113,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N N
-AI0>>STDOUT: N
-AI1>>Writing to stdin, waiting for stdout
 45
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2255,8 +2160,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N N
-AI1>>STDOUT: N
-AI2>>Writing to stdin, waiting for stdout
 46
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2304,8 +2207,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N N
-AI2>>STDOUT: N
-AI3>>Writing to stdin, waiting for stdout
 47
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2353,8 +2254,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N N
-AI3>>STDOUT: N
-AI0>>Writing to stdin, waiting for stdout
 48
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2402,8 +2301,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N N
-AI0>>STDOUT: N
-AI1>>Writing to stdin, waiting for stdout
 49
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2451,8 +2348,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N N
-AI1>>STDOUT: N
-AI2>>Writing to stdin, waiting for stdout
 50
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2500,8 +2395,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N N
-AI2>>STDOUT: N
-AI3>>Writing to stdin, waiting for stdout
 51
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2549,8 +2442,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N N
-AI3>>STDOUT: N
-AI0>>Writing to stdin, waiting for stdout
 52
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2598,8 +2489,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N N
-AI0>>STDOUT: A
-AI1>>Writing to stdin, waiting for stdout
 53
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2647,8 +2536,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 A N N N
-AI1>>STDOUT: A
-AI2>>Writing to stdin, waiting for stdout
 54
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2696,8 +2583,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 A A N N
-AI2>>STDOUT: A
-AI3>>Writing to stdin, waiting for stdout
 55
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2745,8 +2630,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 A A A N
-AI3>>STDOUT: A
-AI0>>Writing to stdin, waiting for stdout
 56
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2794,8 +2677,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 A A A A
-AI0>>STDOUT: N
-AI1>>Writing to stdin, waiting for stdout
 57
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2843,8 +2724,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N A A A
-AI1>>STDOUT: N
-AI2>>Writing to stdin, waiting for stdout
 58
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2892,8 +2771,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N A A
-AI2>>STDOUT: N
-AI3>>Writing to stdin, waiting for stdout
 59
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2941,8 +2818,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N A
-AI3>>STDOUT: N
-AI0>>Writing to stdin, waiting for stdout
 60
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -2990,8 +2865,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 N N N N
-AI0>>STDOUT: D
-AI1>>Writing to stdin, waiting for stdout
 61
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3039,8 +2912,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 D N N N
-AI1>>STDOUT: D
-AI2>>Writing to stdin, waiting for stdout
 62
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3088,8 +2959,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 15 D
 37 1 D
 D D N N
-AI2>>STDOUT: D
-AI3>>Writing to stdin, waiting for stdout
 63
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3137,8 +3006,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 16 D
 37 1 D
 D D D N
-AI3>>STDOUT: D
-AI0>>Writing to stdin, waiting for stdout
 64
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3186,8 +3053,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 D D D D
-AI0>>STDOUT: A
-AI1>>Writing to stdin, waiting for stdout
 65
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3235,8 +3100,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 A D D D
-AI1>>STDOUT: A
-AI2>>Writing to stdin, waiting for stdout
 66
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3284,8 +3147,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 A A D D
-AI2>>STDOUT: A
-AI3>>Writing to stdin, waiting for stdout
 67
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3333,8 +3194,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 A A A D
-AI3>>STDOUT: A
-AI0>>Writing to stdin, waiting for stdout
 68
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3382,8 +3241,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 A A A A
-AI0>>STDOUT: L
-AI1>>Writing to stdin, waiting for stdout
 69
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3431,8 +3288,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 N A A A
-AI1>>STDOUT: L
-AI2>>Writing to stdin, waiting for stdout
 70
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3480,8 +3335,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 N N A A
-AI2>>STDOUT: L
-AI3>>Writing to stdin, waiting for stdout
 71
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3529,8 +3382,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 N N N A
-AI3>>STDOUT: L
-AI0>>Writing to stdin, waiting for stdout
 72
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3578,8 +3429,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 N N N N
-AI0>>STDOUT: N
-AI1>>Writing to stdin, waiting for stdout
 73
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3627,8 +3476,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 N N N N
-AI1>>STDOUT: N
-AI2>>Writing to stdin, waiting for stdout
 74
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3676,8 +3523,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 N N N N
-AI2>>STDOUT: N
-AI3>>Writing to stdin, waiting for stdout
 75
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3725,8 +3570,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 N N N N
-AI3>>STDOUT: N
-AI0>>Writing to stdin, waiting for stdout
 76
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3774,8 +3617,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 N N N N
-AI0>>STDOUT: D
-AI1>>Writing to stdin, waiting for stdout
 77
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3823,8 +3664,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 D N N N
-AI1>>STDOUT: D
-AI2>>Writing to stdin, waiting for stdout
 78
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3872,8 +3711,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 D D N N
-AI2>>STDOUT: D
-AI3>>Writing to stdin, waiting for stdout
 79
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3921,8 +3758,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 16 D
 37 2 D
 D D D N
-AI3>>STDOUT: D
-AI0>>Writing to stdin, waiting for stdout
 80
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -3970,8 +3805,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 16 D
 37 3 D
 D D D D
-AI0>>STDOUT: R
-AI1>>Writing to stdin, waiting for stdout
 81
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4019,8 +3852,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 16 D
 37 3 D
 R D D D
-AI1>>STDOUT: R
-AI2>>Writing to stdin, waiting for stdout
 82
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4068,8 +3899,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 16 D
 37 3 D
 R R D D
-AI2>>STDOUT: R
-AI3>>Writing to stdin, waiting for stdout
 83
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4117,8 +3946,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 16 R
 37 3 D
 R R R D
-AI3>>STDOUT: R
-AI0>>Writing to stdin, waiting for stdout
 84
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4166,8 +3993,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 16 R
 38 3 R
 R R R R
-AI0>>STDOUT: U
-AI1>>Writing to stdin, waiting for stdout
 85
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4215,8 +4040,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 16 R
 38 3 R
 U R R R
-AI1>>STDOUT: U
-AI2>>Writing to stdin, waiting for stdout
 86
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4264,8 +4087,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 16 R
 38 3 R
 U U R R
-AI2>>STDOUT: U
-AI3>>Writing to stdin, waiting for stdout
 87
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4313,8 +4134,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 15 U
 38 3 R
 U U U R
-AI3>>STDOUT: U
-AI0>>Writing to stdin, waiting for stdout
 88
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4362,8 +4181,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 15 U
 38 2 U
 U U U U
-AI0>>STDOUT: D
-AI1>>Writing to stdin, waiting for stdout
 89
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4411,8 +4228,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 15 U
 38 2 U
 D U U U
-AI1>>STDOUT: D
-AI2>>Writing to stdin, waiting for stdout
 90
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4460,8 +4275,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 15 U
 38 2 U
 D D U U
-AI2>>STDOUT: D
-AI3>>Writing to stdin, waiting for stdout
 91
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4509,8 +4322,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 16 D
 38 2 U
 D D D U
-AI3>>STDOUT: D
-AI0>>Writing to stdin, waiting for stdout
 92
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4558,8 +4369,6 @@ AI0>>Writing to stdin, waiting for stdout
 11 16 D
 38 3 D
 D D D D
-AI0>>STDOUT: N
-AI1>>Writing to stdin, waiting for stdout
 93
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4607,8 +4416,6 @@ AI1>>Writing to stdin, waiting for stdout
 11 16 D
 38 3 D
 N D D D
-AI1>>STDOUT: N
-AI2>>Writing to stdin, waiting for stdout
 94
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4656,8 +4463,6 @@ AI2>>Writing to stdin, waiting for stdout
 11 16 D
 38 3 D
 N N D D
-AI2>>STDOUT: N
-AI3>>Writing to stdin, waiting for stdout
 95
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4705,8 +4510,6 @@ AI3>>Writing to stdin, waiting for stdout
 11 16 D
 38 3 D
 N N N D
-AI3>>STDOUT: N
-AI0>>Writing to stdin, waiting for stdout
 96
 5 5 5 5
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
@@ -4715,36 +4518,4 @@ AI0>>Writing to stdin, waiting for stdout
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
  0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2 -2 -2 -2 -2
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2 -2 -2 -2 -2
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2 -2 -2 -2 -2
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2 -2 -2 -2 -2
- 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -2 -2 -2 -2 -2
- 0 0 0 0 0 0 0 0 0 0 -4 -4 -4 -4 -4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -6 -6 -6 -6 -6
- 0 0 0 0 0 0 0 0 0 0 -4 -4 -4 -4 -4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -6 -6 -6 -6 -6
- 0 0 0 0 0 0 0 0 0 0 -4 -4 -4 -4 -4 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 -6 -6 -6 -6 -6
- 0
+ 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 
