@@ -44,9 +44,9 @@ public class Field {
 		for (int y = 0; y < size; y++) {
 			StringBuilder builder = new StringBuilder();
 			for (int x = 0; x < size; x++) {
-				// if (x > 0) {
-				builder.append(' ');
-				// }
+				if (x > 0) {
+					builder.append(' ');
+				}
 				builder.append(board[y][x]);
 			}
 			ret.add(builder.toString());

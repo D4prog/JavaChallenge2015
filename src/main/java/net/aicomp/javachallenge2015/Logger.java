@@ -36,8 +36,7 @@ class Logger {
 		}
 	}
 
-	@Override
-	public void finalize() {
+	public static void close() {
 		if (_writer != null) {
 			_writer.close();
 		}

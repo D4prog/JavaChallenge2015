@@ -92,18 +92,19 @@ public class Player {
 
 	public void move(Direction4 direction, Field field) {
 		Point2 tpoint = direction.move(point);
-		if (field.canMove(tpoint) && !isCollideOtherPlayers()) {
+		if (field.canMove(tpoint) && !isCollideOtherPlayers(tpoint)) {
 			point = tpoint;
 		}
 		dir = direction;
 	}
 
-	private boolean isCollideOtherPlayers() {
+	private boolean isCollideOtherPlayers(Point2 point) {
 		for (Player player : players) {
 			if (!player.isAlive()) {
 				continue;
 			}
-			if (point.getManhattanDistance(player.point) <= COLLISION_DISTANCE) {
+			if (player != this
+					&& point.getManhattanDistance(player.point) <= COLLISION_DISTANCE) {
 				return true;
 			}
 		}

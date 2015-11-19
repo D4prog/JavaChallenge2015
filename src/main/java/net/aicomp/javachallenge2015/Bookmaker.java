@@ -72,6 +72,8 @@ public class Bookmaker {
 
 		play(game, ais, line.getOptionValue(SEED_COMMAND));
 
+		Logger.close();
+
 	}
 
 	private static void play(Game game, List<RunManipulators> ais, String seed) {
