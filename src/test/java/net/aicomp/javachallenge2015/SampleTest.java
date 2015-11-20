@@ -13,6 +13,7 @@ import java.util.Scanner;
 import org.apache.commons.cli.ParseException;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 public class SampleTest {
@@ -33,6 +34,7 @@ public class SampleTest {
 	}
 
 	@Test
+	@Ignore
 	public void testSeed0() {
 		try {
 			Bookmaker.main(new String[] { "-a", "\"java SampleAI -s 0\"", "-a",
@@ -51,6 +53,7 @@ public class SampleTest {
 	}
 
 	@Test
+	@Ignore
 	public void testSeed1000() {
 		try {
 			Bookmaker.main(new String[] { "-a", "\"java SampleAI -s 0\"", "-a",
@@ -69,6 +72,7 @@ public class SampleTest {
 	}
 
 	@Test
+	@Ignore
 	public void testSeed0WithPlayer() {
 		try {
 			Bookmaker.main(new String[] { "-a", "\"java SampleAI -s 20\"",
@@ -88,6 +92,7 @@ public class SampleTest {
 	}
 
 	@Test
+	@Ignore
 	public void testSeed2000WithPlayer() {
 		try {
 			Bookmaker.main(new String[] { "-a", "\"java SampleAI -s 20\"",
@@ -101,6 +106,23 @@ public class SampleTest {
 		System.out.flush();
 		String expected = getFileContents(new File(
 				"fixture/sample_log_seed2000_player.txt"));
+		String actual = _baos.toString();
+		System.out.println(actual);
+		assertEquals(expected, actual);
+	}
+
+	@Test
+	public void testNew() {
+		try {
+			Bookmaker.main(new String[] { "-a", "\"java SampleAIL\"", "-a",
+					"\"java SampleAIL\"", "-a", "\"java SampleAIL\"", "-a",
+					"\"java SampleAIL\"", "-s", "0" });
+		} catch (InterruptedException | ParseException e) {
+			e.printStackTrace();
+			fail();
+		}
+		System.out.flush();
+		String expected = getFileContents(new File("fixture/sample_log_new.txt"));
 		String actual = _baos.toString();
 		System.out.println(actual);
 		assertEquals(expected, actual);

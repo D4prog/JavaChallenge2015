@@ -33,11 +33,16 @@ public class Game {
 				livingCnt++;
 			}
 		}
-		return livingCnt == 1;// || turn > FORCED_END_TURN;
+		return livingCnt == 1 || turn > FORCED_END_TURN;
 	}
 
 	public void processTurn(String[] commands) {
 		Player turnPlayer = players[turn % players.length];
+		if (!turnPlayer.isAlive()) {
+			field.refresh(players);
+			turn++;
+			return;
+		}
 		turnPlayer.setCommand(commands[0]);
 		turnPlayer.doCommand(field, players);
 		field.refresh(players);

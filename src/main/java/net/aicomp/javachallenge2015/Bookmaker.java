@@ -53,7 +53,7 @@ public class Bookmaker {
 		String[] unpauseAICommands = line.hasOption(UNPAUSE_COMMAND) ? line
 				.getOptionValues(UNPAUSE_COMMAND) : new String[PLAYERS_NUM];
 
-		Logger.initialize(Logger.LOG_LEVEL_DETAILS);
+		Logger.initialize(Logger.LOG_LEVEL_STATUS);
 
 		List<RunManipulators> ais = new ArrayList<RunManipulators>();
 		for (int i = 0; i < PLAYERS_NUM; i++) {
