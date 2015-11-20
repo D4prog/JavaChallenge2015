@@ -1,5 +1,6 @@
 package net.aicomp.javachallenge2015;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -39,16 +40,18 @@ public class Player {
 
 	private void spawn() {
 		List<Point2> points = Field.getAllPoints();
+		List<Point2> collisionPoints = new ArrayList<Point2>();
 		for (int i = 0; i < players.length; i++) {
 			if (players[i] == null) {
 				continue;
 			}
 			for (Point2 point2 : points) {
 				if (players[i].point.getManhattanDistance(point2) <= COLLISION_DISTANCE) {
-					points.remove(point2);
+					collisionPoints.add(point2);
 				}
 			}
 		}
+		points.removeAll(collisionPoints);
 		point = points.get(rnd.nextInt(points.size()));
 	}
 
@@ -66,7 +69,7 @@ public class Player {
 	}
 
 	public boolean isThere(int sx, int sy, int gx, int gy) {
-		if (isAlive() || rebirthTime > 0) {
+		if (isAlive() && rebirthTime > 0) {
 			return false;
 		}
 		List<Point2> area = Point2.getPoints(sx, sy, gx, gy);
