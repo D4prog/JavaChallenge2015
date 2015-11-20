@@ -8,6 +8,10 @@ public class CommandBuilder {
 	public static final String ATTACK = "A";
 	public static final String NONE = "N";
 
+	private CommandBuilder() {
+		// do nothing
+	}
+
 	public static ICommand createCommand(String input) {
 		if (input.equals(UP)) {
 			return new Up();

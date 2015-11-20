@@ -14,6 +14,7 @@ public class Player {
 	private static final int DEFAULT_INVINCIBLE_TIME = 5;
 	private static final int ATTACK_WAIT_TIME = 2;
 	private static final int COLLISION_DISTANCE = 7;
+	private static final Point2 FALLEN_POINT = new Point2(-1, -1);
 
 	private int life;
 	private Point2 point;
@@ -21,20 +22,37 @@ public class Player {
 	private int waitTime = 0;
 	private int invincibleTime = 0;
 	private Player[] players;
+	private Random rnd;
 
 	private Direction4 dir;
 
 	private ICommand command;
 
-	public Player(Random rnd) {
+	public Player(Random random, Player[] players) {
 		this.life = INITIAL_LIFE;
-		point = new Point2((int) (rnd.nextDouble() * 40),
-				(int) (rnd.nextDouble() * 40));
-		setRandomDir(rnd);
+		rnd = random;
+		this.players = players;
+		spawn();
+		setRandomDir();
 		command = CommandBuilder.createCommand("N");
 	}
 
-	public void setRandomDir(Random rnd) {
+	private void spawn() {
+		List<Point2> points = Field.getAllPoints();
+		for (int i = 0; i < players.length; i++) {
+			if (players[i] == null) {
+				continue;
+			}
+			for (Point2 point2 : points) {
+				if (players[i].point.getManhattanDistance(point2) <= COLLISION_DISTANCE) {
+					points.remove(point2);
+				}
+			}
+		}
+		point = points.get(rnd.nextInt(points.size()));
+	}
+
+	public void setRandomDir() {
 		int d = rnd.nextInt(Direction4.values().length);
 		dir = Direction4.values()[d];
 	}
@@ -61,8 +79,7 @@ public class Player {
 	}
 
 	public String getPlace() {
-		return (isOnBoard() ? point.x : -1) + " "
-				+ (isOnBoard() ? point.y : -1);
+		return point.x + " " + point.y;
 	}
 
 	public String getPlaceAndDirection() {
@@ -119,6 +136,7 @@ public class Player {
 	public void fall() {
 		life--;
 		rebirthTime = DEFAULT_REBIRTH_TIME;
+		point = FALLEN_POINT;
 	}
 
 	public void refresh() {
@@ -129,6 +147,7 @@ public class Player {
 			rebirthTime--;
 			if (rebirthTime == 0) {
 				invincibleTime = DEFAULT_INVINCIBLE_TIME;
+				spawn();
 			}
 		}
 		if (waitTime > 0) {

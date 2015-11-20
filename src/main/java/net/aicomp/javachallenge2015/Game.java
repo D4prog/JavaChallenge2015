@@ -7,22 +7,22 @@ import java.util.Random;
 public class Game {
 	private static final int FORCED_END_TURN = 100;
 	private static final String EOD = "EOD";
-	private Random rnd;
+	private Random random;
 	private int turn;
 	private Player[] players;
 	private Field field;
 
 	public void initialize(String seed) {
 		if (seed != null) {
-			rnd = new Random(Long.parseLong(seed));
+			random = new Random(Long.parseLong(seed));
 		} else {
-			rnd = new Random();
+			random = new Random();
 		}
 		turn = 0;
 		field = new Field();
 		players = new Player[Bookmaker.PLAYERS_NUM];
 		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player(rnd);
+			players[i] = new Player(random, players);
 		}
 	}
 
@@ -33,7 +33,7 @@ public class Game {
 				livingCnt++;
 			}
 		}
-		return livingCnt == 1 || turn > FORCED_END_TURN;
+		return livingCnt == 1;// || turn > FORCED_END_TURN;
 	}
 
 	public void processTurn(String[] commands) {
