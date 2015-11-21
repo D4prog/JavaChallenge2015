@@ -22,12 +22,6 @@ public class Field {
 		}
 	}
 
-	public static List<Point2> getAllPoints() {
-		return Point2.getPoints(FIELD_SIZE * BLOCK_SIZE, FIELD_SIZE
-				* BLOCK_SIZE);
-
-	}
-
 	public boolean isInside(int x, int y) {
 		return 0 <= x && x < FIELD_SIZE * BLOCK_SIZE && 0 <= y
 				&& y < FIELD_SIZE * BLOCK_SIZE;
