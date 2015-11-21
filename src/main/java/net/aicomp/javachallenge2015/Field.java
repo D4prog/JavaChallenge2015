@@ -10,7 +10,7 @@ import net.exkazuu.gameaiarena.api.Point2;
 
 public class Field {
 	private static final int FIELD_SIZE = 8;
-	static final int BLOCK_SIZE = 5;
+	private static final int BLOCK_SIZE = 5;
 	private Block[][] field;
 
 	public Field() {
