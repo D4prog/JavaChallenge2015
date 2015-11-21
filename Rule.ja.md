@@ -65,11 +65,11 @@ B<sub>0,0</sub> B<sub>0,1</sub> B<sub>0,2</sub> ... B<sub>0,39</sub>
 B<sub>1,0</sub> B<sub>1,1</sub> B<sub>1,2</sub> ... B<sub>1,39</sub>
 ...
 B<sub>39,0</sub> B<sub>39,1</sub> B<sub>39,2</sub> ... B<sub>39,39</sub>
-R<sub>0</sub> C<sub>0</sub> D<sub>0</sub>
-R<sub>1</sub> C<sub>1</sub> D<sub>1</sub>
-R<sub>2</sub> C<sub>2</sub> D<sub>2</sub>
-R<sub>3</sub> C<sub>3</sub> D<sub>3</sub>
-O<sub>0</sub> O<sub>1</sub> O<sub>2</sub> O<sub>3</sub>
+R<sub>0</sub> C<sub>0</sub>
+R<sub>1</sub> C<sub>1</sub>
+R<sub>2</sub> C<sub>2</sub>
+R<sub>3</sub> C<sub>3</sub>
+EOD
 </pre>
 
 * id: プレイヤーID
@@ -81,14 +81,13 @@ O<sub>0</sub> O<sub>1</sub> O<sub>2</sub> O<sub>3</sub>
  * 負の数の場合は、そのパネルは落下していて存在しない。その数の絶対値のターン数後にパネルが復活する。
 * R<sub>i</sub>: プレーヤーiが存在している行。負の数の場合は落下していて盤上に存在しないことを表す。
 * C<sub>i</sub>: プレーヤーiが存在している列。負の数の場合は落下していて盤上に存在しないことを表す。
-* D<sub>i</sub>: プレーヤーi向いている方向。
-* O<sub>i</sub>: プレーヤーiが出力したコマンド。
  * "U": 「上に1マス進む」という命令を出した。
  * "R": 「右に1マス進む」という命令を出した。
  * "D": 「下に1マス進む」という命令を出した。
  * "L": 「左に1マス進む」という命令を出した。
  * "A": 「向いている方向に攻撃を出す」という命令を出した。
  * "N": 「何もしない」という命令を出した。
+* EOD: 入力の終わりを表す。
 
 ### 行動の出力形式
 
