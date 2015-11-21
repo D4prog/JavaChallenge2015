@@ -42,7 +42,7 @@ public class Bookmaker {
 			printHelp(options);
 			System.exit(-1);
 		}
-		System.out.println("Game Finished!");
+		Logger.outputLog("Game Finished!", Logger.LOG_LEVEL_DETAILS);
 	}
 
 	@SuppressWarnings("unused")
