@@ -1,7 +1,9 @@
 package net.aicomp.javachallenge2015;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import net.aicomp.javachallenge2015.commands.CommandBuilder;
 import net.aicomp.javachallenge2015.commands.ICommand;
@@ -33,14 +35,15 @@ public class Player {
 		rnd = random;
 	}
 
-	public void initialize(List<Point2> spawnablePoints) {
+	public void initialize(Set<Point2> spawnablePoints) {
 		spawn(spawnablePoints);
 		setRandomDir();
 		command = CommandBuilder.createCommand("N");
 	}
 
-	private void spawn(List<Point2> spawnablePoints) {
-		point = spawnablePoints.get(rnd.nextInt(spawnablePoints.size()));
+	private void spawn(Set<Point2> spawnablePoints) {
+		List<Point2> points = new ArrayList<Point2>(spawnablePoints);
+		point = points.get(rnd.nextInt(spawnablePoints.size()));
 	}
 
 	public void setRandomDir() {
@@ -130,7 +133,7 @@ public class Player {
 		point = FALLEN_POINT;
 	}
 
-	public void refresh(List<Point2> spawnablePoints) {
+	public void refresh(Set<Point2> spawnablePoints) {
 		if (invincibleTime > 0) {
 			invincibleTime--;
 		}

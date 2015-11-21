@@ -17,7 +17,7 @@ public class Field {
 		field = new Block[FIELD_SIZE][FIELD_SIZE];
 		for (int i = 0; i < field.length; i++) {
 			for (int j = 0; j < field[i].length; j++) {
-				field[i][j] = new Block();
+				field[i][j] = new Block(j, i);
 			}
 		}
 	}
@@ -95,28 +95,22 @@ public class Field {
 		}
 	}
 
-	public List<Point2> getSpawnablePoints(Player[] players) {
-		List<Point2> ret = Point2.getPoints(FIELD_SIZE * BLOCK_SIZE, FIELD_SIZE
-				* BLOCK_SIZE);
-		Set<Point2> invalidPoints = new HashSet<Point2>();
-		for (int i = 0; i < FIELD_SIZE; i++) {
-			for (int j = 0; j < FIELD_SIZE; j++) {
-				Block block = field[i][j];
-				if (!block.isAlive()) {
-					invalidPoints.addAll(Point2.getPoints(j * BLOCK_SIZE, i
-							* BLOCK_SIZE, (j + 1) * BLOCK_SIZE, (i + 1)
-							* BLOCK_SIZE));
+	public Set<Point2> getSpawnablePoints(Player[] players) {
+		Set<Point2> ret = new HashSet<Point2>();
+		for (Block[] row : field) {
+			for (Block block : row) {
+				if (block.isAlive()) {
+					ret.addAll(block.area);
 				}
 			}
 		}
 		for (Point2 point : ret) {
 			for (Player player : players) {
 				if (player != null && player.isCollided(point)) {
-					invalidPoints.add(point);
+					ret.remove(point);
 				}
 			}
 		}
-		ret.removeAll(invalidPoints);
 		return ret;
 	}
 }
@@ -124,8 +118,12 @@ public class Field {
 class Block {
 	int life;
 	private static final int REBIRTH_TIME = 5;
+	Set<Point2> area;
 
-	Block() {
+	Block(int x, int y) {
+		area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y
+				* Field.BLOCK_SIZE, (x + 1) * Field.BLOCK_SIZE, (y + 1)
+				* Field.BLOCK_SIZE));
 		life = 0;
 	}
 
