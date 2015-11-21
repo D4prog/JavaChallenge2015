@@ -112,48 +112,45 @@ public class Field {
 		}
 		return ret;
 	}
-}
 
-class Block {
-	int life;
-	private static final int REBIRTH_TIME = 5;
-	Set<Point2> area;
+	private static class Block {
+		private int life;
+		private static final int REBIRTH_TIME = 5;
+		private Set<Point2> area;
 
-	Block(int x, int y) {
-		area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y
-				* Field.BLOCK_SIZE, (x + 1) * Field.BLOCK_SIZE, (y + 1)
-				* Field.BLOCK_SIZE));
-		life = 0;
-	}
+		private Block(int x, int y) {
+			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y
+					* Field.BLOCK_SIZE, (x + 1) * Field.BLOCK_SIZE, (y + 1)
+					* Field.BLOCK_SIZE));
+			life = 0;
+		}
 
-	public void refresh(List<Player> players) {
-		if (life > 0) {
-			life--;
-			if (life == 0) {
-				life = -REBIRTH_TIME * Bookmaker.PLAYERS_NUM;
-				for (Player player : players) {
-					if (!player.isInvincible()) {
-						player.fall();
+		private void refresh(List<Player> players) {
+			if (life > 0) {
+				life--;
+				if (life == 0) {
+					life = -REBIRTH_TIME * Bookmaker.PLAYERS_NUM;
+					for (Player player : players) {
+						if (!player.isInvincible()) {
+							player.fall();
+						}
 					}
 				}
 			}
+			if (life < 0) {
+				life++;
+			}
 		}
-		if (life < 0) {
-			life++;
+
+		private void setLife(int i) {
+			if (life == 0) {
+				life = i;
+			}
+		}
+
+		private boolean isAlive() {
+			return life >= 0;
 		}
 	}
 
-	void setLife(int i) {
-		if (life == 0) {
-			life = i;
-		}
-	}
-
-	int getLife() {
-		return life;
-	}
-
-	boolean isAlive() {
-		return life >= 0;
-	}
 }
