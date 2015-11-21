@@ -59,17 +59,11 @@ public class Player {
 		return life > 0;
 	}
 
-	public boolean isThere(int sx, int sy, int gx, int gy) {
+	public boolean isThere(Set<Point2> area) {
 		if (isAlive() && rebirthTime > 0) {
 			return false;
 		}
-		List<Point2> area = Point2.getPoints(sx, sy, gx, gy);
-		for (Point2 point : area) {
-			if (this.point.equals(point)) {
-				return true;
-			}
-		}
-		return false;
+		return area.contains(point);
 	}
 
 	public String getPlace() {

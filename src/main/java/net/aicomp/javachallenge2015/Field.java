@@ -85,8 +85,7 @@ public class Field {
 				Block block = field[i][j];
 				List<Player> playersInBlock = new ArrayList<Player>();
 				for (Player player : players) {
-					if (player.isThere(j * BLOCK_SIZE, i * BLOCK_SIZE, (j + 1)
-							* BLOCK_SIZE, (i + 1) * BLOCK_SIZE)) {
+					if (player.isThere(block.area)) {
 						playersInBlock.add(player);
 					}
 				}
