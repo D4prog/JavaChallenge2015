@@ -1,7 +1,9 @@
 package net.aicomp.javachallenge2015;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import net.exkazuu.gameaiarena.api.Direction4;
 import net.exkazuu.gameaiarena.api.Point2;
@@ -97,6 +99,31 @@ public class Field {
 				block.refresh(playersInBlock);
 			}
 		}
+	}
+
+	public List<Point2> getSpawnablePoints(Player[] players) {
+		List<Point2> ret = Point2.getPoints(FIELD_SIZE * BLOCK_SIZE, FIELD_SIZE
+				* BLOCK_SIZE);
+		Set<Point2> invalidPoints = new HashSet<Point2>();
+		for (int i = 0; i < FIELD_SIZE; i++) {
+			for (int j = 0; j < FIELD_SIZE; j++) {
+				Block block = field[i][j];
+				if (!block.isAlive()) {
+					invalidPoints.addAll(Point2.getPoints(j * BLOCK_SIZE, i
+							* BLOCK_SIZE, (j + 1) * BLOCK_SIZE, (i + 1)
+							* BLOCK_SIZE));
+				}
+			}
+		}
+		for (Point2 point : ret) {
+			for (Player player : players) {
+				if (player != null && player.isCollided(point)) {
+					invalidPoints.add(point);
+				}
+			}
+		}
+		ret.removeAll(invalidPoints);
+		return ret;
 	}
 }
 

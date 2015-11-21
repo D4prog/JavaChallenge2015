@@ -1,6 +1,5 @@
 package net.aicomp.javachallenge2015;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -29,30 +28,19 @@ public class Player {
 
 	private ICommand command;
 
-	public Player(Random random, Player[] players) {
+	public Player(Random random) {
 		this.life = INITIAL_LIFE;
 		rnd = random;
-		this.players = players;
-		spawn();
+	}
+
+	public void initialize(List<Point2> spawnablePoints) {
+		spawn(spawnablePoints);
 		setRandomDir();
 		command = CommandBuilder.createCommand("N");
 	}
 
-	private void spawn() {
-		List<Point2> points = Field.getAllPoints();
-		List<Point2> collisionPoints = new ArrayList<Point2>();
-		for (int i = 0; i < players.length; i++) {
-			if (players[i] == null) {
-				continue;
-			}
-			for (Point2 point2 : points) {
-				if (players[i].point.getManhattanDistance(point2) <= COLLISION_DISTANCE) {
-					collisionPoints.add(point2);
-				}
-			}
-		}
-		points.removeAll(collisionPoints);
-		point = points.get(rnd.nextInt(points.size()));
+	private void spawn(List<Point2> spawnablePoints) {
+		point = spawnablePoints.get(rnd.nextInt(spawnablePoints.size()));
 	}
 
 	public void setRandomDir() {
@@ -142,7 +130,7 @@ public class Player {
 		point = FALLEN_POINT;
 	}
 
-	public void refresh() {
+	public void refresh(List<Point2> spawnablePoints) {
 		if (invincibleTime > 0) {
 			invincibleTime--;
 		}
@@ -150,7 +138,7 @@ public class Player {
 			rebirthTime--;
 			if (rebirthTime == 0) {
 				invincibleTime = DEFAULT_INVINCIBLE_TIME;
-				spawn();
+				spawn(spawnablePoints);
 			}
 		}
 		if (waitTime > 0) {
@@ -160,5 +148,12 @@ public class Player {
 
 	public boolean isInvincible() {
 		return invincibleTime > 0;
+	}
+
+	public boolean isCollided(Point2 point) {
+		if (this.point == null) {
+			return false;
+		}
+		return point.getManhattanDistance(this.point) <= COLLISION_DISTANCE;
 	}
 }

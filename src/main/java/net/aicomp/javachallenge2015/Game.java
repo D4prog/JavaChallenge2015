@@ -22,7 +22,8 @@ public class Game {
 		field = new Field();
 		players = new Player[Bookmaker.PLAYERS_NUM];
 		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player(random, players);
+			players[i] = new Player(random);
+			players[i].initialize(field.getSpawnablePoints(players));
 		}
 	}
 
@@ -46,7 +47,7 @@ public class Game {
 		turnPlayer.setCommand(commands[0]);
 		turnPlayer.doCommand(field, players);
 		field.refresh(players);
-		turnPlayer.refresh();
+		turnPlayer.refresh(field.getSpawnablePoints(players));
 		turn++;
 	}
 
