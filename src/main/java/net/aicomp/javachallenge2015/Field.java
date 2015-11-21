@@ -129,15 +129,14 @@ public class Field {
 			if (life > 0) {
 				life--;
 				if (life == 0) {
-					life = -REBIRTH_TIME * Bookmaker.PLAYERS_NUM;
+					life = -REBIRTH_TIME * Bookmaker.PLAYERS_NUM + 1;
 					for (Player player : players) {
 						if (!player.isInvincible()) {
 							player.fall();
 						}
 					}
 				}
-			}
-			if (life < 0) {
+			} else if (life < 0) {
 				life++;
 			}
 		}
