@@ -1,4 +1,3 @@
-# sorry
 # JavaChallenge2015
 
 ## Overview of Game
