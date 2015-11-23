@@ -21,7 +21,7 @@ There are four players. Initial position and direction is decided randomly, and 
 Field is composed of 1600 (40 x 40) squares.
 To be exact, there are 64 (8 x 8) blocks on the field, and each block is composed of 25 (5x5) squares.
 
-![Sample](https://github.com/AI-comp/JavaChallenge2015/img/fieldE.png)
+![Sample](./img/fieldE.png)
 
 ### Flow of Game
 
