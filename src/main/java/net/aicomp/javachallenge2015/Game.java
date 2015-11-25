@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Game {
-	private static final int FORCED_END_TURN = 10000;
+	private int forcedEndTurn = 10000;
 	private static final String EOD = "EOD";
 	private Random random;
 	private int turn;
@@ -13,11 +13,14 @@ public class Game {
 	private Field field;
 	private int winner;
 
-	public void initialize(String seed) {
+	public void initialize(String seed, String maxTurn) {
 		if (seed != null) {
 			random = new Random(Long.parseLong(seed));
 		} else {
 			random = new Random();
+		}
+		if (maxTurn != null) {
+			forcedEndTurn = Integer.parseInt(maxTurn);
 		}
 		turn = 0;
 		winner = -1;
@@ -42,7 +45,7 @@ public class Game {
 			winner = winnerId;
 			return true;
 		}
-		return turn >= FORCED_END_TURN;
+		return turn >= forcedEndTurn;
 	}
 
 	public void processTurn(String[] commands) {
