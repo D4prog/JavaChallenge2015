@@ -5,12 +5,13 @@ import java.util.List;
 import java.util.Random;
 
 public class Game {
-	private static final int FORCED_END_TURN = 100;
+	private static final int FORCED_END_TURN = 10000;
 	private static final String EOD = "EOD";
 	private Random random;
 	private int turn;
 	private Player[] players;
 	private Field field;
+	private int winner;
 
 	public void initialize(String seed) {
 		if (seed != null) {
@@ -19,6 +20,7 @@ public class Game {
 			random = new Random();
 		}
 		turn = 0;
+		winner = -1;
 		field = new Field();
 		players = new Player[Bookmaker.PLAYERS_NUM];
 		for (int i = 0; i < players.length; i++) {
@@ -29,12 +31,18 @@ public class Game {
 
 	public boolean isFinished() {
 		int livingCnt = 0;
+		int winnerId = -1;
 		for (int i = 0; i < players.length; i++) {
 			if (players[i].isAlive()) {
 				livingCnt++;
+				winnerId = i;
 			}
 		}
-		return livingCnt == 1 || turn > FORCED_END_TURN;
+		if (livingCnt == 1) {
+			winner = winnerId;
+			return true;
+		}
+		return turn >= FORCED_END_TURN;
 	}
 
 	public void processTurn(String[] commands) {
@@ -112,6 +120,10 @@ public class Game {
 			ret.add(player.getPlaceAndDirection());
 		}
 		return ret;
+	}
+
+	public int getWinner() {
+		return winner;
 	}
 
 }

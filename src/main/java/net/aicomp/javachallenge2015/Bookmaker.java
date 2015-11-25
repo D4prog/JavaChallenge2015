@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.aicomp.javachallenge2015.log.Logger;
 import net.exkazuu.gameaiarena.manipulator.Manipulator;
 import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
 
@@ -89,6 +90,7 @@ public class Bookmaker {
 					.run(game);
 			game.processTurn(commands);
 		}
+		Logger.outputLogObject(game.getWinner());
 
 	}
 
@@ -206,6 +208,7 @@ class AIManipulator extends GameManipulator {
 				Logger.LOG_LEVEL_DETAILS);
 		String input = game.getTurnInformation(_index);
 		_com.writeLine(input);
+		Logger.createMessage(_index, input);
 
 		String log = game.getLogInformation(_index);
 		Logger.outputLog(log, Logger.LOG_LEVEL_STATUS);

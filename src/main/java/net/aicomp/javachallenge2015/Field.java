@@ -103,13 +103,15 @@ public class Field {
 				}
 			}
 		}
+		Set<Point2> collisionPoints = new HashSet<Point2>();
 		for (Point2 point : ret) {
 			for (Player player : players) {
 				if (player != null && player.isCollided(point)) {
-					ret.remove(point);
+					collisionPoints.add(point);
 				}
 			}
 		}
+		ret.removeAll(collisionPoints);
 		return ret;
 	}
 
