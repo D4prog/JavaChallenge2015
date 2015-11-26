@@ -55,7 +55,11 @@ public class Game {
 			turn++;
 			return;
 		}
-		turnPlayer.setCommand(commands[0]);
+		String command = null;
+		if (commands != null && commands.length > 0) {
+			command = commands[0];
+		}
+		turnPlayer.setCommand(command);
 		turnPlayer.doCommand(field, players);
 		field.refresh(players);
 		turnPlayer.refresh(field.getSpawnablePoints(players));
