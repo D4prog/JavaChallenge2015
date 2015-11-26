@@ -57,7 +57,6 @@ public class Bookmaker {
 		System.exit(0);
 	}
 
-	@SuppressWarnings("unused")
 	private static void start(Game game, CommandLine line) {
 		String[] execAICommands = line.getOptionValues(EXEC_COMMAND);
 		String[] pauseAICommands = line.hasOption(PAUSE_COMMAND) ? line.getOptionValues(PAUSE_COMMAND)
@@ -69,8 +68,11 @@ public class Bookmaker {
 		for (int i = 0; i < PLAYERS_NUM; i++) {
 			try {
 				ExternalComputerPlayer com = new ExternalComputerPlayer(execAICommands[i].split(" "));
-				ais.add(new RunManipulators(new AIInitializer(com, i).limittingSumTime(MIN_TIME, READY_TIME_LIMIT),
-						new AIManipulator(com, i).limittingSumTime(MIN_TIME, ACTION_TIME_LIMIT)));
+				ais.add(new RunManipulators(
+						new AIInitializer(com, i).limittingSumTime(MIN_TIME, READY_TIME_LIMIT)
+								.pauseUnpause(pauseAICommands, unpauseAICommands),
+						new AIManipulator(com, i).limittingSumTime(MIN_TIME, ACTION_TIME_LIMIT)
+								.pauseUnpause(pauseAICommands, unpauseAICommands)));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
@@ -93,7 +95,6 @@ public class Bookmaker {
 			game.processTurn(commands);
 		}
 		Logger.outputLogObject(game.getWinner());
-
 	}
 
 	private static void printHelp(Options options) {

@@ -51,6 +51,7 @@ public class Logger {
 	public static void outputLog(String message, int targetLogLevel) {
 		if (_logLevel >= targetLogLevel) {
 			_writer.println(message.trim());
+			_writer.flush();
 			logObject.addReplay(message);
 		}
 	}
