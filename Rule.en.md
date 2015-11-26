@@ -65,7 +65,7 @@ The player who makes other player's life 0 is the winner.
 ### Output Format for Ready Message
 
 When the AI programs prepared for the game, they must print `READY` to the standard output.
-Note that, the ready message must be printed within 5 seconds from game start, otherwise the AI program will be terminated by force.
+Note that, the ready message must be printed within **1 second** from game start, otherwise the AI program will be terminated by force.
 
 ### Input Format of Game Settings
 
@@ -96,7 +96,7 @@ EOD
 ### Output Format of Actions
 
 Print the one command from the following.
-Note that, if an AI program does not print its action within 2 seconds from the beginning of a turn, it will be terminated by force.
+Note that, if an AI program does not print its action within **0.1 seconds** from the beginning of a turn, it will be terminated by force.
 
  * "U": move to the upper square
  * "R": move to the right square
