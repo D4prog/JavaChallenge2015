@@ -61,16 +61,25 @@ public class Bookmaker {
 				: new String[PLAYERS_NUM];
 		String[] unpauseAICommands = line.hasOption(UNPAUSE_COMMAND) ? line.getOptionValues(UNPAUSE_COMMAND)
 				: new String[PLAYERS_NUM];
-
+		for (int i = 0; i < pauseAICommands.length; i++) {
+			if (pauseAICommands[i] == null) {
+				pauseAICommands[i] = "";
+			}
+		}
+		for (int i = 0; i < unpauseAICommands.length; i++) {
+			if (unpauseAICommands[i] == null) {
+				unpauseAICommands[i] = "";
+			}
+		}
 		List<RunManipulators> ais = new ArrayList<RunManipulators>();
 		for (int i = 0; i < PLAYERS_NUM; i++) {
 			try {
 				ExternalComputerPlayer com = new ExternalComputerPlayer(execAICommands[i].split(" "));
 				ais.add(new RunManipulators(
-						new AIInitializer(com, i).limittingTime(READY_TIME_LIMIT).pauseUnpause(pauseAICommands,
-								unpauseAICommands),
-						new AIManipulator(com, i).limittingTime(ACTION_TIME_LIMIT).pauseUnpause(pauseAICommands,
-								unpauseAICommands)));
+						new AIInitializer(com, i).limittingTime(READY_TIME_LIMIT)
+								.pauseUnpause(pauseAICommands[i].split(" "), unpauseAICommands),
+						new AIManipulator(com, i).limittingTime(ACTION_TIME_LIMIT)
+								.pauseUnpause(pauseAICommands[i].split(" "), unpauseAICommands)));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);

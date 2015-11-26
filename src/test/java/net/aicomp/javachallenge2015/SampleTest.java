@@ -111,7 +111,7 @@ public class SampleTest {
 		assertEquals(expected, actual);
 	}
 
-	@Test
+	@Test @Ignore
 	public void testNew() {
 		try {
 			Bookmaker.main(new String[] { "-a", "\"java SampleAIL\"", "-a",
