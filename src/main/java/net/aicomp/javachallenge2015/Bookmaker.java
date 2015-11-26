@@ -45,6 +45,7 @@ public class Bookmaker {
 		} finally {
 			Logger.outputLog("Game Finished!", Logger.LOG_LEVEL_DETAILS);
 			Logger.close();
+			System.exit(0);
 		}
 	}
 
@@ -138,21 +139,26 @@ public class Bookmaker {
 }
 
 abstract class GameManipulator extends Manipulator<Game, String[]> {
+	protected ExternalComputerPlayer _com;
 	protected int _index;
 
-	public GameManipulator(int index) {
+	public GameManipulator(ExternalComputerPlayer com, int index) {
+		_com = com;
 		_index = index;
+	}
+
+	@Override
+	public ExternalComputerPlayer getExternalComputerPlayer() {
+		return _com;
 	}
 }
 
 class AIInitializer extends GameManipulator {
 	private static final String READY = "READY";
-	private ExternalComputerPlayer _com;
 	private List<String> _lines;
 
 	public AIInitializer(ExternalComputerPlayer com, int index) {
-		super(index);
-		_com = com;
+		super(com, index);
 	}
 
 	@Override
@@ -178,7 +184,7 @@ class AIInitializer extends GameManipulator {
 
 	@Override
 	protected String[] runPostProcessing() {
-		if (!_com.getErrorLog().isEmpty()) {
+		if (_com.available() && !_com.getErrorLog().isEmpty()) {
 			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog(), Logger.LOG_LEVEL_DETAILS);
 		}
 		String[] ret = new String[_lines.size()];
@@ -191,12 +197,10 @@ class AIInitializer extends GameManipulator {
 }
 
 class AIManipulator extends GameManipulator {
-	private ExternalComputerPlayer _com;
 	private String _line;
 
 	AIManipulator(ExternalComputerPlayer com, int index) {
-		super(index);
-		_com = com;
+		super(com, index);
 	}
 
 	@Override
@@ -224,7 +228,7 @@ class AIManipulator extends GameManipulator {
 
 	@Override
 	protected String[] runPostProcessing() {
-		if (!_com.getErrorLog().isEmpty()) {
+		if (_com.available() && !_com.getErrorLog().isEmpty()) {
 			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog(), Logger.LOG_LEVEL_DETAILS);
 		}
 		Logger.outputLog("AI" + _index + ">>STDOUT: " + _line, Logger.LOG_LEVEL_DETAILS);
