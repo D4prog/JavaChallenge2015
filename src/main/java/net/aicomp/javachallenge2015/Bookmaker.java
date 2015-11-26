@@ -75,10 +75,10 @@ public class Bookmaker {
 				String[] pauseAICommandWithArgs = pauseAICommands[i].split(" ");
 				String[] unpauseAICommandWithArgs = unpauseAICommands[i].split(" ");
 				ais.add(new ManipulatorSet(
-						new AIInitializer(com, i).limittingTime(READY_TIME_LIMIT)
-								.pauseUnpause(pauseAICommandWithArgs, unpauseAICommandWithArgs).ignoringException(),
-						new AIRunner(com, i).limittingTime(ACTION_TIME_LIMIT)
-								.pauseUnpause(pauseAICommandWithArgs, unpauseAICommandWithArgs).ignoringException()));
+						new AIInitializer(com, i).limittingTime(READY_TIME_LIMIT).ignoringException()
+								.pauseUnpause(pauseAICommandWithArgs, unpauseAICommandWithArgs),
+						new AIRunner(com, i).limittingTime(ACTION_TIME_LIMIT).ignoringException()
+								.pauseUnpause(pauseAICommandWithArgs, unpauseAICommandWithArgs)));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
@@ -92,12 +92,16 @@ public class Bookmaker {
 		game.initialize(seed, maxTurn);
 
 		for (ManipulatorSet ai : ais) {
-			ai.getInitializeManipulator().run(game);
+			ai.getInitializer().run(game);
+			if (ai.getInitializer().released()) {
+				ai.getRunner().release();
+			}
+			ai.getRunner().setPaused(ai.getInitializer().paused());
 		}
 
 		while (!game.isFinished()) {
 			int turn = game.getTurn();
-			String[] commands = ais.get(turn % PLAYERS_NUM).getRunManipulator().run(game);
+			String[] commands = ais.get(turn % PLAYERS_NUM).getRunner().run(game);
 			game.processTurn(commands);
 		}
 		Logger.outputLogObject(game.getWinner());
