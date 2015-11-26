@@ -111,7 +111,8 @@ public class SampleTest {
 		assertEquals(expected, actual);
 	}
 
-	@Test @Ignore
+	@Test
+	@Ignore
 	public void testNew() {
 		try {
 			Bookmaker.main(new String[] { "-a", "\"java SampleAIL\"", "-a",
@@ -137,7 +138,8 @@ public class SampleTest {
 			fail();
 		}
 		StringBuilder builder = new StringBuilder();
-		String newLine = System.getProperty("line.separator");
+		String newLine = System.getProperty("line.separator").replace("\r\n",
+				"\n");
 		while (sc.hasNextLine()) {
 			builder.append(sc.nextLine());
 			builder.append(newLine);
