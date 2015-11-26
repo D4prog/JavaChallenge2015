@@ -52,7 +52,7 @@ public class Bookmaker {
 		}
 	}
 
-	private static void start(Game game, CommandLine line) {
+	public static void start(Game game, CommandLine line) {
 		String[] execAICommands = line.getOptionValues(EXEC_COMMAND);
 		String[] pauseAICommands = line.hasOption(PAUSE_COMMAND) ? line.getOptionValues(PAUSE_COMMAND)
 				: new String[PLAYERS_NUM];
@@ -112,7 +112,7 @@ public class Bookmaker {
 		help.printHelp("java -jar Bookmaker.jar [OPTIONS]\n" + "[OPTIONS]: ", "", options, "", true);
 	}
 
-	private static Options buildOptions() {
+	public static Options buildOptions() {
 		return new Options()
 				.addOption(EXEC_COMMAND, true,
 						"The command and arguments with double quotation marks to execute AI program (e.g. -a \"java MyAI\")")
