@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.aicomp.javachallenge2015.log.Logger;
 import net.exkazuu.gameaiarena.manipulator.Manipulator;
 import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
 
@@ -24,6 +25,7 @@ public class Bookmaker {
 	private static final String PAUSE_COMMAND = "p";
 	private static final String UNPAUSE_COMMAND = "u";
 	private static final String SEED_COMMAND = "s";
+	private static final String TURN_COMMAND = "t";
 
 	public static void main(String[] args) throws InterruptedException,
 			ParseException {
@@ -70,14 +72,16 @@ public class Bookmaker {
 			}
 		}
 
-		play(game, ais, line.getOptionValue(SEED_COMMAND));
+		play(game, ais, line.getOptionValue(SEED_COMMAND),
+				line.getOptionValue(TURN_COMMAND));
 
 		Logger.close();
 
 	}
 
-	private static void play(Game game, List<RunManipulators> ais, String seed) {
-		game.initialize(seed);
+	private static void play(Game game, List<RunManipulators> ais, String seed,
+			String maxTurn) {
+		game.initialize(seed, maxTurn);
 
 		for (RunManipulators ai : ais) {
 			ai.getInitializeManipulator().run(game);
@@ -89,6 +93,7 @@ public class Bookmaker {
 					.run(game);
 			game.processTurn(commands);
 		}
+		Logger.outputLogObject(game.getWinner());
 
 	}
 
@@ -112,7 +117,8 @@ public class Bookmaker {
 						UNPAUSE_COMMAND,
 						true,
 						"The command and arguments with double quotation marks to unpause AI program (e.g. -u \"echo unpause\")")
-				.addOption(SEED_COMMAND, true, "The seed of the game");
+				.addOption(SEED_COMMAND, true, "The seed of the game")
+				.addOption(TURN_COMMAND, true, "The turn number of game end");
 	}
 
 	/**
@@ -206,6 +212,7 @@ class AIManipulator extends GameManipulator {
 				Logger.LOG_LEVEL_DETAILS);
 		String input = game.getTurnInformation(_index);
 		_com.writeLine(input);
+		Logger.createMessage(_index, input);
 
 		String log = game.getLogInformation(_index);
 		Logger.outputLog(log, Logger.LOG_LEVEL_STATUS);

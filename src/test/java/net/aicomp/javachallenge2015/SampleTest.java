@@ -116,7 +116,7 @@ public class SampleTest {
 		try {
 			Bookmaker.main(new String[] { "-a", "\"java SampleAIL\"", "-a",
 					"\"java SampleAIL\"", "-a", "\"java SampleAIL\"", "-a",
-					"\"java SampleAIL\"", "-s", "0" });
+					"\"java SampleAIL\"", "-s", "0", "-t", "3" });
 		} catch (InterruptedException | ParseException e) {
 			e.printStackTrace();
 			fail();
