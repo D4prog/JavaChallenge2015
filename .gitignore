@@ -14,3 +14,8 @@ buildNumber.properties
 .settings
 .classpath
 .project
+
+# Project Specific
+log.txt
+game_engine_tester_log.txt
+GameEngineTester.jar

@@ -23,8 +23,7 @@ public class Field {
 	}
 
 	public boolean isInside(int x, int y) {
-		return 0 <= x && x < FIELD_SIZE * BLOCK_SIZE && 0 <= y
-				&& y < FIELD_SIZE * BLOCK_SIZE;
+		return 0 <= x && x < FIELD_SIZE * BLOCK_SIZE && 0 <= y && y < FIELD_SIZE * BLOCK_SIZE;
 	}
 
 	private String[][] getRawStatus() {
@@ -32,8 +31,7 @@ public class Field {
 		String[][] board = new String[size][size];
 		for (int i = 0; i < size; i++) {
 			for (int j = 0; j < size; j++) {
-				board[i][j] = Integer.toString(field[i / BLOCK_SIZE][j
-						/ BLOCK_SIZE].life);
+				board[i][j] = Integer.toString(field[i / BLOCK_SIZE][j / BLOCK_SIZE].life);
 			}
 		}
 		return board;
@@ -61,8 +59,7 @@ public class Field {
 		int blcy = y / BLOCK_SIZE;
 		Point2 start = new Point2(blcx, blcy);
 		Point2 current = dir.move(start);
-		while (current.x >= 0 && current.y >= 0 && current.x < FIELD_SIZE
-				&& current.y < FIELD_SIZE) {
+		while (current.x >= 0 && current.y >= 0 && current.x < FIELD_SIZE && current.y < FIELD_SIZE) {
 			int dist = current.getManhattanDistance(start);
 			field[current.y][current.x].setLife(dist * Bookmaker.PLAYERS_NUM);
 			current = dir.move(current);
@@ -103,15 +100,13 @@ public class Field {
 				}
 			}
 		}
-		Set<Point2> collisionPoints = new HashSet<Point2>();
-		for (Point2 point : ret) {
+		for (Point2 point : ret.toArray(new Point2[0])) {
 			for (Player player : players) {
 				if (player != null && player.isCollided(point)) {
-					collisionPoints.add(point);
+					ret.remove(point);
 				}
 			}
 		}
-		ret.removeAll(collisionPoints);
 		return ret;
 	}
 
@@ -121,9 +116,8 @@ public class Field {
 		private Set<Point2> area;
 
 		private Block(int x, int y) {
-			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y
-					* Field.BLOCK_SIZE, (x + 1) * Field.BLOCK_SIZE, (y + 1)
-					* Field.BLOCK_SIZE));
+			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y * Field.BLOCK_SIZE,
+					(x + 1) * Field.BLOCK_SIZE, (y + 1) * Field.BLOCK_SIZE));
 			life = 0;
 		}
 
