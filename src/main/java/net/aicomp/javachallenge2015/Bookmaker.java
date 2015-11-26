@@ -27,13 +27,6 @@ public class Bookmaker {
 	private static final String TURN_COMMAND = "t";
 
 	public static void main(String[] args) throws InterruptedException, ParseException {
-		// it will be removed (for debugging)
-		// args = new String[] { "-t", "8", "-a", "java -jar
-		// GameEngineTester.jar -a", "-a",
-		// "java -jar GameEngineTester.jar -a", "-a", "java -jar
-		// GameEngineTester.jar -a", "-a",
-		// "java -jar GameEngineTester.jar -a", };
-
 		Options options = buildOptions();
 
 		try {
@@ -75,11 +68,13 @@ public class Bookmaker {
 		for (int i = 0; i < PLAYERS_NUM; i++) {
 			try {
 				ExternalComputerPlayer com = new ExternalComputerPlayer(execAICommands[i].split(" "));
+				String[] pauseAICommandWithArgs = pauseAICommands[i].split(" ");
+				String[] unpauseAICommandWithArgs = unpauseAICommands[i].split(" ");
 				ais.add(new RunManipulators(
-						new AIInitializer(com, i).limittingTime(READY_TIME_LIMIT)
-								.pauseUnpause(pauseAICommands[i].split(" "), unpauseAICommands),
-						new AIManipulator(com, i).limittingTime(ACTION_TIME_LIMIT)
-								.pauseUnpause(pauseAICommands[i].split(" "), unpauseAICommands)));
+						new AIInitializer(com, i).limittingTime(READY_TIME_LIMIT).pauseUnpause(pauseAICommandWithArgs,
+								unpauseAICommandWithArgs),
+						new AIManipulator(com, i).limittingTime(ACTION_TIME_LIMIT).pauseUnpause(pauseAICommandWithArgs,
+								unpauseAICommandWithArgs)));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
@@ -166,7 +161,11 @@ class AIInitializer extends GameManipulator {
 	}
 
 	@Override
-	protected void runProcessing() {
+	protected void sendDataToAI(Game game) {
+	}
+
+	@Override
+	protected void receiveDataFromAI() {
 		String line = "";
 		do {
 			line = _com.readLine();
@@ -203,8 +202,6 @@ class AIManipulator extends GameManipulator {
 	@Override
 	protected void runPreProcessing(Game game) {
 		Logger.outputLog("AI" + _index + ">>Writing to stdin, waiting for stdout", Logger.LOG_LEVEL_DETAILS);
-		String input = game.getTurnInformation(_index);
-		_com.writeLine(input);
 
 		String log = game.getLogInformation(_index);
 		Logger.outputLog(log, Logger.LOG_LEVEL_STATUS);
@@ -215,7 +212,13 @@ class AIManipulator extends GameManipulator {
 	}
 
 	@Override
-	protected void runProcessing() {
+	protected void sendDataToAI(Game game) {
+		String input = game.getTurnInformation(_index);
+		_com.writeLine(input);
+	}
+
+	@Override
+	protected void receiveDataFromAI() {
 		_line = _com.readLine();
 	}
 
