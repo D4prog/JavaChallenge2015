@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.aicomp.javachallenge2015.log.Logger;
+import net.exkazuu.gameaiarena.manipulator.Manipulator;
+import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
-
-import net.aicomp.javachallenge2015.log.Logger;
-import net.exkazuu.gameaiarena.manipulator.Manipulator;
-import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
 
 public class Bookmaker {
 	public static final int PLAYERS_NUM = 4;
@@ -26,7 +26,8 @@ public class Bookmaker {
 	private static final String SEED_COMMAND = "s";
 	private static final String TURN_COMMAND = "t";
 
-	public static void main(String[] args) throws InterruptedException, ParseException {
+	public static void main(String[] args) throws InterruptedException,
+			ParseException {
 		Options options = buildOptions();
 
 		try {
@@ -49,12 +50,12 @@ public class Bookmaker {
 		}
 	}
 
-	private static void start(Game game, CommandLine line) {
+	public static void start(Game game, CommandLine line) {
 		String[] execAICommands = line.getOptionValues(EXEC_COMMAND);
-		String[] pauseAICommands = line.hasOption(PAUSE_COMMAND) ? line.getOptionValues(PAUSE_COMMAND)
-				: new String[PLAYERS_NUM];
-		String[] unpauseAICommands = line.hasOption(UNPAUSE_COMMAND) ? line.getOptionValues(UNPAUSE_COMMAND)
-				: new String[PLAYERS_NUM];
+		String[] pauseAICommands = line.hasOption(PAUSE_COMMAND) ? line
+				.getOptionValues(PAUSE_COMMAND) : new String[PLAYERS_NUM];
+		String[] unpauseAICommands = line.hasOption(UNPAUSE_COMMAND) ? line
+				.getOptionValues(UNPAUSE_COMMAND) : new String[PLAYERS_NUM];
 		for (int i = 0; i < pauseAICommands.length; i++) {
 			if (pauseAICommands[i] == null) {
 				pauseAICommands[i] = "";
@@ -68,24 +69,29 @@ public class Bookmaker {
 		List<RunManipulators> ais = new ArrayList<RunManipulators>();
 		for (int i = 0; i < PLAYERS_NUM; i++) {
 			try {
-				ExternalComputerPlayer com = new ExternalComputerPlayer(execAICommands[i].split(" "));
+				ExternalComputerPlayer com = new ExternalComputerPlayer(
+						execAICommands[i].split(" "));
 				String[] pauseAICommandWithArgs = pauseAICommands[i].split(" ");
-				String[] unpauseAICommandWithArgs = unpauseAICommands[i].split(" ");
-				ais.add(new RunManipulators(
-						new AIInitializer(com, i).limittingTime(READY_TIME_LIMIT).pauseUnpause(pauseAICommandWithArgs,
-								unpauseAICommandWithArgs),
-						new AIManipulator(com, i).limittingTime(ACTION_TIME_LIMIT).pauseUnpause(pauseAICommandWithArgs,
-								unpauseAICommandWithArgs)));
+				String[] unpauseAICommandWithArgs = unpauseAICommands[i]
+						.split(" ");
+				ais.add(new RunManipulators(new AIInitializer(com, i)
+						.limittingTime(READY_TIME_LIMIT).pauseUnpause(
+								pauseAICommandWithArgs,
+								unpauseAICommandWithArgs), new AIManipulator(
+						com, i).limittingTime(ACTION_TIME_LIMIT).pauseUnpause(
+						pauseAICommandWithArgs, unpauseAICommandWithArgs)));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
 			}
 		}
 
-		play(game, ais, line.getOptionValue(SEED_COMMAND), line.getOptionValue(TURN_COMMAND));
+		play(game, ais, line.getOptionValue(SEED_COMMAND),
+				line.getOptionValue(TURN_COMMAND));
 	}
 
-	private static void play(Game game, List<RunManipulators> ais, String seed, String maxTurn) {
+	private static void play(Game game, List<RunManipulators> ais, String seed,
+			String maxTurn) {
 		game.initialize(seed, maxTurn);
 
 		for (RunManipulators ai : ais) {
@@ -94,7 +100,8 @@ public class Bookmaker {
 
 		while (!game.isFinished()) {
 			int turn = game.getTurn();
-			String[] commands = ais.get(turn % PLAYERS_NUM).getRunManipulator().run(game);
+			String[] commands = ais.get(turn % PLAYERS_NUM).getRunManipulator()
+					.run(game);
 			game.processTurn(commands);
 		}
 		Logger.outputLogObject(game.getWinner());
@@ -102,16 +109,23 @@ public class Bookmaker {
 
 	private static void printHelp(Options options) {
 		HelpFormatter help = new HelpFormatter();
-		help.printHelp("java -jar Bookmaker.jar [OPTIONS]\n" + "[OPTIONS]: ", "", options, "", true);
+		help.printHelp("java -jar Bookmaker.jar [OPTIONS]\n" + "[OPTIONS]: ",
+				"", options, "", true);
 	}
 
-	private static Options buildOptions() {
+	public static Options buildOptions() {
 		return new Options()
-				.addOption(EXEC_COMMAND, true,
+				.addOption(
+						EXEC_COMMAND,
+						true,
 						"The command and arguments with double quotation marks to execute AI program (e.g. -a \"java MyAI\")")
-				.addOption(PAUSE_COMMAND, true,
+				.addOption(
+						PAUSE_COMMAND,
+						true,
 						"The command and arguments with double quotation marks to pause AI program (e.g. -p \"echo pause\")")
-				.addOption(UNPAUSE_COMMAND, true,
+				.addOption(
+						UNPAUSE_COMMAND,
+						true,
 						"The command and arguments with double quotation marks to unpause AI program (e.g. -u \"echo unpause\")")
 				.addOption(SEED_COMMAND, true, "The seed of the game")
 				.addOption(TURN_COMMAND, true, "The turn number of game end");
@@ -129,11 +143,14 @@ public class Bookmaker {
 		if (line == null) {
 			return false;
 		}
-		if (!line.hasOption(EXEC_COMMAND) || line.getOptionValues(EXEC_COMMAND).length != PLAYERS_NUM) {
+		if (!line.hasOption(EXEC_COMMAND)
+				|| line.getOptionValues(EXEC_COMMAND).length != PLAYERS_NUM) {
 			return false;
 		}
-		return (!line.hasOption(PAUSE_COMMAND) || line.getOptionValues(PAUSE_COMMAND).length == PLAYERS_NUM)
-				&& (!line.hasOption(UNPAUSE_COMMAND) || line.getOptionValues(UNPAUSE_COMMAND).length == PLAYERS_NUM);
+		return (!line.hasOption(PAUSE_COMMAND) || line
+				.getOptionValues(PAUSE_COMMAND).length == PLAYERS_NUM)
+				&& (!line.hasOption(UNPAUSE_COMMAND) || line
+						.getOptionValues(UNPAUSE_COMMAND).length == PLAYERS_NUM);
 	}
 
 }
@@ -185,11 +202,13 @@ class AIInitializer extends GameManipulator {
 	@Override
 	protected String[] runPostProcessing() {
 		if (_com.available() && !_com.getErrorLog().isEmpty()) {
-			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog(), Logger.LOG_LEVEL_DETAILS);
+			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog(),
+					Logger.LOG_LEVEL_DETAILS);
 		}
 		String[] ret = new String[_lines.size()];
 		for (String line : _lines) {
-			Logger.outputLog("AI" + _index + ">>STDOUT: " + line, Logger.LOG_LEVEL_DETAILS);
+			Logger.outputLog("AI" + _index + ">>STDOUT: " + line,
+					Logger.LOG_LEVEL_DETAILS);
 			ret[_lines.indexOf(line)] = line;
 		}
 		return ret;
@@ -205,7 +224,9 @@ class AIManipulator extends GameManipulator {
 
 	@Override
 	protected void runPreProcessing(Game game) {
-		Logger.outputLog("AI" + _index + ">>Writing to stdin, waiting for stdout", Logger.LOG_LEVEL_DETAILS);
+		Logger.outputLog("AI" + _index
+				+ ">>Writing to stdin, waiting for stdout",
+				Logger.LOG_LEVEL_DETAILS);
 
 		String log = game.getLogInformation(_index);
 		Logger.outputLog(log, Logger.LOG_LEVEL_STATUS);
@@ -229,9 +250,11 @@ class AIManipulator extends GameManipulator {
 	@Override
 	protected String[] runPostProcessing() {
 		if (_com.available() && !_com.getErrorLog().isEmpty()) {
-			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog(), Logger.LOG_LEVEL_DETAILS);
+			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog(),
+					Logger.LOG_LEVEL_DETAILS);
 		}
-		Logger.outputLog("AI" + _index + ">>STDOUT: " + _line, Logger.LOG_LEVEL_DETAILS);
+		Logger.outputLog("AI" + _index + ">>STDOUT: " + _line,
+				Logger.LOG_LEVEL_DETAILS);
 		String[] ret = new String[0];
 		if (!(_line == null || _line.isEmpty())) {
 			ret = _line.trim().split(" ");
@@ -247,7 +270,8 @@ class RunManipulators {
 	private Manipulator<Game, String[]> initialize;
 	private Manipulator<Game, String[]> run;
 
-	public RunManipulators(Manipulator<Game, String[]> manipulator, Manipulator<Game, String[]> manipulator2) {
+	public RunManipulators(Manipulator<Game, String[]> manipulator,
+			Manipulator<Game, String[]> manipulator2) {
 		initialize = manipulator;
 		run = manipulator2;
 	}
