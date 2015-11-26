@@ -35,6 +35,6 @@ public class LogObject {
 	}
 
 	public void addReplay(String turnMessage) {
-		replay.append(System.getProperty("line.separator") + turnMessage);
+		replay.append(turnMessage + System.getProperty("line.separator"));
 	}
 }
