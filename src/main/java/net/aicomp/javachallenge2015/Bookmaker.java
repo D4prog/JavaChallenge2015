@@ -4,16 +4,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.aicomp.javachallenge2015.log.Logger;
-import net.exkazuu.gameaiarena.manipulator.Manipulator;
-import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
+
+import net.aicomp.javachallenge2015.log.Logger;
+import net.exkazuu.gameaiarena.manipulator.Manipulator;
+import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
 
 public class Bookmaker {
 	public static final int PLAYERS_NUM = 4;
@@ -29,12 +29,16 @@ public class Bookmaker {
 
 	public static void main(String[] args) throws InterruptedException, ParseException {
 		// it will be removed (for debugging)
-		args = new String[] { "-a", "java -jar GameEngineTester.jar -a", "-a", "java -jar GameEngineTester.jar -a",
-				"-a", "java -jar GameEngineTester.jar -a", "-a", "java -jar GameEngineTester.jar -a", };
+		// args = new String[] { "-t", "8", "-a", "java -jar
+		// GameEngineTester.jar -a", "-a",
+		// "java -jar GameEngineTester.jar -a", "-a", "java -jar
+		// GameEngineTester.jar -a", "-a",
+		// "java -jar GameEngineTester.jar -a", };
 
 		Options options = buildOptions();
 
 		try {
+			Logger.initialize(Logger.LOG_LEVEL_DETAILS);
 			CommandLineParser parser = new DefaultParser();
 			CommandLine line = parser.parse(options, args);
 			if (!hasCompleteArgs(line)) {
@@ -46,8 +50,11 @@ public class Bookmaker {
 			System.err.println("Error: " + e.getMessage());
 			printHelp(options);
 			System.exit(-1);
+		} finally {
+			Logger.outputLog("Game Finished!", Logger.LOG_LEVEL_DETAILS);
+			Logger.close();
 		}
-		Logger.outputLog("Game Finished!", Logger.LOG_LEVEL_DETAILS);
+		System.exit(0);
 	}
 
 	@SuppressWarnings("unused")
@@ -57,8 +64,6 @@ public class Bookmaker {
 				: new String[PLAYERS_NUM];
 		String[] unpauseAICommands = line.hasOption(UNPAUSE_COMMAND) ? line.getOptionValues(UNPAUSE_COMMAND)
 				: new String[PLAYERS_NUM];
-
-		Logger.initialize(Logger.LOG_LEVEL_STATUS);
 
 		List<RunManipulators> ais = new ArrayList<RunManipulators>();
 		for (int i = 0; i < PLAYERS_NUM; i++) {
@@ -73,9 +78,6 @@ public class Bookmaker {
 		}
 
 		play(game, ais, line.getOptionValue(SEED_COMMAND), line.getOptionValue(TURN_COMMAND));
-
-		Logger.close();
-
 	}
 
 	private static void play(Game game, List<RunManipulators> ais, String seed, String maxTurn) {
