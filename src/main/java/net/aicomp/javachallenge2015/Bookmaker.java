@@ -17,9 +17,8 @@ import org.apache.commons.cli.ParseException;
 
 public class Bookmaker {
 	public static final int PLAYERS_NUM = 4;
-	private static final int MIN_TIME = 1;
-	private static final int READY_TIME_LIMIT = 5000;
-	private static final int ACTION_TIME_LIMIT = 2000;
+	private static final int READY_TIME_LIMIT = 1000;
+	private static final int ACTION_TIME_LIMIT = 100;
 
 	private static final String EXEC_COMMAND = "a";
 	private static final String PAUSE_COMMAND = "p";
@@ -71,9 +70,8 @@ public class Bookmaker {
 				ExternalComputerPlayer com = new ExternalComputerPlayer(
 						execAICommands[i].split(" "));
 				ais.add(new RunManipulators(new AIInitializer(com, i)
-						.limittingSumTime(MIN_TIME, READY_TIME_LIMIT),
-						new AIManipulator(com, i).limittingSumTime(MIN_TIME,
-								ACTION_TIME_LIMIT)));
+						.limittingTime(READY_TIME_LIMIT), new AIManipulator(
+						com, i).limittingTime(ACTION_TIME_LIMIT)));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
