@@ -15,16 +15,13 @@ public class Logger {
 	public static final int LOG_LEVEL_DETAILS = 2;
 
 	private static PrintWriter _writer;
-	private static int _logLevel;
 	private static LogObject logObject = new LogObject();
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	private Logger() {
 	}
 
-	public static void initialize(int logLevel) {
-		_logLevel = logLevel;
-
+	public static void initialize() {
 		File file = new File("./log.txt");
 		if (!file.exists()) {
 			try {
@@ -49,9 +46,9 @@ public class Logger {
 	}
 
 	public static void outputLog(String message, int targetLogLevel) {
-		if (_logLevel >= targetLogLevel) {
-			_writer.println(message.trim());
-			_writer.flush();
+		_writer.println(message.trim());
+		_writer.flush();
+		if (LOG_LEVEL_STATUS >= targetLogLevel) {
 			logObject.addReplay(message);
 		}
 	}

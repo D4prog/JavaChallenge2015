@@ -17,9 +17,8 @@ import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
 
 public class Bookmaker {
 	public static final int PLAYERS_NUM = 4;
-	private static final int MIN_TIME = 1;
-	private static final int READY_TIME_LIMIT = 5000;
-	private static final int ACTION_TIME_LIMIT = 2000;
+	private static final int READY_TIME_LIMIT = 1000;
+	private static final int ACTION_TIME_LIMIT = 100;
 
 	private static final String EXEC_COMMAND = "a";
 	private static final String PAUSE_COMMAND = "p";
@@ -38,7 +37,7 @@ public class Bookmaker {
 		Options options = buildOptions();
 
 		try {
-			Logger.initialize(Logger.LOG_LEVEL_DETAILS);
+			Logger.initialize();
 			CommandLineParser parser = new DefaultParser();
 			CommandLine line = parser.parse(options, args);
 			if (!hasCompleteArgs(line)) {
@@ -54,7 +53,6 @@ public class Bookmaker {
 			Logger.outputLog("Game Finished!", Logger.LOG_LEVEL_DETAILS);
 			Logger.close();
 		}
-		System.exit(0);
 	}
 
 	private static void start(Game game, CommandLine line) {
@@ -69,10 +67,10 @@ public class Bookmaker {
 			try {
 				ExternalComputerPlayer com = new ExternalComputerPlayer(execAICommands[i].split(" "));
 				ais.add(new RunManipulators(
-						new AIInitializer(com, i).limittingSumTime(MIN_TIME, READY_TIME_LIMIT)
-								.pauseUnpause(pauseAICommands, unpauseAICommands),
-						new AIManipulator(com, i).limittingSumTime(MIN_TIME, ACTION_TIME_LIMIT)
-								.pauseUnpause(pauseAICommands, unpauseAICommands)));
+						new AIInitializer(com, i).limittingTime(READY_TIME_LIMIT).pauseUnpause(pauseAICommands,
+								unpauseAICommands),
+						new AIManipulator(com, i).limittingTime(ACTION_TIME_LIMIT).pauseUnpause(pauseAICommands,
+								unpauseAICommands)));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
@@ -198,11 +196,13 @@ class AIManipulator extends GameManipulator {
 		Logger.outputLog("AI" + _index + ">>Writing to stdin, waiting for stdout", Logger.LOG_LEVEL_DETAILS);
 		String input = game.getTurnInformation(_index);
 		_com.writeLine(input);
-		Logger.createMessage(_index, input);
 
 		String log = game.getLogInformation(_index);
 		Logger.outputLog(log, Logger.LOG_LEVEL_STATUS);
 		_line = "";
+
+		String message = game.getMessageInformation(_index);
+		Logger.createMessage(_index, message);
 	}
 
 	@Override

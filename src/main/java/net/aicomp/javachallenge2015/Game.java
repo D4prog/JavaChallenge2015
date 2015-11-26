@@ -87,6 +87,14 @@ public class Game {
 		return String.join(System.getProperty("line.separator"), info);
 	}
 
+	public String getMessageInformation(int index) {
+		List<String> info = new ArrayList<String>();
+		info.add(Integer.toString(turn));
+		info.addAll(getPlayersPlaceAndDirection());
+		info.add(getPlayersCommand());
+		return String.join(System.getProperty("line.separator"), info);
+	}
+
 	private List<String> getPlayersPlace() {
 		List<String> ret = new ArrayList<String>();
 		for (Player player : players) {
