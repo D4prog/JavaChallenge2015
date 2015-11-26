@@ -13,22 +13,22 @@ public class CommandBuilder {
 	}
 
 	public static ICommand createCommand(String input) {
-		if (input.equals(UP)) {
+		if (UP.equals(input)) {
 			return new Up();
 		}
-		if (input.equals(DOWN)) {
+		if (DOWN.equals(input)) {
 			return new Down();
 		}
-		if (input.equals(LEFT)) {
+		if (LEFT.equals(input)) {
 			return new Left();
 		}
-		if (input.equals(RIGHT)) {
+		if (RIGHT.equals(input)) {
 			return new Right();
 		}
-		if (input.equals(ATTACK)) {
+		if (ATTACK.equals(input)) {
 			return new Attack();
 		}
-		if (input.equals(NONE)) {
+		if (NONE.equals(input)) {
 			return new None();
 		}
 
