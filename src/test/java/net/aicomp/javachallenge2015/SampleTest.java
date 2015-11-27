@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import net.aicomp.javachallenge2015.log.Logger;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -19,8 +21,6 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
-
-import net.aicomp.javachallenge2015.log.Logger;
 
 public class SampleTest {
 
@@ -114,15 +114,9 @@ public class SampleTest {
 	}
 
 	@Test
-	@Ignore
 	public void testNew() {
-		try {
-			Bookmaker.main(new String[] { "-a", "\"java SampleAIL\"", "-a", "\"java SampleAIL\"", "-a",
-					"\"java SampleAIL\"", "-a", "\"java SampleAIL\"", "-s", "0", "-t", "3" });
-		} catch (InterruptedException | ParseException e) {
-			e.printStackTrace();
-			fail();
-		}
+		main(new String[] { "-a", "\"java SampleAIL\"", "-a", "\"java SampleAIL\"", "-a", "\"java SampleAIL\"", "-a",
+				"\"java SampleAIL\"", "-s", "0", "-t", "3" });
 		System.out.flush();
 		String expected = getFileContents(new File("fixture/sample_log_new.txt"));
 		String actual = _sysout.toString();
@@ -136,8 +130,10 @@ public class SampleTest {
 				"\"java TimeoutAI\"", "-s", "0", "-t", "30" });
 		System.err.flush();
 		String actual = _syserr.toString();
-		assertEquals(actual.length() - actual.replace("Terminated the thread because time was exceeded.",
-				"Terminated the thread because time was exceeded").length(), 4);
+		assertEquals(
+				actual.length()
+						- actual.replace("Terminated the thread because time was exceeded.",
+								"Terminated the thread because time was exceeded").length(), 4);
 	}
 
 	private void main(String[] args) {
