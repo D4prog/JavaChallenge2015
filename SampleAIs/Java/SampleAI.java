@@ -68,8 +68,40 @@ public class SampleAI {
 		}
 	    }
 	}
-	int rnd = random.nextInt(turn);
-	return ACTIONS[rnd % ACTIONS.length];
+
+	int[] blockDist = new int[PLAYER_N];
+	for (int i = 0; i < PLAYER_N; i++) {
+	    if (i == id || block[i][0] < 0 || block[i][1] < 0)
+		continue;
+	    blockDist[i] = Math.min(Math.abs(block[id][0] - block[i][0]),
+		    Math.abs(block[id][1] - block[i][1]));
+	}
+	int near = id;
+	for (int i = 0; i < PLAYER_N; i++) {
+	    if (i == id || block[i][0] < 0 || block[i][1] < 0)
+		continue;
+	    if (near == id || blockDist[near] > blockDist[i]) {
+		near = i;
+	    }
+	}
+	if (near == id) {
+	    return ATTACK;
+	}
+
+	if (Math.abs(block[near][0] - block[id][0]) > Math.abs(block[near][1]
+		- block[id][1])) {
+	    if (block[id][1] > block[near][1]) {
+		return LEFT;
+	    } else {
+		return RIGHT;
+	    }
+	} else {
+	    if (block[id][0] > block[near][0]) {
+		return DOWN;
+	    } else {
+		return UP;
+	    }
+	}
     }
 
     public void run() {
@@ -100,6 +132,7 @@ public class SampleAI {
 		    field[i][j] = board[i * 5][j * 5];
 		}
 	    }
+
 	    System.out.println(action());
 	}
 
