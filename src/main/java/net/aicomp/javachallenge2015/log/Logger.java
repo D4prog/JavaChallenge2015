@@ -61,6 +61,7 @@ public class Logger {
 		logObject.setWinner(winnerId);
 		try {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
+			logObject.fillReplay();
 			String json = mapper.writeValueAsString(logObject);
 			System.out.println(json);
 		} catch (JsonProcessingException e) {

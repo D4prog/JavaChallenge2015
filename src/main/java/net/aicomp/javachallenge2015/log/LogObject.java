@@ -3,15 +3,18 @@ package net.aicomp.javachallenge2015.log;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 public class LogObject {
 	private List<Message> log;
 	private int winner;
-	private StringBuilder replay;
+	private List<String> replay;
+	private static StringBuilder buffer;
 
 	public LogObject() {
 		log = new ArrayList<Message>();
 		winner = -1;
-		replay = new StringBuilder();
+		buffer = new StringBuilder();
 	}
 
 	public List<Message> getLog() {
@@ -30,11 +33,15 @@ public class LogObject {
 		winner = winnerId;
 	}
 
-	public String getReplay() {
-		return replay.toString();
+	public List<String> getReplay() {
+		return replay;
 	}
 
 	public void addReplay(String turnMessage) {
-		replay.append(turnMessage + System.getProperty("line.separator"));
+		buffer.append(turnMessage + System.getProperty("line.separator"));
+	}
+
+	public void fillReplay() {
+		replay = Lists.newArrayList(buffer.toString());
 	}
 }
