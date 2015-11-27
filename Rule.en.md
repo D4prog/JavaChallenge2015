@@ -1,110 +1,126 @@
 # JavaChallenge2015
 
-## Overview of Game
+## Overview
 
 Drop the block, and drop the enemies!
 
 
 ## Rules
 
-Move on field composed of 64 (8 x 8) blocks, and drop the blocks with your direction.
-Players can drop the enemies with the block. The last remaining player is winner.
+Move on a board composed of 6 x 6 blocks, and drop the blocks in the direction you are facing.
+Players can drop the enemy players with a block. The last remaining player is a winner.
 
 
 ### Initial Settings
 
-There are four players. Initial position and direction is decided randomly, and players get their each id (0, 1, 2, 3).
+There are four players. Players get their each id (0, 1, 2, 3).
+Their initial position and direction are decided randomly.
+They are placed so that the Manhattan distance between each player are more than 3.
 
 
-### Field
+### Board
 
-Field is composed of 1600 (40 x 40) squares.
-To be exact, there are 64 (8 x 8) blocks on the field, and each block is composed of 25 (5x5) squares.
+The board is composed of 18 x 18 squares.
+To be exact, there are 6 x 6 blocks on the board, and each block is composed of 3 x 3 squares.
+
+### Player
+
+A player exists on 1 x 1 square, facing either up, down, left, or right.
 
 ![Sample](./img/fieldE.png)
 
 ### Flow of Game
 
-Game starts at player id 0, and continues by turn as ID0->ID1->ID2->ID3->ID0->...
+Game starts from the player whose id is 0, and continues by turn as ID0->ID1->ID2->ID3->ID0->...
 
-At the beginning of each turn, current information is sent through the standard input.
-Players should choose one action from the following.
+At the beginning of each of your turn, you get current information of each player and the board.
+You choose one action from the following.
 - Move to the upper/lower/right/left square
-- Attack to current direction
+- Attack toward your facing direction
 - Do nothing
 
 #### Move
 
-Move to the upper/lower/right/left _square_.
-Then, direction is changed depending on the move.
+Move to the upper/lower/right/left **square** of your current position.
+Then, you face the direction you have moved to.
 
 #### Cancel of Move
 
-In the following cases, move is canceled but direction is changed.
-- Move to the out of field
-- Move to the block already dropped
-- Move to the square whose Manhattan distance is less than 7 from other player
+In the following cases, move is canceled and only the direction is changed.
+- Move to the outside of the board
+- Move to a block already dropped
+- Move to a square whose Manhattan distance is 3 or less from another player.
 
 #### Attack
 
-After your AI take attack command, the neighbor block is going to fall in the next your AI's turn (4 turn after),
-the second neighbor block is going to fall in the second next your AI's turn (8 turn after), and so on.
-If the enemy drop with the block, the enemy's life decreases.
+When you attack, blocks in the direction you are facing drop some turns later.
+A block at n blocks away drops 4n turns later.
+Therefore, the neighbor block drops in your next turn (4 turns later),
+and the neighbor of the neighbor block drops in your second next turn (8 turns later), and so on.
 
-### Restore the Block
+Additionally, if you attack, you cannot take an action until your second next turn (8 turns later) ends.
 
-Dropped block restores in the fifth next your AI's turn (20 turns after).
+### Drop of a Player
+
+If there is a player on a block which has dropped, that player drops with the block and is removed from the board.
+
+### Restoration of a Block
+
+A dropped block is restored to its original state in the your fifth next turn (20 turns later).
+A dropped player will not be restored.
 
 ### End of Game
 
-The player who makes other player's life 0 is the winner.
+If you make the other players drop, you win.
+If there are multiple players after the end of the 1000th turn, the game ends in a draw.
 
 
-## Input and Output Format of AI Programs
+## Input and Output Format of an AI Program
 
-### Output Format for Ready Message
+### Output Format of a Ready Message
 
-When the AI programs prepared for the game, they must print `READY` to the standard output.
-Note that, the ready message must be printed within **1 second** from game start, otherwise the AI program will be terminated by force.
+When your AI becomes ready to start a game, print `READY` to the standard output. If a ready message is not printed within **1 second**, the AI program will be terminated.
 
 ### Input Format of Game Settings
 
 <pre>
 id
 T
-L<sub>0</sub> L<sub>1</sub> L<sub>2</sub> L<sub>3</sub>
-B<sub>0,0</sub> B<sub>0,1</sub> B<sub>0,2</sub> ... B<sub>0,39</sub>
-B<sub>1,0</sub> B<sub>1,1</sub> B<sub>1,2</sub> ... B<sub>1,39</sub>
+B<sub>0,0</sub> B<sub>0,1</sub> B<sub>0,2</sub> ... B<sub>0,5</sub>
+B<sub>1,0</sub> B<sub>1,1</sub> B<sub>1,2</sub> ... B<sub>1,5</sub>
 ...
-B<sub>39,0</sub> B<sub>39,1</sub> B<sub>39,2</sub> ... B<sub>39,39</sub>
-R<sub>0</sub> C<sub>0</sub>
-R<sub>1</sub> C<sub>1</sub>
-R<sub>2</sub> C<sub>2</sub>
-R<sub>3</sub> C<sub>3</sub>
+B<sub>5,0</sub> B<sub>5,1</sub> B<sub>5,2</sub> ... B<sub>5,5</sub>
+R<sub>0</sub> C<sub>0</sub> D<sub>0</sub> S<sub>0</sub>
+R<sub>1</sub> C<sub>1</sub> D<sub>1</sub> S<sub>1</sub>
+R<sub>2</sub> C<sub>2</sub> D<sub>2</sub> S<sub>2</sub>
+R<sub>3</sub> C<sub>3</sub> D<sub>3</sub> S<sub>3</sub>
 EOD
 </pre>
 
 * id: player ID
 * T: current turn
-* L<sub>i</sub>: the life of player ID i
-* B<sub>r,c</sub>: status of square (_r_th row, _c_th column) on the field
- * in case of 0, the square is stable and no plan to fall
- * in case of positive number, the square is going to fall that number's turn after
- * in case of negative number, the square is dropped now, and restores that number's absolute value turn after
+* B<sub>r,c</sub>: status of a block in the _r_th row and _c_th column
+ * 0 means the square is stable and is not going to drop
+ * positive number means the square is going to fall that number turns later
+ * negative number means the square has been dropped, and is restored that number's absolute value turns later
+* R<sub>i</sub>: row of the position of the player whose ID is i
+* C<sub>i</sub>: column of the position of the player whose ID is i
+* D<sub>i</sub>: direction of the player whose ID is i
+* S<sub>i</sub>: the number of turns the player whose ID is i will be able to take an action. 0 means that player can take an action this turn.
 * EOD: end of input
 
-### Output Format of Actions
+### Output Format of an Action
 
-Print the one command from the following.
-Note that, if an AI program does not print its action within **0.1 seconds** from the beginning of a turn, it will be terminated by force.
+Print one of the following commands.
+If your AI program does not print its action within 1 second from the beginning of the turn, it will be terminated.
 
  * "U": move to the upper square
  * "R": move to the right square
  * "D": move to the lower square
  * "L": move to the left square
- * "A": attack to current direction
+ * "A": attack toward your facing direction
  * "N": do nothing
 
-### Note for Output
+### Notice
 
-Please terminate the output with the newline character ("\n"), and be sure to flush the standard output after printing.
+When you output READY at the start of the game or an action in each turn, be sure to output a newline character ("\n") at the end of the line and flush the standard output after printing.
