@@ -62,7 +62,7 @@ public class Game {
 		turnPlayer.setCommand(command);
 		turnPlayer.doCommand(field, players);
 		field.refresh(players);
-		turnPlayer.refresh(field, players);
+		turnPlayer.refresh();
 		turn++;
 	}
 
