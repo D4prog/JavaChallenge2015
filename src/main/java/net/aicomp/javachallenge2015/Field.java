@@ -54,6 +54,21 @@ public class Field {
 		return ret;
 	}
 
+	public List<String> getBlockStatus() {
+		List<String> ret = new ArrayList<String>();
+		for (int y = 0; y < FIELD_SIZE; y++) {
+			StringBuilder builder = new StringBuilder();
+			for (int x = 0; x < FIELD_SIZE; x++) {
+				if (x > 0) {
+					builder.append(' ');
+				}
+				builder.append(field[y][x].life);
+			}
+			ret.add(builder.toString());
+		}
+		return ret;
+	}
+
 	public void setLimit(int x, int y, Direction4 dir) {
 		int blcx = x / BLOCK_SIZE;
 		int blcy = y / BLOCK_SIZE;
@@ -116,8 +131,8 @@ public class Field {
 		private Set<Point2> area;
 
 		private Block(int x, int y) {
-			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y * Field.BLOCK_SIZE,
-					(x + 1) * Field.BLOCK_SIZE, (y + 1) * Field.BLOCK_SIZE));
+			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y * Field.BLOCK_SIZE, (x + 1)
+					* Field.BLOCK_SIZE, (y + 1) * Field.BLOCK_SIZE));
 			life = 0;
 		}
 

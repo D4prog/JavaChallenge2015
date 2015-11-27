@@ -15,7 +15,7 @@ public class Logger {
 	public static final int LOG_LEVEL_DETAILS = 2;
 
 	private static PrintWriter _writer;
-	private static LogObject logObject = new LogObject();
+	private static LogObject logObject;
 	private static ObjectMapper mapper = new ObjectMapper();
 
 	private Logger() {
@@ -23,6 +23,7 @@ public class Logger {
 
 	public static void initialize() {
 		File file = new File("./log.txt");
+		logObject = new LogObject();
 		if (!file.exists()) {
 			try {
 				file.createNewFile();

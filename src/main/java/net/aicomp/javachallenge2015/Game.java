@@ -85,7 +85,7 @@ public class Game {
 		List<String> info = new ArrayList<String>();
 		info.add(Integer.toString(turn));
 		info.add(getPlayersLife());
-		info.addAll(field.getStatus());
+		info.addAll(field.getBlockStatus());
 		info.addAll(getPlayersPlaceAndDirection());
 		info.add(getPlayersCommand());
 		return String.join(System.getProperty("line.separator"), info);
