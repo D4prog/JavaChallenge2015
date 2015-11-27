@@ -14,21 +14,15 @@ public class Player {
 	private static final Point2 FALLEN_POINT = new Point2(-1, -1);
 
 	private Point2 point;
-	private int waitTime = 0;
-	private Random rnd;
-
 	private Direction4 dir;
-
 	private ICommand command;
+	private int waitTime = 0;
 
-	public Player(Random random) {
-		rnd = random;
-	}
-
-	public void initialize(Field field, Player[] players) {
+	public Player(Game game, Field field, Player[] players) {
 		Point2[] points = field.getSpawnablePoints(players).toArray(new Point2[0]);
-		point = points[rnd.nextInt(points.length)];
-		dir = Direction4.values()[rnd.nextInt(Direction4.values().length)];
+		Random random = game.getRandom();
+		point = points[random.nextInt(points.length)];
+		dir = Direction4.values()[random.nextInt(Direction4.values().length)];
 		command = CommandBuilder.createCommand("N");
 	}
 
