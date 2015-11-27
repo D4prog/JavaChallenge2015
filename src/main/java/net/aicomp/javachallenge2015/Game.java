@@ -5,15 +5,15 @@ import java.util.List;
 import java.util.Random;
 
 public class Game {
-	private int forcedEndTurn = 1000;
 	private static final String EOD = "EOD";
-	private Random random;
+	private final Random random;
+	private final Player[] players;
+	private final Field field;
+	private final int forcedEndTurn;
 	private int turn;
-	private Player[] players;
-	private Field field;
-	private int winner;
+	private int winnerId;
 
-	public void initialize(String seed, String maxTurn) {
+	public Game(String seed, String maxTurn) {
 		if (seed != null) {
 			random = new Random(Long.parseLong(seed));
 		} else {
@@ -21,9 +21,11 @@ public class Game {
 		}
 		if (maxTurn != null) {
 			forcedEndTurn = Integer.parseInt(maxTurn);
+		} else {
+			forcedEndTurn = 1000;
 		}
 		turn = 0;
-		winner = -1;
+		winnerId = -1;
 		field = new Field();
 		players = new Player[Bookmaker.PLAYERS_NUM];
 		for (int i = 0; i < players.length; i++) {
@@ -42,7 +44,7 @@ public class Game {
 			}
 		}
 		if (livingCnt == 1) {
-			winner = winnerId;
+			this.winnerId = winnerId;
 			return true;
 		}
 		return turn >= forcedEndTurn;
@@ -50,19 +52,16 @@ public class Game {
 
 	public void processTurn(String[] commands) {
 		Player turnPlayer = players[turn % players.length];
-		if (!turnPlayer.isAlive()) {
-			field.refresh(players);
-			turn++;
-			return;
+		if (turnPlayer.isAlive()) {
+			String command = null;
+			if (commands != null && commands.length > 0) {
+				command = commands[0];
+			}
+			turnPlayer.setCommand(command);
+			turnPlayer.doCommand(field, players);
+			turnPlayer.refresh();
 		}
-		String command = null;
-		if (commands != null && commands.length > 0) {
-			command = commands[0];
-		}
-		turnPlayer.setCommand(command);
-		turnPlayer.doCommand(field, players);
 		field.refresh(players);
-		turnPlayer.refresh();
 		turn++;
 	}
 
@@ -99,11 +98,11 @@ public class Game {
 
 	private String getPlayersCommand() {
 		StringBuilder builder = new StringBuilder();
+		String delimiter = "";
 		for (int i = 0; i < players.length; i++) {
-			if (i != 0) {
-				builder.append(' ');
-			}
+			builder.append(delimiter);
 			builder.append(players[i].getCommandValue());
+			delimiter = " ";
 		}
 		return builder.toString();
 	}
@@ -124,8 +123,7 @@ public class Game {
 		return ret;
 	}
 
-	public int getWinner() {
-		return winner;
+	public int getWinnerId() {
+		return winnerId;
 	}
-
 }

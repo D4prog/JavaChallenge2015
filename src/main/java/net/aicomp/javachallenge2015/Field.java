@@ -43,11 +43,11 @@ public class Field {
 		String[][] board = getRawStatus();
 		for (int y = 0; y < size; y++) {
 			StringBuilder builder = new StringBuilder();
+			String delimiter = "";
 			for (int x = 0; x < size; x++) {
-				if (x > 0) {
-					builder.append(' ');
-				}
+				builder.append(delimiter);
 				builder.append(board[y][x]);
+				delimiter = " ";
 			}
 			ret.add(builder.toString());
 		}
@@ -58,11 +58,11 @@ public class Field {
 		List<String> ret = new ArrayList<String>();
 		for (int y = 0; y < FIELD_SIZE; y++) {
 			StringBuilder builder = new StringBuilder();
+			String delimiter = "";
 			for (int x = 0; x < FIELD_SIZE; x++) {
-				if (x > 0) {
-					builder.append(' ');
-				}
+				builder.append(delimiter);
 				builder.append(field[y][x].life);
+				delimiter = " ";
 			}
 			ret.add(builder.toString());
 		}
@@ -126,13 +126,13 @@ public class Field {
 	}
 
 	private static class Block {
-		private int life;
 		private static final int REBIRTH_TIME = 5;
 		private Set<Point2> area;
+		private int life;
 
 		private Block(int x, int y) {
-			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y * Field.BLOCK_SIZE, (x + 1)
-					* Field.BLOCK_SIZE, (y + 1) * Field.BLOCK_SIZE));
+			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y * Field.BLOCK_SIZE,
+					(x + 1) * Field.BLOCK_SIZE, (y + 1) * Field.BLOCK_SIZE));
 			life = 0;
 		}
 
@@ -160,5 +160,4 @@ public class Field {
 			return life >= 0;
 		}
 	}
-
 }

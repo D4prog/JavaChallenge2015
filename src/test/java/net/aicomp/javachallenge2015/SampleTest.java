@@ -72,7 +72,7 @@ public class SampleTest {
 			Logger.initialize();
 			CommandLineParser parser = new DefaultParser();
 			CommandLine line = parser.parse(options, args);
-			Bookmaker.start(new Game(), line);
+			Bookmaker.start(line);
 		} catch (ParseException e) {
 			System.err.println("Error: " + e.getMessage());
 			System.exit(-1);

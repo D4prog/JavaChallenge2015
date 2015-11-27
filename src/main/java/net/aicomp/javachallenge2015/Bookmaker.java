@@ -39,7 +39,7 @@ public class Bookmaker {
 				printHelp(options);
 				return;
 			}
-			start(new Game(), line);
+			start(line);
 		} catch (ParseException e) {
 			System.err.println("Error: " + e.getMessage());
 			printHelp(options);
@@ -52,7 +52,7 @@ public class Bookmaker {
 		}
 	}
 
-	public static void start(Game game, CommandLine line) {
+	public static void start(CommandLine line) {
 		String[] execAICommands = line.getOptionValues(EXEC_COMMAND);
 		String[] pauseAICommands = line.hasOption(PAUSE_COMMAND) ? line.getOptionValues(PAUSE_COMMAND)
 				: new String[PLAYERS_NUM];
@@ -85,11 +85,11 @@ public class Bookmaker {
 			}
 		}
 
-		play(game, ais, line.getOptionValue(SEED_COMMAND), line.getOptionValue(TURN_COMMAND));
+		play(ais, line.getOptionValue(SEED_COMMAND), line.getOptionValue(TURN_COMMAND));
 	}
 
-	private static void play(Game game, List<ManipulatorSet> ais, String seed, String maxTurn) {
-		game.initialize(seed, maxTurn);
+	private static void play(List<ManipulatorSet> ais, String seed, String maxTurn) {
+		Game game = new Game(seed, maxTurn);
 
 		for (ManipulatorSet ai : ais) {
 			ai.getInitializer().run(game);
@@ -104,7 +104,7 @@ public class Bookmaker {
 			String[] commands = ais.get(turn % PLAYERS_NUM).getRunner().run(game);
 			game.processTurn(commands);
 		}
-		Logger.outputLogObject(game.getWinner());
+		Logger.outputLogObject(game.getWinnerId());
 	}
 
 	private static void printHelp(Options options) {
