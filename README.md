@@ -1,5 +1,7 @@
 # JavaChallenge2015
 
+[![Build Status](https://travis-ci.org/AI-comp/JavaChallenge2015.svg?branch=master)](https://travis-ci.org/AI-comp/JavaChallenge2015)
+
 ## Build
 ```bash
 mvn package
