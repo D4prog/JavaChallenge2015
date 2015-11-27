@@ -11,10 +11,10 @@ import net.exkazuu.gameaiarena.api.Direction4;
 import net.exkazuu.gameaiarena.api.Point2;
 
 public class Player {
-	private static final int INITIAL_LIFE = 5;
+	private static final int INITIAL_LIFE = 1;
 	private static final int DEFAULT_REBIRTH_TIME = 5;
 	private static final int DEFAULT_INVINCIBLE_TIME = 5;
-	private static final int ATTACK_WAIT_TIME = 2;
+	private static final int ATTACK_WAIT_TIME = 3;
 	private static final int COLLISION_DISTANCE = 7;
 	private static final Point2 FALLEN_POINT = new Point2(-1, -1);
 
@@ -108,8 +108,7 @@ public class Player {
 			if (!player.isAlive()) {
 				continue;
 			}
-			if (player != this
-					&& point.getManhattanDistance(player.point) <= COLLISION_DISTANCE) {
+			if (player != this && point.getManhattanDistance(player.point) <= COLLISION_DISTANCE) {
 				return true;
 			}
 		}
@@ -152,5 +151,9 @@ public class Player {
 			return false;
 		}
 		return point.getManhattanDistance(this.point) <= COLLISION_DISTANCE;
+	}
+
+	public String getStatus() {
+		return getPlaceAndDirection() + " " + waitTime;
 	}
 }

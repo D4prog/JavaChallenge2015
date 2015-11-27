@@ -6,23 +6,19 @@ import java.util.List;
 import com.google.common.collect.Lists;
 
 public class LogObject {
-	private List<Message> log;
+	private List<Object> log;
 	private int winner;
 	private List<String> replay;
 	private static StringBuilder buffer;
 
 	public LogObject() {
-		log = new ArrayList<Message>();
+		log = new ArrayList<Object>();
 		winner = -1;
 		buffer = new StringBuilder();
 	}
 
-	public List<Message> getLog() {
+	public List<Object> getLog() {
 		return log;
-	}
-
-	public void addMessage(int playerId, String message) {
-		log.add(new Message(playerId, message));
 	}
 
 	public int getWinner() {

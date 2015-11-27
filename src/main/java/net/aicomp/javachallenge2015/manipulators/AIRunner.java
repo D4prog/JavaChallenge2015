@@ -18,9 +18,6 @@ public class AIRunner extends GameManipulator {
 		String log = game.getLogInformation(_index);
 		Logger.outputLog(log, Logger.LOG_LEVEL_STATUS);
 
-		String message = game.getMessageInformation(_index);
-		Logger.createMessage(_index, message);
-
 		_line = "";
 	}
 

@@ -54,10 +54,6 @@ public class Logger {
 		}
 	}
 
-	public static void createMessage(int playerId, String input) {
-		logObject.addMessage(playerId, input);
-	}
-
 	public static void outputLogObject(int winnerId) {
 		logObject.setWinner(winnerId);
 		try {

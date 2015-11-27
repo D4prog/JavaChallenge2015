@@ -115,8 +115,8 @@ public class SampleTest {
 
 	@Test
 	public void testNew() {
-		main(new String[] { "-a", "\"java SampleAIL\"", "-a", "\"java SampleAIL\"", "-a", "\"java SampleAIL\"", "-a",
-				"\"java SampleAIL\"", "-s", "0", "-t", "3" });
+		main(new String[] { "-a", "\"java SampleAIL -s 0\"", "-a", "\"java SampleAIL -s 20\"", "-a",
+				"\"java SampleAIL -s 40\"", "-a", "\"java SampleAIL -s 60\"", "-s", "0", "-t", "3" });
 		System.out.flush();
 		String expected = getFileContents(new File("fixture/sample_log_new.txt"));
 		String actual = _sysout.toString();

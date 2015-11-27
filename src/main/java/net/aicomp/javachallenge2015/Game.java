@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 public class Game {
-	private int forcedEndTurn = 10000;
+	private int forcedEndTurn = 1000;
 	private static final String EOD = "EOD";
 	private Random random;
 	private int turn;
@@ -74,9 +74,8 @@ public class Game {
 		List<String> info = new ArrayList<String>();
 		info.add(Integer.toString(index));
 		info.add(Integer.toString(turn));
-		info.add(getPlayersLife());
-		info.addAll(field.getStatus());
-		info.addAll(getPlayersPlace());
+		info.addAll(field.getBlockStatus());
+		info.addAll(getPlayersStatus());
 		info.add(EOD);
 		return String.join(System.getProperty("line.separator"), info);
 	}
@@ -84,7 +83,6 @@ public class Game {
 	public String getLogInformation(int index) {
 		List<String> info = new ArrayList<String>();
 		info.add(Integer.toString(turn));
-		info.add(getPlayersLife());
 		info.addAll(field.getBlockStatus());
 		info.addAll(getPlayersPlaceAndDirection());
 		info.add(getPlayersCommand());
@@ -97,25 +95,6 @@ public class Game {
 		info.addAll(getPlayersPlaceAndDirection());
 		info.add(getPlayersCommand());
 		return String.join(System.getProperty("line.separator"), info);
-	}
-
-	private List<String> getPlayersPlace() {
-		List<String> ret = new ArrayList<String>();
-		for (Player player : players) {
-			ret.add(player.getPlace());
-		}
-		return ret;
-	}
-
-	private String getPlayersLife() {
-		String ret = "";
-		for (int i = 0; i < players.length; i++) {
-			if (i != 0) {
-				ret += " ";
-			}
-			ret += players[i].getLife();
-		}
-		return ret;
 	}
 
 	private String getPlayersCommand() {
@@ -133,6 +112,14 @@ public class Game {
 		List<String> ret = new ArrayList<String>();
 		for (Player player : players) {
 			ret.add(player.getPlaceAndDirection());
+		}
+		return ret;
+	}
+
+	private List<String> getPlayersStatus() {
+		List<String> ret = new ArrayList<String>();
+		for (Player player : players) {
+			ret.add(player.getStatus());
 		}
 		return ret;
 	}
