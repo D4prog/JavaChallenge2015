@@ -33,7 +33,7 @@ public class Player {
 	}
 
 	public boolean isAlive() {
-		return point.x == -1 && point.y == -1;
+		return point.x != -1 || point.y != -1;
 	}
 
 	public boolean isThere(Set<Point2> area) {
