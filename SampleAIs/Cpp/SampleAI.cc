@@ -1,14 +1,22 @@
 #include <iostream>
 #include <random>
+
+#define REP(i, b, n) for (int i = (int)(b); i < (int)(n); ++i)
+#define rep(i, n) REP(i, 0, n)
+
 using namespace std;
+typedef long long ll;
 
 const string commands = "URDLA";
-int board[40][40];
-int life[4];
+const int BOARD_WIDTH = 18;
+const int FIELD_WIDTH = 6;
+const int PLAYER_NUM = 4;
+
+int board[BOARD_WIDTH][BOARD_WIDTH];
+int life[PLAYER_NUM];
 int turn;
-int x[4];
-int y[4];
-string dir[4];
+int x[PLAYER_NUM];
+int y[PLAYER_NUM];
 
 void action() {
   random_device rnd;
@@ -24,13 +32,10 @@ int main() {
 
     cin >> turn;
 
-    for (int i = 0; i < 4; ++i) {
-      cin >> life[i];
-    }
-    for (int i = 0; i < 40; ++i)
-      for (int j = 0; j < 40; ++j) cin >> board[i][j];
+    rep(i, PLAYER_NUM) cin >> life[i];
+    rep(i, FIELD_WIDTH) rep(j, FIELD_WIDTH) cin >> board[i][j];
 
-    for (int i = 0; i < 4; ++i) cin >> y[i] >> x[i];
+    rep(i, PLAYER_NUM) cin >> y[i] >> x[i];
 
     string eod;
     cin >> eod;
