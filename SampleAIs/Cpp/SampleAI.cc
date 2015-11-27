@@ -12,11 +12,12 @@ const int BOARD_WIDTH = 18;
 const int FIELD_WIDTH = 6;
 const int PLAYER_NUM = 4;
 
-int board[BOARD_WIDTH][BOARD_WIDTH];
-int life[PLAYER_NUM];
-int turn;
+int turn, id;
+int board[FIELD_WIDTH][FIELD_WIDTH];
 int x[PLAYER_NUM];
 int y[PLAYER_NUM];
+string dir[PLAYER_NUM];
+int pausing[PLAYER_NUM];
 
 void action() {
   random_device rnd;
@@ -27,16 +28,9 @@ void action() {
 int main() {
   cout << "READY" << endl;
   while (true) {
-    int my_num;
-    cin >> my_num;
-
-    cin >> turn;
-
-    rep(i, PLAYER_NUM) cin >> life[i];
+    cin >> id;
     rep(i, FIELD_WIDTH) rep(j, FIELD_WIDTH) cin >> board[i][j];
-
-    rep(i, PLAYER_NUM) cin >> y[i] >> x[i];
-
+    rep(i, PLAYER_NUM) cin >> y[i] >> x[i] >> dir[i] >> pausing[i];
     string eod;
     cin >> eod;
 

@@ -3,18 +3,11 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class SampleAI {
-    private final int BOARD_W = 40;
-    private final int FIELD_W = 8;
+    private final int BOARD_W = 18;
+    private final int FIELD_W = 6;
     private final int BLOCK_W = BOARD_W / FIELD_W;
     private final int PLAYER_N = 4;
-    private int id = 0, turn = 0;
-    private int[] lifes = new int[PLAYER_N];
-    private int[] row = new int[PLAYER_N];
-    private int[] column = new int[PLAYER_N];
-    private int[][] board = new int[BOARD_W][BOARD_W];
 
-    private int[] lastAttackTurn = new int[PLAYER_N];
-    private int[][] field = new int[FIELD_W][FIELD_W];
     private final char ATTACK = 'A';
     private final char UP = 'U';
     private final char RIGHT = 'R';
@@ -22,48 +15,47 @@ public class SampleAI {
     private final char LEFT = 'L';
     private final char NONE = 'N';
     private final char[] ACTIONS = { ATTACK, UP, DOWN, RIGHT, LEFT };
-    private char dir = NONE;
 
-    private Random random = new Random();
+    private int id = 0, turn = 0;
+    private int[][] board = new int[FIELD_W][FIELD_W];
+    private int[] lifes = new int[PLAYER_N];
+    private int[] row = new int[PLAYER_N];
+    private int[] column = new int[PLAYER_N];
+    private char dir[] = new char[PLAYER_N];
+    private int[] pausing = new int[PLAYER_N];
 
     private char action() {
-	int[][] block = new int[PLAYER_N][2];
 	for (int i = 0; i < PLAYER_N; i++) {
-	    block[i][0] = column[i] / BLOCK_W;
-	    block[i][1] = row[i] / BLOCK_W;
-	}
-
-	for (int i = 0; i < PLAYER_N; i++) {
-	    if (i == id || block[i][0] < 0 || block[i][1] < 0)
+	    if (i == id || board[i][0] < 0 || board[i][1] < 0)
 		continue;
-	    if (block[i][0] == block[id][0]) {
-		if (block[i][1] < block[id][1] && dir == LEFT) {
+	    if (board[i][0] == board[id][0]) {
+		if (board[i][1] < board[id][1] && dir[id] == LEFT) {
 		    return ATTACK;
-		} else if (block[i][1] > block[id][1] && dir == RIGHT) {
+		} else if (board[i][1] > board[id][1] && dir[id] == RIGHT) {
 		    return ATTACK;
 		}
-	    } else if (block[i][1] == block[id][1]) {
-		if (block[i][0] < block[id][0] && dir == UP) {
+	    } else if (board[i][1] == board[id][1]) {
+		if (board[i][0] < board[id][0] && dir[id] == UP) {
 		    return ATTACK;
-		} else if (block[i][0] > block[id][0] && dir == DOWN) {
+		} else if (board[i][0] > board[id][0] && dir[id] == DOWN) {
 		    return ATTACK;
 		}
 	    }
 	}
 
 	for (int i = 0; i < PLAYER_N; i++) {
-	    if (i == id || block[i][0] < 0 || block[i][1] < 0)
+	    if (i == id || board[i][0] < 0 || board[i][1] < 0)
 		continue;
-	    if (block[i][0] == block[id][0]) {
-		if (block[i][1] < block[id][1]) {
+	    if (board[i][0] == board[id][0]) {
+		if (board[i][1] < board[id][1]) {
 		    return LEFT;
-		} else if (block[i][1] > block[id][1]) {
+		} else if (board[i][1] > board[id][1]) {
 		    return RIGHT;
 		}
-	    } else if (block[i][1] == block[id][1]) {
-		if (block[i][0] < block[id][0]) {
+	    } else if (board[i][1] == board[id][1]) {
+		if (board[i][0] < board[id][0]) {
 		    return UP;
-		} else if (block[i][0] > block[id][0]) {
+		} else if (board[i][0] > board[id][0]) {
 		    return DOWN;
 		}
 	    }
@@ -71,14 +63,14 @@ public class SampleAI {
 
 	int[] blockDist = new int[PLAYER_N];
 	for (int i = 0; i < PLAYER_N; i++) {
-	    if (i == id || block[i][0] < 0 || block[i][1] < 0)
+	    if (i == id || board[i][0] < 0 || board[i][1] < 0)
 		continue;
-	    blockDist[i] = Math.min(Math.abs(block[id][0] - block[i][0]),
-		    Math.abs(block[id][1] - block[i][1]));
+	    blockDist[i] = Math.min(Math.abs(board[id][0] - board[i][0]),
+		    Math.abs(board[id][1] - board[i][1]));
 	}
 	int near = id;
 	for (int i = 0; i < PLAYER_N; i++) {
-	    if (i == id || block[i][0] < 0 || block[i][1] < 0)
+	    if (i == id || board[i][0] < 0 || board[i][1] < 0)
 		continue;
 	    if (near == id || blockDist[near] > blockDist[i]) {
 		near = i;
@@ -88,15 +80,15 @@ public class SampleAI {
 	    return ATTACK;
 	}
 
-	if (Math.abs(block[near][0] - block[id][0]) > Math.abs(block[near][1]
-		- block[id][1])) {
-	    if (block[id][1] > block[near][1]) {
+	if (Math.abs(board[near][0] - board[id][0]) > Math.abs(board[near][1]
+		- board[id][1])) {
+	    if (board[id][1] > board[near][1]) {
 		return LEFT;
 	    } else {
 		return RIGHT;
 	    }
 	} else {
-	    if (block[id][0] > block[near][0]) {
+	    if (board[id][0] > board[near][0]) {
 		return DOWN;
 	    } else {
 		return UP;
@@ -107,7 +99,6 @@ public class SampleAI {
     public void run() {
 	System.out.println("READY");
 	Scanner scanner = new Scanner(System.in);
-	Arrays.fill(lastAttackTurn, -1);
 
 	while (true) {
 	    id = scanner.nextInt();
@@ -124,18 +115,13 @@ public class SampleAI {
 	    for (int i = 0; i < PLAYER_N; i++) {
 		row[i] = scanner.nextInt();
 		column[i] = scanner.nextInt();
+		dir[i] = scanner.next().toCharArray()[0];
+		pausing[i] = scanner.nextInt();
 	    }
 	    scanner.next();// EOD
 
-	    for (int i = 0; i < FIELD_W; i++) {
-		for (int j = 0; j < FIELD_W; j++) {
-		    field[i][j] = board[i * 5][j * 5];
-		}
-	    }
-
 	    System.out.println(action());
 	}
-
     }
 
     public static void main(String[] args) {
