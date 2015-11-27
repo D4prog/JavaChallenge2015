@@ -26,12 +26,14 @@ public class AIRunner extends GameManipulator {
 
 	@Override
 	protected void sendDataToAI(Game game) {
+		Logger.outputLog("AI" + _index + ">>sendDataToAI", Logger.LOG_LEVEL_DETAILS);
 		String input = game.getTurnInformation(_index);
 		_com.writeLine(input);
 	}
 
 	@Override
 	protected void receiveDataFromAI() {
+		Logger.outputLog("AI" + _index + ">>receiveDataFromAI", Logger.LOG_LEVEL_DETAILS);
 		_line = _com.readLine();
 	}
 

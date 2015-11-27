@@ -16,6 +16,7 @@ buildNumber.properties
 .project
 
 # Project Specific
+*.zip
 log.txt
 game_engine_tester_log.txt
 GameEngineTester.jar
