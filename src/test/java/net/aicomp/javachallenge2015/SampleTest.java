@@ -10,6 +10,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
+import net.aicomp.javachallenge2015.log.Logger;
+
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -18,8 +20,6 @@ import org.apache.commons.cli.ParseException;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
-import net.aicomp.javachallenge2015.log.Logger;
 
 public class SampleTest {
 
@@ -58,11 +58,22 @@ public class SampleTest {
 	public void testTimeout() {
 		main(new String[] { "-a", "\"java TimeoutAI\"", "-a", "\"java TimeoutAI\"", "-a", "\"java TimeoutAI\"", "-a",
 				"\"java TimeoutAI\"", "-s", "0", "-t", "30" });
-		System.out.flush();
 		System.err.flush();
 		String actual = _syserr.toString();
-		assertEquals(actual.length() - actual.replace("Terminated the thread because time was exceeded.",
-				"Terminated the thread because time was exceeded").length(), 4);
+		assertEquals(
+				actual.length()
+						- actual.replace("Terminated the thread because time was exceeded.",
+								"Terminated the thread because time was exceeded").length(), 4);
+	}
+
+	@Test
+	public void testRandomWalk() {
+		main(new String[] { "-a", "\"java SampleAI -s 0\"", "-a", "\"java SampleAI -s 0\"", "-a",
+				"\"java SampleAI -s 0\"", "-a", "\"java SampleAI -s 0\"", "-s", "0", "-t", "30" });
+		System.out.flush();
+		String expected = getFileContents(new File("fixture/sample_log_seed0.txt"));
+		String actual = _sysout.toString();
+		assertEquals(normalize(expected), normalize(actual));
 	}
 
 	private void main(String[] args) {

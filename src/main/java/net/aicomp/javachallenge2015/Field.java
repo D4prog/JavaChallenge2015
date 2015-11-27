@@ -26,34 +26,6 @@ public class Field {
 		return 0 <= x && x < FIELD_SIZE * BLOCK_SIZE && 0 <= y && y < FIELD_SIZE * BLOCK_SIZE;
 	}
 
-	private String[][] getRawStatus() {
-		int size = FIELD_SIZE * BLOCK_SIZE;
-		String[][] board = new String[size][size];
-		for (int i = 0; i < size; i++) {
-			for (int j = 0; j < size; j++) {
-				board[i][j] = Integer.toString(field[i / BLOCK_SIZE][j / BLOCK_SIZE].life);
-			}
-		}
-		return board;
-	}
-
-	public List<String> getStatus() {
-		int size = FIELD_SIZE * BLOCK_SIZE;
-		List<String> ret = new ArrayList<String>();
-		String[][] board = getRawStatus();
-		for (int y = 0; y < size; y++) {
-			StringBuilder builder = new StringBuilder();
-			String delimiter = "";
-			for (int x = 0; x < size; x++) {
-				builder.append(delimiter);
-				builder.append(board[y][x]);
-				delimiter = " ";
-			}
-			ret.add(builder.toString());
-		}
-		return ret;
-	}
-
 	public List<String> getBlockStatus() {
 		List<String> ret = new ArrayList<String>();
 		for (int y = 0; y < FIELD_SIZE; y++) {
@@ -131,8 +103,8 @@ public class Field {
 		private int life;
 
 		private Block(int x, int y) {
-			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y * Field.BLOCK_SIZE,
-					(x + 1) * Field.BLOCK_SIZE, (y + 1) * Field.BLOCK_SIZE));
+			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y * Field.BLOCK_SIZE, (x + 1)
+					* Field.BLOCK_SIZE, (y + 1) * Field.BLOCK_SIZE));
 			life = 0;
 		}
 

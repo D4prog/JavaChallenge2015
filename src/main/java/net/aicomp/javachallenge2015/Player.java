@@ -10,7 +10,7 @@ import net.exkazuu.gameaiarena.api.Point2;
 
 public class Player {
 	private static final int ATTACK_WAIT_TIME = 3;
-	private static final int COLLISION_DISTANCE = 7;
+	private static final int COLLISION_DISTANCE = 3;
 	private static final Point2 FALLEN_POINT = new Point2(-1, -1);
 
 	private Point2 point;
