@@ -29,8 +29,7 @@ public class Game {
 		field = new Field();
 		players = new Player[Bookmaker.PLAYERS_NUM];
 		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player(random);
-			players[i].initialize(field, players);
+			players[i] = new Player(this, field, players);
 		}
 	}
 
@@ -125,5 +124,9 @@ public class Game {
 
 	public int getWinnerId() {
 		return winnerId;
+	}
+
+	public Random getRandom() {
+		return random;
 	}
 }

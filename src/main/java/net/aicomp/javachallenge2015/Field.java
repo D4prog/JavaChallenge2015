@@ -11,7 +11,7 @@ import net.exkazuu.gameaiarena.api.Point2;
 public class Field {
 	private static final int FIELD_SIZE = 6;
 	private static final int BLOCK_SIZE = 3;
-	private Block[][] field;
+	private final Block[][] field;
 
 	public Field() {
 		field = new Block[FIELD_SIZE][FIELD_SIZE];
