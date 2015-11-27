@@ -13,7 +13,7 @@ public class Player {
 	private static final int COLLISION_DISTANCE = 3;
 	private static final Point2 FALLEN_POINT = new Point2(-1, -1);
 
-	private Point2 point;
+	private Point2 location;
 	private Direction4 dir;
 	private ICommand command;
 	private int waitTime = 0;
@@ -21,21 +21,21 @@ public class Player {
 	public Player(Game game, Field field, Player[] players) {
 		Point2[] points = field.getSpawnablePoints(players).toArray(new Point2[0]);
 		Random random = game.getRandom();
-		point = points[random.nextInt(points.length)];
+		location = points[random.nextInt(points.length)];
 		dir = Direction4.values()[random.nextInt(Direction4.values().length)];
 		command = CommandBuilder.createCommand("N");
 	}
 
 	public boolean isAlive() {
-		return point.x != -1 || point.y != -1;
+		return location.x != -1 || location.y != -1;
 	}
 
 	public boolean isThere(Set<Point2> area) {
-		return area.contains(point);
+		return area.contains(location);
 	}
 
 	public String getPlaceAndDirection() {
-		return point.x + " " + point.y + " " + dir.name().substring(0, 1);
+		return location.x + " " + location.y + " " + dir.name().substring(0, 1);
 	}
 
 	public String getCommandValue() {
@@ -55,9 +55,9 @@ public class Player {
 	}
 
 	public void move(Direction4 direction, Field field, Player[] players) {
-		Point2 tpoint = direction.move(point);
-		if (field.canMove(tpoint) && !isCollideOtherPlayers(tpoint, players)) {
-			point = tpoint;
+		Point2 to = direction.move(location);
+		if (field.canMove(to) && !isCollideOtherPlayers(to, players)) {
+			location = to;
 		}
 		dir = direction;
 	}
@@ -67,7 +67,7 @@ public class Player {
 			if (!player.isAlive()) {
 				continue;
 			}
-			if (player != this && point.getManhattanDistance(player.point) <= COLLISION_DISTANCE) {
+			if (player != this && point.getManhattanDistance(player.location) <= COLLISION_DISTANCE) {
 				return true;
 			}
 		}
@@ -76,11 +76,11 @@ public class Player {
 
 	public void attack(Field field) {
 		waitTime = ATTACK_WAIT_TIME;
-		field.setLimit(point.x, point.y, dir);
+		field.setLimit(location.x, location.y, dir);
 	}
 
 	public void fall() {
-		point = FALLEN_POINT;
+		location = FALLEN_POINT;
 	}
 
 	public void refresh() {
@@ -90,10 +90,10 @@ public class Player {
 	}
 
 	public boolean isCollided(Point2 point) {
-		if (this.point == null) {
+		if (this.location == null) {
 			return false;
 		}
-		return point.getManhattanDistance(this.point) <= COLLISION_DISTANCE;
+		return point.getManhattanDistance(this.location) <= COLLISION_DISTANCE;
 	}
 
 	public String getStatus() {

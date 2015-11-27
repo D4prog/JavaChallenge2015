@@ -11,19 +11,20 @@ import net.exkazuu.gameaiarena.api.Point2;
 public class Field {
 	private static final int FIELD_SIZE = 6;
 	private static final int BLOCK_SIZE = 3;
+	private static final int MAX_COORD = FIELD_SIZE * BLOCK_SIZE;
 	private final Block[][] field;
 
 	public Field() {
 		field = new Block[FIELD_SIZE][FIELD_SIZE];
-		for (int i = 0; i < field.length; i++) {
-			for (int j = 0; j < field[i].length; j++) {
-				field[i][j] = new Block(j, i);
+		for (int y = 0; y < field.length; y++) {
+			for (int x = 0; x < field[y].length; x++) {
+				field[y][x] = new Block(x, y);
 			}
 		}
 	}
 
 	public boolean isInside(int x, int y) {
-		return 0 <= x && x < FIELD_SIZE * BLOCK_SIZE && 0 <= y && y < FIELD_SIZE * BLOCK_SIZE;
+		return 0 <= x && x < MAX_COORD && 0 <= y && y < MAX_COORD;
 	}
 
 	public List<String> getBlockStatus() {
@@ -46,7 +47,7 @@ public class Field {
 		int blcy = y / BLOCK_SIZE;
 		Point2 start = new Point2(blcx, blcy);
 		Point2 current = dir.move(start);
-		while (current.x >= 0 && current.y >= 0 && current.x < FIELD_SIZE && current.y < FIELD_SIZE) {
+		while (0 <= current.x && 0 <= current.y && current.x < FIELD_SIZE && current.y < FIELD_SIZE) {
 			int dist = current.getManhattanDistance(start);
 			field[current.y][current.x].setLife(dist * Bookmaker.PLAYERS_NUM);
 			current = dir.move(current);
@@ -54,8 +55,7 @@ public class Field {
 	}
 
 	public boolean canMove(Point2 point) {
-		int size = FIELD_SIZE * BLOCK_SIZE;
-		if (point.x < 0 || point.y < 0 || point.x >= size || point.y >= size) {
+		if (!isInside(point.x, point.y)) {
 			return false;
 		}
 		int blcx = point.x / BLOCK_SIZE;
@@ -64,9 +64,9 @@ public class Field {
 	}
 
 	public void refresh(Player[] players) {
-		for (int i = 0; i < FIELD_SIZE; i++) {
-			for (int j = 0; j < FIELD_SIZE; j++) {
-				Block block = field[i][j];
+		for (int y = 0; y < FIELD_SIZE; y++) {
+			for (int x = 0; x < FIELD_SIZE; x++) {
+				Block block = field[y][x];
 				List<Player> playersInBlock = new ArrayList<Player>();
 				for (Player player : players) {
 					if (player.isThere(block.area)) {
@@ -103,8 +103,8 @@ public class Field {
 		private int life;
 
 		private Block(int x, int y) {
-			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y * Field.BLOCK_SIZE, (x + 1)
-					* Field.BLOCK_SIZE, (y + 1) * Field.BLOCK_SIZE));
+			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y * Field.BLOCK_SIZE,
+					(x + 1) * Field.BLOCK_SIZE, (y + 1) * Field.BLOCK_SIZE));
 			life = 0;
 		}
 

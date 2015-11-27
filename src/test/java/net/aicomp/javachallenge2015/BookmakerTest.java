@@ -21,7 +21,7 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-public class SampleTest {
+public class BookmakerTest {
 
 	private ByteArrayOutputStream _sysout;
 	private ByteArrayOutputStream _syserr;
