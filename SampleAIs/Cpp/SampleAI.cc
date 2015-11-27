@@ -10,11 +10,14 @@ int x[4];
 int y[4];
 string dir[4];
 
-void action() {}
+void action() {
+  random_device rnd;
+  int c = rnd() % commands.size();
+  cout << commands[c] << endl;
+}
 
 int main() {
   cout << "READY" << endl;
-  random_device rnd;
   while (true) {
     int my_num;
     cin >> my_num;
@@ -32,8 +35,7 @@ int main() {
     string eod;
     cin >> eod;
 
-    int c = rnd() % commands.size();
-    cout << commands[c] << endl;
+    action();
   }
 
   return 0;
