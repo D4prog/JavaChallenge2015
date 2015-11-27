@@ -9,8 +9,8 @@ import net.exkazuu.gameaiarena.api.Direction4;
 import net.exkazuu.gameaiarena.api.Point2;
 
 public class Field {
-	private static final int FIELD_SIZE = 8;
-	private static final int BLOCK_SIZE = 5;
+	private static final int FIELD_SIZE = 6;
+	private static final int BLOCK_SIZE = 3;
 	private Block[][] field;
 
 	public Field() {
@@ -142,9 +142,7 @@ public class Field {
 				if (life == 0) {
 					life = -REBIRTH_TIME * Bookmaker.PLAYERS_NUM + 1;
 					for (Player player : players) {
-						if (!player.isInvincible()) {
-							player.fall();
-						}
+						player.fall();
 					}
 				}
 			} else if (life < 0) {

@@ -28,14 +28,12 @@ public class Logger {
 			try {
 				file.createNewFile();
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 		try {
 			_writer = new PrintWriter(file.getAbsoluteFile());
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -54,10 +52,6 @@ public class Logger {
 		}
 	}
 
-	public static void createMessage(int playerId, String input) {
-		logObject.addMessage(playerId, input);
-	}
-
 	public static void outputLogObject(int winnerId) {
 		logObject.setWinner(winnerId);
 		try {
@@ -66,9 +60,7 @@ public class Logger {
 			String json = mapper.writeValueAsString(logObject);
 			System.out.println(json);
 		} catch (JsonProcessingException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
 	}
 }

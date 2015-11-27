@@ -4,7 +4,7 @@ import net.aicomp.javachallenge2015.Field;
 import net.aicomp.javachallenge2015.Player;
 
 public interface ICommand {
-	public void doCommand(Player player, Field field);
+	public void doCommand(Player player, Field field, Player[] players);
 
 	public String getValue();
 }
