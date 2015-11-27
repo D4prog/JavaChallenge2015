@@ -120,7 +120,6 @@ public class SampleTest {
 		System.out.flush();
 		String expected = getFileContents(new File("fixture/sample_log_new.txt"));
 		String actual = _sysout.toString();
-		System.out.println(actual);
 		assertEquals(expected, actual);
 	}
 
@@ -128,6 +127,7 @@ public class SampleTest {
 	public void testTimeout() {
 		main(new String[] { "-a", "\"java TimeoutAI\"", "-a", "\"java TimeoutAI\"", "-a", "\"java TimeoutAI\"", "-a",
 				"\"java TimeoutAI\"", "-s", "0", "-t", "30" });
+		System.out.flush();
 		System.err.flush();
 		String actual = _syserr.toString();
 		assertEquals(
