@@ -4,9 +4,8 @@ import net.aicomp.javachallenge2015.Field;
 import net.aicomp.javachallenge2015.Player;
 
 public class Attack implements ICommand {
-
 	@Override
-	public void doCommand(Player player, Field field) {
+	public void doCommand(Player player, Field field, Player[] players) {
 		player.attack(field);
 	}
 
@@ -14,5 +13,4 @@ public class Attack implements ICommand {
 	public String getValue() {
 		return "A";
 	}
-
 }

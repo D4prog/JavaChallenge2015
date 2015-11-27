@@ -1,7 +1,5 @@
 package net.aicomp.javachallenge2015;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
@@ -23,7 +21,6 @@ public class Player {
 	private int rebirthTime = 0;
 	private int waitTime = 0;
 	private int invincibleTime = 0;
-	private Player[] players;
 	private Random rnd;
 
 	private Direction4 dir;
@@ -35,15 +32,15 @@ public class Player {
 		rnd = random;
 	}
 
-	public void initialize(Set<Point2> spawnablePoints) {
-		spawn(spawnablePoints);
+	public void initialize(Field field, Player[] players) {
+		spawn(field, players);
 		setRandomDir();
 		command = CommandBuilder.createCommand("N");
 	}
 
-	private void spawn(Set<Point2> spawnablePoints) {
-		List<Point2> points = new ArrayList<Point2>(spawnablePoints);
-		point = points.get(rnd.nextInt(spawnablePoints.size()));
+	private void spawn(Field field, Player[] players) {
+		Point2[] points = field.getSpawnablePoints(players).toArray(new Point2[0]);
+		point = points[rnd.nextInt(points.length)];
 	}
 
 	public void setRandomDir() {
@@ -91,19 +88,18 @@ public class Player {
 	}
 
 	public void doCommand(Field field, Player[] players) {
-		this.players = players;
-		command.doCommand(this, field);
+		command.doCommand(this, field, players);
 	}
 
-	public void move(Direction4 direction, Field field) {
+	public void move(Direction4 direction, Field field, Player[] players) {
 		Point2 tpoint = direction.move(point);
-		if (field.canMove(tpoint) && !isCollideOtherPlayers(tpoint)) {
+		if (field.canMove(tpoint) && !isCollideOtherPlayers(tpoint, players)) {
 			point = tpoint;
 		}
 		dir = direction;
 	}
 
-	private boolean isCollideOtherPlayers(Point2 point) {
+	private boolean isCollideOtherPlayers(Point2 point, Player[] players) {
 		for (Player player : players) {
 			if (!player.isAlive()) {
 				continue;
@@ -126,7 +122,7 @@ public class Player {
 		point = FALLEN_POINT;
 	}
 
-	public void refresh(Set<Point2> spawnablePoints) {
+	public void refresh(Field field, Player[] players) {
 		if (invincibleTime > 0) {
 			invincibleTime--;
 		}
@@ -134,7 +130,7 @@ public class Player {
 			rebirthTime--;
 			if (rebirthTime == 0) {
 				invincibleTime = DEFAULT_INVINCIBLE_TIME;
-				spawn(spawnablePoints);
+				spawn(field, players);
 			}
 		}
 		if (waitTime > 0) {

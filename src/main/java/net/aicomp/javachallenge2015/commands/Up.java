@@ -5,15 +5,13 @@ import net.aicomp.javachallenge2015.Player;
 import net.exkazuu.gameaiarena.api.Direction4;
 
 public class Up implements ICommand {
-
 	@Override
-	public void doCommand(Player player, Field field) {
-		player.move(Direction4.UP, field);
+	public void doCommand(Player player, Field field, Player[] players) {
+		player.move(Direction4.UP, field, players);
 	}
 
 	@Override
 	public String getValue() {
 		return "U";
 	}
-
 }
