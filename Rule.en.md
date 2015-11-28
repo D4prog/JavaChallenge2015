@@ -58,6 +58,9 @@ A block at n blocks away drops 4n turns later.
 Therefore, the neighbor block drops in your next turn (4 turns later),
 and the neighbor of the neighbor block drops in your second next turn (8 turns later), and so on.
 
+Even the fallen block and the fall scheduled block becomes an attack target block,
+Never revival plan turns and fall schedule turn of the block is changed.
+
 Additionally, if you attack, you cannot take an action until your second next turn (8 turns later) ends.
 
 ### Drop of a Player
