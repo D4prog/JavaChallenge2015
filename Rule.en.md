@@ -27,7 +27,7 @@ To be exact, there are 6 x 6 blocks on the board, and each block is composed of 
 
 A player exists on 1 x 1 square, facing either up, down, left, or right.
 
-![Sample](./node_modules/fieldE.png)
+![Sample](./node_modules/img/fieldE.png)
 
 ### Flow of Game
 

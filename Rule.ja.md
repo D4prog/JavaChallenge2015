@@ -24,7 +24,7 @@
 
 プレイヤーは、1マス×1マスのマス目上に存在し、上下左右のいずれかの方向を向いています。
 
-![サンプル](./node_modules/fieldJ.png)
+![サンプル](./node_modules/img/fieldJ.png)
 
 ### ターンの流れ
 
