@@ -10,10 +10,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 
 public class Logger {
-	public static final int LOG_LEVEL_RESULT = 0;
-	public static final int LOG_LEVEL_STATUS = 1;
-	public static final int LOG_LEVEL_DETAILS = 2;
-
 	private static PrintWriter _writer;
 	private static LogObject logObject;
 	private static ObjectMapper mapper = new ObjectMapper();
@@ -44,15 +40,17 @@ public class Logger {
 		}
 	}
 
-	public static void outputLog(String message, int targetLogLevel) {
+	public static void outputLog(String message) {
 		_writer.println(message.trim());
 		_writer.flush();
-		if (LOG_LEVEL_STATUS >= targetLogLevel) {
-			logObject.addReplay(message);
-		}
 	}
 
-	public static void outputLogObject(int winnerId) {
+	public static void outputReplay(String replay) {
+		logObject.addReplay(replay);
+	}
+
+	public static void outputLogObject(String lastReplay, int winnerId) {
+		outputReplay(lastReplay);
 		logObject.setWinner(winnerId);
 		try {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);

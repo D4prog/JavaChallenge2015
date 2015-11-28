@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.aicomp.javachallenge2015.log.Logger;
+
 public class Game {
 	private static final String EOD = "EOD";
 	private final Random random;
@@ -11,7 +13,6 @@ public class Game {
 	private final Field field;
 	private final int forcedEndTurn;
 	private int turn;
-	private int winnerId;
 
 	public Game(String seed, String maxTurn) {
 		if (seed != null) {
@@ -25,7 +26,6 @@ public class Game {
 			forcedEndTurn = 1000;
 		}
 		turn = 0;
-		winnerId = -1;
 		field = new Field();
 		players = new Player[Bookmaker.PLAYERS_NUM];
 		for (int i = 0; i < players.length; i++) {
@@ -34,19 +34,29 @@ public class Game {
 	}
 
 	public boolean isFinished() {
-		int livingCnt = 0;
+		int livingCount = 0;
+		for (int i = 0; i < players.length; i++) {
+			if (players[i].isAlive()) {
+				livingCount++;
+			}
+		}
+		return livingCount == 1 || turn >= forcedEndTurn;
+	}
+
+	public void finish() {
+		int livingCount = 0;
 		int winnerId = -1;
 		for (int i = 0; i < players.length; i++) {
 			if (players[i].isAlive()) {
-				livingCnt++;
+				livingCount++;
 				winnerId = i;
 			}
 		}
-		if (livingCnt == 1) {
-			this.winnerId = winnerId;
-			return true;
+		if (livingCount != 1) {
+			winnerId = -1;
 		}
-		return turn >= forcedEndTurn;
+		String log = getLogInformation(turn % players.length);
+		Logger.outputLogObject(log, winnerId);
 	}
 
 	public void processTurn(String[] commands) {
@@ -120,10 +130,6 @@ public class Game {
 			ret.add(player.getStatus());
 		}
 		return ret;
-	}
-
-	public int getWinnerId() {
-		return winnerId;
 	}
 
 	public Random getRandom() {

@@ -16,9 +16,9 @@ public class Field {
 
 	public Field() {
 		field = new Block[FIELD_SIZE][FIELD_SIZE];
-		for (int y = 0; y < field.length; y++) {
-			for (int x = 0; x < field[y].length; x++) {
-				field[y][x] = new Block(x, y);
+		for (int i = 0; i < field.length; i++) {
+			for (int j = 0; j < field[i].length; j++) {
+				field[i][j] = new Block(j, i);
 			}
 		}
 	}

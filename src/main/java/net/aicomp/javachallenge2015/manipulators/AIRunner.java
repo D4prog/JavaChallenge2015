@@ -13,10 +13,11 @@ public class AIRunner extends GameManipulator {
 
 	@Override
 	protected void runPreProcessing(Game game) {
-		Logger.outputLog("AI" + _index + ">>Writing to stdin, waiting for stdout", Logger.LOG_LEVEL_DETAILS);
+		Logger.outputLog("AI" + _index + ">>Writing to stdin, waiting for stdout");
 
 		String log = game.getLogInformation(_index);
-		Logger.outputLog(log, Logger.LOG_LEVEL_STATUS);
+		Logger.outputLog(log);
+		Logger.outputReplay(log);
 
 		_line = "";
 	}
@@ -32,7 +33,7 @@ public class AIRunner extends GameManipulator {
 	@Override
 	protected void receiveDataFromAI() {
 		if (!released()) {
-			Logger.outputLog("AI" + _index + ">>receiveDataFromAI", Logger.LOG_LEVEL_DETAILS);
+			Logger.outputLog("AI" + _index + ">>receiveDataFromAI");
 			_line = _com.readLine();
 		}
 	}
@@ -40,9 +41,9 @@ public class AIRunner extends GameManipulator {
 	@Override
 	protected String[] runPostProcessing() {
 		if (_com.available() && !_com.getErrorLog().isEmpty()) {
-			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog(), Logger.LOG_LEVEL_DETAILS);
+			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog());
 		}
-		Logger.outputLog("AI" + _index + ">>STDOUT: " + _line, Logger.LOG_LEVEL_DETAILS);
+		Logger.outputLog("AI" + _index + ">>STDOUT: " + _line);
 		String[] ret = null;
 		if (!(_line == null || _line.isEmpty())) {
 			ret = _line.trim().split(" ");

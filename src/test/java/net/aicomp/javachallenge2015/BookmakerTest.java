@@ -88,7 +88,7 @@ public class BookmakerTest {
 			System.err.println("Error: " + e.getMessage());
 			System.exit(-1);
 		} finally {
-			Logger.outputLog("Game Finished!", Logger.LOG_LEVEL_DETAILS);
+			Logger.outputLog("Game Finished!");
 			Logger.close();
 		}
 	}

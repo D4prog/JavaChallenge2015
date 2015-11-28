@@ -45,7 +45,7 @@ public class Bookmaker {
 			printHelp(options);
 			System.exit(-1);
 		} finally {
-			Logger.outputLog("Game Finished!", Logger.LOG_LEVEL_DETAILS);
+			Logger.outputLog("Game Finished!");
 			Logger.close();
 			// must exit to clear all resources including threads
 			System.exit(0);
@@ -104,7 +104,7 @@ public class Bookmaker {
 			String[] commands = ais.get(turn % PLAYERS_NUM).getRunner().run(game);
 			game.processTurn(commands);
 		}
-		Logger.outputLogObject(game.getWinnerId());
+		game.finish();
 	}
 
 	private static void printHelp(Options options) {

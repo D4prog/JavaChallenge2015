@@ -39,11 +39,11 @@ public class AIInitializer extends GameManipulator {
 	@Override
 	protected String[] runPostProcessing() {
 		if (_com.available() && !_com.getErrorLog().isEmpty()) {
-			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog(), Logger.LOG_LEVEL_DETAILS);
+			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog());
 		}
 		String[] ret = new String[_lines.size()];
 		for (String line : _lines) {
-			Logger.outputLog("AI" + _index + ">>STDOUT: " + line, Logger.LOG_LEVEL_DETAILS);
+			Logger.outputLog("AI" + _index + ">>STDOUT: " + line);
 			ret[_lines.indexOf(line)] = line;
 		}
 		return ret;
