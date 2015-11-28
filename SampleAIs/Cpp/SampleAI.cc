@@ -29,6 +29,7 @@ int main() {
   cout << "READY" << endl;
   while (true) {
     cin >> id;
+    cin >> turn;
     rep(i, FIELD_WIDTH) rep(j, FIELD_WIDTH) cin >> board[i][j];
     rep(i, PLAYER_NUM) cin >> y[i] >> x[i] >> dir[i] >> pausing[i];
     string eod;
