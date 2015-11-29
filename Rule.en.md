@@ -110,8 +110,8 @@ EOD
  * 0 means the square is stable and is not going to drop
  * positive number means the square is going to fall that number turns later
  * negative number means the square has been dropped, and is restored that number's absolute value turns later
-* R<sub>i</sub>: row of the position of the player whose ID is i
-* C<sub>i</sub>: column of the position of the player whose ID is i
+* R<sub>i</sub>: row of the position of the player whose ID is i. This value takes between 0 and 17 when the i-th player survives, and -1 when the i-th player is fallen.
+* C<sub>i</sub>: column of the position of the player whose ID is i. This value takes between 0 and 17 when the i-th player survives, and -1 when the i-th player is fallen.
 * D<sub>i</sub>: direction of the player whose ID is i
 * S<sub>i</sub>: the number of turns the player whose ID is i will be able to take an action. 0 means that player can take an action this turn.
 * EOD: end of input
