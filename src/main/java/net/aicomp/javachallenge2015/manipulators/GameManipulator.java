@@ -4,13 +4,11 @@ import net.aicomp.javachallenge2015.Game;
 import net.exkazuu.gameaiarena.manipulator.RootManipulator;
 import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
 
-abstract class GameManipulator extends RootManipulator<Game, String[]> {
+abstract class GameManipulator extends RootManipulator<Game, String> {
 	protected ExternalComputerPlayer _com;
-	protected int _index;
 
-	public GameManipulator(ExternalComputerPlayer com, int index) {
+	public GameManipulator(ExternalComputerPlayer com) {
 		_com = com;
-		_index = index;
 	}
 
 	@Override

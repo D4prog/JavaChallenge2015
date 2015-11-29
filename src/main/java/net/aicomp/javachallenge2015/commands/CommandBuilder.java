@@ -1,15 +1,13 @@
 package net.aicomp.javachallenge2015.commands;
 
 public class CommandBuilder {
-	public static final String UP = "U";
-	public static final String DOWN = "D";
-	public static final String RIGHT = "R";
-	public static final String LEFT = "L";
-	public static final String ATTACK = "A";
-	public static final String NONE = "N";
+	private static final String UP = "U";
+	private static final String DOWN = "D";
+	private static final String RIGHT = "R";
+	private static final String LEFT = "L";
+	private static final String ATTACK = "A";
 
 	private CommandBuilder() {
-		// do nothing
 	}
 
 	public static ICommand createCommand(String input) {
@@ -28,10 +26,6 @@ public class CommandBuilder {
 		if (ATTACK.equals(input)) {
 			return new Attack();
 		}
-		if (NONE.equals(input)) {
-			return new None();
-		}
-
-		return new Invalid();
+		return new None();
 	}
 }

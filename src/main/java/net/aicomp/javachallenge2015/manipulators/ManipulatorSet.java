@@ -4,20 +4,20 @@ import net.aicomp.javachallenge2015.Game;
 import net.exkazuu.gameaiarena.manipulator.PauseUnpauseManipulator;
 
 public class ManipulatorSet {
-	private PauseUnpauseManipulator<Game, String[]> initializer;
-	private PauseUnpauseManipulator<Game, String[]> runner;
+	private PauseUnpauseManipulator<Game, String> _initializer;
+	private PauseUnpauseManipulator<Game, String> _runner;
 
-	public ManipulatorSet(PauseUnpauseManipulator<Game, String[]> initializer,
-			PauseUnpauseManipulator<Game, String[]> runner) {
-		this.initializer = initializer;
-		this.runner = runner;
+	public ManipulatorSet(PauseUnpauseManipulator<Game, String> initializer,
+			PauseUnpauseManipulator<Game, String> runner) {
+		this._initializer = initializer;
+		this._runner = runner;
 	}
 
-	public PauseUnpauseManipulator<Game, String[]> getInitializer() {
-		return initializer;
+	public PauseUnpauseManipulator<Game, String> getInitializer() {
+		return _initializer;
 	}
 
-	public PauseUnpauseManipulator<Game, String[]> getRunner() {
-		return runner;
+	public PauseUnpauseManipulator<Game, String> getRunner() {
+		return _runner;
 	}
 }

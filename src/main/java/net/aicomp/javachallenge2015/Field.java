@@ -9,47 +9,44 @@ import net.exkazuu.gameaiarena.api.Direction4;
 import net.exkazuu.gameaiarena.api.Point2;
 
 public class Field {
-	private static final int FIELD_SIZE = 6;
-	private static final int BLOCK_SIZE = 3;
-	private static final int MAX_COORD = FIELD_SIZE * BLOCK_SIZE;
-	private final Block[][] field;
+	private static final int MAX_COORD = Constants.FIELD_SIZE * Constants.BLOCK_SIZE;
+	private final Block[][] _field;
 
 	public Field() {
-		field = new Block[FIELD_SIZE][FIELD_SIZE];
-		for (int i = 0; i < field.length; i++) {
-			for (int j = 0; j < field[i].length; j++) {
-				field[i][j] = new Block(j, i);
+		_field = new Block[Constants.FIELD_SIZE][Constants.FIELD_SIZE];
+		for (int i = 0; i < _field.length; i++) {
+			for (int j = 0; j < _field[i].length; j++) {
+				_field[i][j] = new Block(j, i);
 			}
 		}
 	}
 
 	public boolean isInside(int x, int y) {
-		return 0 <= x && x < MAX_COORD && 0 <= y && y < MAX_COORD;
+		return 0 <= x && x < Field.MAX_COORD && 0 <= y && y < Field.MAX_COORD;
 	}
 
-	public List<String> getBlockStatus() {
-		List<String> ret = new ArrayList<String>();
-		for (int y = 0; y < FIELD_SIZE; y++) {
-			StringBuilder builder = new StringBuilder();
+	public StringBuilder serialize(StringBuilder builder) {
+		for (int y = 0; y < Constants.FIELD_SIZE; y++) {
 			String delimiter = "";
-			for (int x = 0; x < FIELD_SIZE; x++) {
+			for (int x = 0; x < Constants.FIELD_SIZE; x++) {
 				builder.append(delimiter);
-				builder.append(field[y][x].life);
+				builder.append(_field[y][x]._life);
 				delimiter = " ";
 			}
-			ret.add(builder.toString());
+			builder.append(Constants.LineSeparator);
 		}
-		return ret;
+		return builder;
 	}
 
-	public void setLimit(int x, int y, Direction4 dir) {
-		int blcx = x / BLOCK_SIZE;
-		int blcy = y / BLOCK_SIZE;
+	public void dropBlocks(int x, int y, Direction4 dir) {
+		int blcx = x / Constants.BLOCK_SIZE;
+		int blcy = y / Constants.BLOCK_SIZE;
 		Point2 start = new Point2(blcx, blcy);
 		Point2 current = dir.move(start);
-		while (0 <= current.x && 0 <= current.y && current.x < FIELD_SIZE && current.y < FIELD_SIZE) {
+		while (0 <= current.x && 0 <= current.y && current.x < Constants.FIELD_SIZE
+				&& current.y < Constants.FIELD_SIZE) {
 			int dist = current.getManhattanDistance(start);
-			field[current.y][current.x].setLife(dist * Bookmaker.PLAYERS_NUM);
+			_field[current.y][current.x].setLife(dist * Constants.PLAYERS_NUM);
 			current = dir.move(current);
 		}
 	}
@@ -58,18 +55,18 @@ public class Field {
 		if (!isInside(point.x, point.y)) {
 			return false;
 		}
-		int blcx = point.x / BLOCK_SIZE;
-		int blcy = point.y / BLOCK_SIZE;
-		return field[blcy][blcx].isAlive();
+		int blcx = point.x / Constants.BLOCK_SIZE;
+		int blcy = point.y / Constants.BLOCK_SIZE;
+		return _field[blcy][blcx].isAlive();
 	}
 
 	public void refresh(Player[] players) {
-		for (int y = 0; y < FIELD_SIZE; y++) {
-			for (int x = 0; x < FIELD_SIZE; x++) {
-				Block block = field[y][x];
+		for (int y = 0; y < Constants.FIELD_SIZE; y++) {
+			for (int x = 0; x < Constants.FIELD_SIZE; x++) {
+				Block block = _field[y][x];
 				List<Player> playersInBlock = new ArrayList<Player>();
 				for (Player player : players) {
-					if (player.isThere(block.area)) {
+					if (player.isThere(block._area)) {
 						playersInBlock.add(player);
 					}
 				}
@@ -80,10 +77,10 @@ public class Field {
 
 	public Set<Point2> getSpawnablePoints(Player[] players) {
 		Set<Point2> ret = new HashSet<Point2>();
-		for (Block[] row : field) {
+		for (Block[] row : _field) {
 			for (Block block : row) {
 				if (block.isAlive()) {
-					ret.addAll(block.area);
+					ret.addAll(block._area);
 				}
 			}
 		}
@@ -98,38 +95,37 @@ public class Field {
 	}
 
 	private static class Block {
-		private static final int REBIRTH_TIME = 5;
-		private Set<Point2> area;
-		private int life;
+		private Set<Point2> _area;
+		private int _life;
 
 		private Block(int x, int y) {
-			area = new HashSet<Point2>(Point2.getPoints(x * Field.BLOCK_SIZE, y * Field.BLOCK_SIZE,
-					(x + 1) * Field.BLOCK_SIZE, (y + 1) * Field.BLOCK_SIZE));
-			life = 0;
+			_area = new HashSet<Point2>(Point2.getPoints(x * Constants.BLOCK_SIZE, y * Constants.BLOCK_SIZE,
+					(x + 1) * Constants.BLOCK_SIZE, (y + 1) * Constants.BLOCK_SIZE));
+			_life = 0;
 		}
 
 		private void refresh(List<Player> players) {
-			if (life > 0) {
-				life--;
-				if (life == 0) {
-					life = -REBIRTH_TIME * Bookmaker.PLAYERS_NUM + 1;
+			if (_life > 0) {
+				_life--;
+				if (_life == 0) {
+					_life = -Constants.BLOCK_REBIRTH_TIME * Constants.PLAYERS_NUM + 1;
 					for (Player player : players) {
 						player.fall();
 					}
 				}
-			} else if (life < 0) {
-				life++;
+			} else if (_life < 0) {
+				_life++;
 			}
 		}
 
 		private void setLife(int i) {
-			if (life == 0) {
-				life = i;
+			if (_life == 0) {
+				_life = i;
 			}
 		}
 
 		private boolean isAlive() {
-			return life >= 0;
+			return _life >= 0;
 		}
 	}
 }

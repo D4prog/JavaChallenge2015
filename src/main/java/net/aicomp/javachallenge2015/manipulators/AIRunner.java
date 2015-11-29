@@ -6,18 +6,23 @@ import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
 
 public class AIRunner extends GameManipulator {
 	private String _line;
+	private String _dataForAI;
 
-	public AIRunner(ExternalComputerPlayer com, int index) {
-		super(com, index);
+	public AIRunner(ExternalComputerPlayer com) {
+		super(com);
 	}
 
 	@Override
 	protected void runPreProcessing(Game game) {
-		Logger.outputLog("AI" + _index + ">>Writing to stdin, waiting for stdout");
-
-		String log = game.getLogInformation(_index);
-		Logger.outputLog(log);
-		Logger.outputReplay(log);
+		int index = game.getCurrentPlayerIndex();
+		
+		String log = game.serializeForLog(new StringBuilder()).toString();
+		Logger.get().writeLog(log);
+		game.getResult().addReplay(log);
+		
+		_dataForAI = game.serializeForAI(new StringBuilder()).toString();
+		Logger.get().writeLog("AI" + index + " >> STDIN:");
+		Logger.get().writeLog(_dataForAI);
 
 		_line = "";
 	}
@@ -25,29 +30,27 @@ public class AIRunner extends GameManipulator {
 	@Override
 	protected void sendDataToAI(Game game) {
 		if (!released()) {
-			String input = game.getTurnInformation(_index);
-			_com.writeLine(input);
+			_com.writeLine(_dataForAI);
 		}
 	}
 
 	@Override
-	protected void receiveDataFromAI() {
+	protected void receiveDataFromAI(Game game) {
 		if (!released()) {
-			Logger.outputLog("AI" + _index + ">>receiveDataFromAI");
 			_line = _com.readLine();
 		}
 	}
 
 	@Override
-	protected String[] runPostProcessing() {
-		if (_com.available() && !_com.getErrorLog().isEmpty()) {
-			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog());
+	protected String runPostProcessing(Game game) {
+		int index = game.getCurrentPlayerIndex();
+		Logger.get().writeLog("AI" + index + " >> STDOUT: " + _line);
+		if (_com.available()) {
+			String errorLog = _com.getErrorLog();
+			if (!errorLog.isEmpty()) {
+				Logger.get().writeLog("AI" + index + " >> STDERR: " + errorLog);
+			}
 		}
-		Logger.outputLog("AI" + _index + ">>STDOUT: " + _line);
-		String[] ret = null;
-		if (!(_line == null || _line.isEmpty())) {
-			ret = _line.trim().split(" ");
-		}
-		return ret;
+		return _line;
 	}
 }

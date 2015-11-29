@@ -1,53 +1,52 @@
 package net.aicomp.javachallenge2015;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
 
-import net.aicomp.javachallenge2015.log.Logger;
+import net.aicomp.javachallenge2015.log.GameResult;
 
 public class Game {
-	private static final String EOD = "EOD";
-	private final Random random;
-	private final Player[] players;
-	private final Field field;
-	private final int forcedEndTurn;
-	private int turn;
+	private final Random _random;
+	private final Player[] _players;
+	private final Field _field;
+	private final int _maxTurn;
+	private final GameResult _result;
+	private int _turn;
+	private int _currentPlayerIndex;
 
 	public Game(String seed, String maxTurn) {
 		if (seed != null) {
-			random = new Random(Long.parseLong(seed));
+			_random = new Random(Long.parseLong(seed));
 		} else {
-			random = new Random();
+			_random = new Random();
 		}
 		if (maxTurn != null) {
-			forcedEndTurn = Integer.parseInt(maxTurn);
+			_maxTurn = Integer.parseInt(maxTurn);
 		} else {
-			forcedEndTurn = 1000;
+			_maxTurn = 1000;
 		}
-		turn = 0;
-		field = new Field();
-		players = new Player[Bookmaker.PLAYERS_NUM];
-		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player(this, field, players);
+		_field = new Field();
+		_players = new Player[Constants.PLAYERS_NUM];
+		for (int i = 0; i < _players.length; i++) {
+			_players[i] = new Player(this, _field, _players);
 		}
+		_result = new GameResult();
 	}
 
 	public boolean isFinished() {
 		int livingCount = 0;
-		for (int i = 0; i < players.length; i++) {
-			if (players[i].isAlive()) {
+		for (int i = 0; i < _players.length; i++) {
+			if (_players[i].isAlive()) {
 				livingCount++;
 			}
 		}
-		return livingCount == 1 || turn >= forcedEndTurn;
+		return livingCount == 1 || _turn >= _maxTurn;
 	}
 
 	public void finish() {
 		int livingCount = 0;
 		int winnerId = -1;
-		for (int i = 0; i < players.length; i++) {
-			if (players[i].isAlive()) {
+		for (int i = 0; i < _players.length; i++) {
+			if (_players[i].isAlive()) {
 				livingCount++;
 				winnerId = i;
 			}
@@ -55,84 +54,71 @@ public class Game {
 		if (livingCount != 1) {
 			winnerId = -1;
 		}
-		String log = getLogInformation(turn % players.length);
-		Logger.outputLogObject(log, winnerId);
+		String log = serializeForAI(new StringBuilder()).toString();
+		_result.writeAsJson(log, winnerId);
 	}
 
-	public void processTurn(String[] commands) {
-		Player turnPlayer = players[turn % players.length];
+	public void processTurn(String command) {
+		Player turnPlayer = _players[getCurrentPlayerIndex()];
 		if (turnPlayer.isAlive()) {
-			String command = null;
-			if (commands != null && commands.length > 0) {
-				command = commands[0];
-			}
 			turnPlayer.setCommand(command);
-			turnPlayer.doCommand(field, players);
+			turnPlayer.doCommand(_field, _players);
 			turnPlayer.refresh();
 		}
-		field.refresh(players);
-		turn++;
+		_field.refresh(_players);
+		_turn++;
+		_currentPlayerIndex = _turn % _players.length;
 	}
 
 	public int getTurn() {
-		return turn;
+		return _turn;
 	}
 
-	public String getTurnInformation(int index) {
-		List<String> info = new ArrayList<String>();
-		info.add(Integer.toString(index));
-		info.add(Integer.toString(turn));
-		info.addAll(field.getBlockStatus());
-		info.addAll(getPlayersStatus());
-		info.add(EOD);
-		return String.join(System.getProperty("line.separator"), info);
+	public int getCurrentPlayerIndex() {
+		return _currentPlayerIndex;
 	}
 
-	public String getLogInformation(int index) {
-		List<String> info = new ArrayList<String>();
-		info.add(Integer.toString(turn));
-		info.addAll(field.getBlockStatus());
-		info.addAll(getPlayersPlaceAndDirection());
-		info.add(getPlayersCommand());
-		return String.join(System.getProperty("line.separator"), info);
+	public StringBuilder serializeForAI(StringBuilder builder) {
+		builder.append(Integer.toString(getCurrentPlayerIndex()));
+		builder.append(Constants.LineSeparator);
+		builder.append(Integer.toString(_turn));
+		builder.append(Constants.LineSeparator);
+		_field.serialize(builder);
+		for (Player player : _players) {
+			player.serialize(builder);
+			builder.append(Constants.LineSeparator);
+		}
+		builder.append(Constants.EOD);
+		return builder;
 	}
 
-	public String getMessageInformation(int index) {
-		List<String> info = new ArrayList<String>();
-		info.add(Integer.toString(turn));
-		info.addAll(getPlayersPlaceAndDirection());
-		info.add(getPlayersCommand());
-		return String.join(System.getProperty("line.separator"), info);
+	public StringBuilder serializeForLog(StringBuilder builder) {
+		builder.append(Integer.toString(_turn));
+		builder.append(Constants.LineSeparator);
+		_field.serialize(builder);
+		for (Player player : _players) {
+			player.serializeOnlyLocation(builder);
+			builder.append(Constants.LineSeparator);
+		}
+		serializePlayerCommands(builder);
+		return builder;
 	}
 
-	private String getPlayersCommand() {
-		StringBuilder builder = new StringBuilder();
+	public StringBuilder serializePlayerCommands(StringBuilder builder) {
 		String delimiter = "";
-		for (int i = 0; i < players.length; i++) {
+		for (int i = 0; i < _players.length; i++) {
 			builder.append(delimiter);
-			builder.append(players[i].getCommandValue());
+			builder.append(_players[i].getCommandValue());
 			delimiter = " ";
 		}
-		return builder.toString();
-	}
-
-	private List<String> getPlayersPlaceAndDirection() {
-		List<String> ret = new ArrayList<String>();
-		for (Player player : players) {
-			ret.add(player.getPlaceAndDirection());
-		}
-		return ret;
-	}
-
-	private List<String> getPlayersStatus() {
-		List<String> ret = new ArrayList<String>();
-		for (Player player : players) {
-			ret.add(player.getStatus());
-		}
-		return ret;
+		return builder;
 	}
 
 	public Random getRandom() {
-		return random;
+		return _random;
+	}
+
+	public GameResult getResult() {
+		return _result;
 	}
 }

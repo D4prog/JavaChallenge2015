@@ -10,8 +10,6 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.util.Scanner;
 
-import net.aicomp.javachallenge2015.log.Logger;
-
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -60,10 +58,8 @@ public class BookmakerTest {
 				"\"java TimeoutAI\"", "-s", "0", "-t", "30" });
 		System.err.flush();
 		String actual = _syserr.toString();
-		assertEquals(
-				actual.length()
-						- actual.replace("Terminated the thread because time was exceeded.",
-								"Terminated the thread because time was exceeded").length(), 4);
+		assertEquals(actual.length() - actual.replace("Terminated the thread because time was exceeded.",
+				"Terminated the thread because time was exceeded").length(), 4);
 	}
 
 	@Test
@@ -80,7 +76,6 @@ public class BookmakerTest {
 		Options options = Bookmaker.buildOptions();
 
 		try {
-			Logger.initialize();
 			CommandLineParser parser = new DefaultParser();
 			CommandLine line = parser.parse(options, args);
 			Bookmaker.start(line);
@@ -88,8 +83,6 @@ public class BookmakerTest {
 			System.err.println("Error: " + e.getMessage());
 			System.exit(-1);
 		} finally {
-			Logger.outputLog("Game Finished!");
-			Logger.close();
 		}
 	}
 

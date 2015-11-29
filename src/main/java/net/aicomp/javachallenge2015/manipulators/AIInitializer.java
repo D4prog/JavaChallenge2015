@@ -9,15 +9,16 @@ import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
 
 public class AIInitializer extends GameManipulator {
 	private static final String READY = "READY";
-	private List<String> _lines;
+	private final List<String> _lines;
 
-	public AIInitializer(ExternalComputerPlayer com, int index) {
-		super(com, index);
+	public AIInitializer(ExternalComputerPlayer com) {
+		super(com);
+		_lines = new ArrayList<String>();
 	}
 
 	@Override
 	protected void runPreProcessing(Game game) {
-		_lines = new ArrayList<String>();
+		_lines.clear();
 	}
 
 	@Override
@@ -25,27 +26,32 @@ public class AIInitializer extends GameManipulator {
 	}
 
 	@Override
-	protected void receiveDataFromAI() {
-		String line = "";
-		do {
-			line = _com.readLine();
-			if (line != null) {
-				line = line.trim();
-				_lines.add(line);
+	protected void receiveDataFromAI(Game game) {
+		while (true) {
+			String line = _com.readLine();
+			if (line == null) {
+				release();
 			}
-		} while (!READY.equals(line));
+			line = line.trim();
+			_lines.add(line);
+			if (READY.equals(line)) {
+				break;
+			}
+		}
 	}
 
 	@Override
-	protected String[] runPostProcessing() {
-		if (_com.available() && !_com.getErrorLog().isEmpty()) {
-			Logger.outputLog("AI" + _index + ">>STDERR: " + _com.getErrorLog());
-		}
-		String[] ret = new String[_lines.size()];
+	protected String runPostProcessing(Game game) {
+		int index = game.getCurrentPlayerIndex();
 		for (String line : _lines) {
-			Logger.outputLog("AI" + _index + ">>STDOUT: " + line);
-			ret[_lines.indexOf(line)] = line;
+			Logger.get().writeLog("AI" + index + " >> STDOUT: " + line);
 		}
-		return ret;
+		if (_com.available()) {
+			String errorLog = _com.getErrorLog();
+			if (!errorLog.isEmpty()) {
+				Logger.get().writeLog("AI" + index + " >> STDERR: " + errorLog);
+			}
+		}
+		return "READY";
 	}
 }

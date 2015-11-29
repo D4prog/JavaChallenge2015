@@ -6,7 +6,6 @@ import net.aicomp.javachallenge2015.Player;
 public class None implements ICommand {
 	@Override
 	public void doCommand(Player player, Field field, Player[] players) {
-		// do nothing
 	}
 
 	@Override

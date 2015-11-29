@@ -2,63 +2,38 @@ package net.aicomp.javachallenge2015.log;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.PrintWriter;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-
 public class Logger {
-	private static PrintWriter _writer;
-	private static LogObject logObject;
-	private static ObjectMapper mapper = new ObjectMapper();
+	private static Logger _instance;
+	private PrintWriter _writer;
 
-	private Logger() {
+	public static Logger get() {
+		if (_instance == null) {
+			_instance = new Logger();
+		}
+		return _instance;
 	}
 
-	public static void initialize() {
+	private Logger() {
 		File file = new File("./log.txt");
-		logObject = new LogObject();
-		if (!file.exists()) {
-			try {
-				file.createNewFile();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 		try {
-			_writer = new PrintWriter(file.getAbsoluteFile());
+			_writer = new PrintWriter(file);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public static void close() {
+	@Override
+	protected void finalize() throws Throwable {
 		if (_writer != null) {
 			_writer.close();
+			_writer = null;
 		}
-	}
+	};
 
-	public static void outputLog(String message) {
-		_writer.println(message.trim());
+	public void writeLog(String content) {
+		_writer.println(content.trim());
 		_writer.flush();
-	}
-
-	public static void outputReplay(String replay) {
-		logObject.addReplay(replay);
-	}
-
-	public static void outputLogObject(String lastReplay, int winnerId) {
-		outputReplay(lastReplay);
-		logObject.setWinner(winnerId);
-		try {
-			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			logObject.fillReplay();
-			String json = mapper.writeValueAsString(logObject);
-			System.out.println(json);
-		} catch (JsonProcessingException e) {
-			e.printStackTrace();
-		}
 	}
 }

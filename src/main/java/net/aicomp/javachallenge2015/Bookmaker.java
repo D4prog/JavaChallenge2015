@@ -18,10 +18,6 @@ import net.aicomp.javachallenge2015.manipulators.ManipulatorSet;
 import net.exkazuu.gameaiarena.player.ExternalComputerPlayer;
 
 public class Bookmaker {
-	public static final int PLAYERS_NUM = 4;
-	private static final int READY_TIME_LIMIT = 1000;
-	private static final int ACTION_TIME_LIMIT = 100;
-
 	private static final String EXEC_COMMAND = "a";
 	private static final String PAUSE_COMMAND = "p";
 	private static final String UNPAUSE_COMMAND = "u";
@@ -32,7 +28,6 @@ public class Bookmaker {
 		Options options = buildOptions();
 
 		try {
-			Logger.initialize();
 			CommandLineParser parser = new DefaultParser();
 			CommandLine line = parser.parse(options, args);
 			if (!hasCompleteArgs(line)) {
@@ -45,19 +40,23 @@ public class Bookmaker {
 			printHelp(options);
 			System.exit(-1);
 		} finally {
-			Logger.outputLog("Game Finished!");
-			Logger.close();
+			Logger.get().writeLog("Game Finished!");
 			// must exit to clear all resources including threads
 			System.exit(0);
 		}
 	}
 
 	public static void start(CommandLine line) {
+		List<ManipulatorSet> ais = initializeManipulatorSets(line);
+		play(ais, line.getOptionValue(SEED_COMMAND), line.getOptionValue(TURN_COMMAND));
+	}
+
+	private static List<ManipulatorSet> initializeManipulatorSets(CommandLine line) {
 		String[] execAICommands = line.getOptionValues(EXEC_COMMAND);
 		String[] pauseAICommands = line.hasOption(PAUSE_COMMAND) ? line.getOptionValues(PAUSE_COMMAND)
-				: new String[PLAYERS_NUM];
+				: new String[Constants.PLAYERS_NUM];
 		String[] unpauseAICommands = line.hasOption(UNPAUSE_COMMAND) ? line.getOptionValues(UNPAUSE_COMMAND)
-				: new String[PLAYERS_NUM];
+				: new String[Constants.PLAYERS_NUM];
 		for (int i = 0; i < pauseAICommands.length; i++) {
 			if (pauseAICommands[i] == null) {
 				pauseAICommands[i] = "";
@@ -69,28 +68,26 @@ public class Bookmaker {
 			}
 		}
 		List<ManipulatorSet> ais = new ArrayList<ManipulatorSet>();
-		for (int i = 0; i < PLAYERS_NUM; i++) {
+		for (int i = 0; i < Constants.PLAYERS_NUM; i++) {
 			try {
 				ExternalComputerPlayer com = new ExternalComputerPlayer(execAICommands[i].split(" "));
 				String[] pauseAICommandWithArgs = pauseAICommands[i].split(" ");
 				String[] unpauseAICommandWithArgs = unpauseAICommands[i].split(" ");
 				ais.add(new ManipulatorSet(
-						new AIInitializer(com, i).limittingTime(READY_TIME_LIMIT).ignoringException()
+						new AIInitializer(com).limittingTime(Constants.READY_TIME_LIMIT).ignoringException()
 								.pauseUnpause(pauseAICommandWithArgs, unpauseAICommandWithArgs),
-						new AIRunner(com, i).limittingTime(ACTION_TIME_LIMIT).ignoringException()
+						new AIRunner(com).limittingTime(Constants.ACTION_TIME_LIMIT).ignoringException()
 								.pauseUnpause(pauseAICommandWithArgs, unpauseAICommandWithArgs)));
 			} catch (IOException e) {
 				e.printStackTrace();
 				System.exit(-1);
 			}
 		}
-
-		play(ais, line.getOptionValue(SEED_COMMAND), line.getOptionValue(TURN_COMMAND));
+		return ais;
 	}
 
 	private static void play(List<ManipulatorSet> ais, String seed, String maxTurn) {
 		Game game = new Game(seed, maxTurn);
-
 		for (ManipulatorSet ai : ais) {
 			ai.getInitializer().run(game);
 			if (ai.getInitializer().released()) {
@@ -100,9 +97,9 @@ public class Bookmaker {
 		}
 
 		while (!game.isFinished()) {
-			int turn = game.getTurn();
-			String[] commands = ais.get(turn % PLAYERS_NUM).getRunner().run(game);
-			game.processTurn(commands);
+			int index = game.getCurrentPlayerIndex();
+			String command = ais.get(index).getRunner().run(game);
+			game.processTurn(command);
 		}
 		game.finish();
 	}
@@ -136,11 +133,11 @@ public class Bookmaker {
 		if (line == null) {
 			return false;
 		}
-		if (!line.hasOption(EXEC_COMMAND) || line.getOptionValues(EXEC_COMMAND).length != PLAYERS_NUM) {
+		if (!line.hasOption(EXEC_COMMAND) || line.getOptionValues(EXEC_COMMAND).length != Constants.PLAYERS_NUM) {
 			return false;
 		}
-		return (!line.hasOption(PAUSE_COMMAND) || line.getOptionValues(PAUSE_COMMAND).length == PLAYERS_NUM)
-				&& (!line.hasOption(UNPAUSE_COMMAND) || line.getOptionValues(UNPAUSE_COMMAND).length == PLAYERS_NUM);
+		return (!line.hasOption(PAUSE_COMMAND) || line.getOptionValues(PAUSE_COMMAND).length == Constants.PLAYERS_NUM)
+				&& (!line.hasOption(UNPAUSE_COMMAND)
+						|| line.getOptionValues(UNPAUSE_COMMAND).length == Constants.PLAYERS_NUM);
 	}
-
 }

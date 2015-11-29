@@ -9,57 +9,51 @@ import net.exkazuu.gameaiarena.api.Direction4;
 import net.exkazuu.gameaiarena.api.Point2;
 
 public class Player {
-	private static final int ATTACK_WAIT_TIME = 3;
-	private static final int COLLISION_DISTANCE = 3;
 	private static final Point2 FALLEN_POINT = new Point2(-1, -1);
 
-	private Point2 location;
-	private Direction4 dir;
-	private ICommand command;
-	private int waitTime = 0;
+	private Point2 _location;
+	private Direction4 _direction;
+	private ICommand _command;
+	private int _waitTime;
 
 	public Player(Game game, Field field, Player[] players) {
 		Point2[] points = field.getSpawnablePoints(players).toArray(new Point2[0]);
 		Random random = game.getRandom();
-		location = points[random.nextInt(points.length)];
-		dir = Direction4.values()[random.nextInt(Direction4.values().length)];
-		command = CommandBuilder.createCommand("N");
+		_location = points[random.nextInt(points.length)];
+		_direction = Direction4.values()[random.nextInt(Direction4.values().length)];
+		_command = CommandBuilder.createCommand("N");
 	}
 
 	public boolean isAlive() {
-		return location.x != -1 || location.y != -1;
+		return _location.x != -1 || _location.y != -1;
 	}
 
 	public boolean isThere(Set<Point2> area) {
-		return area.contains(location);
-	}
-
-	public String getPlaceAndDirection() {
-		return location.x + " " + location.y + " " + dir.name().substring(0, 1);
+		return area.contains(_location);
 	}
 
 	public String getCommandValue() {
-		return command.getValue();
+		return _command.getValue();
 	}
 
 	public void setCommand(String commandStr) {
-		command = CommandBuilder.createCommand(isMovable() ? commandStr : "N");
+		_command = CommandBuilder.createCommand(isMovable() ? commandStr : "N");
 	}
 
 	private boolean isMovable() {
-		return waitTime == 0;
+		return _waitTime == 0;
 	}
 
 	public void doCommand(Field field, Player[] players) {
-		command.doCommand(this, field, players);
+		_command.doCommand(this, field, players);
 	}
 
 	public void move(Direction4 direction, Field field, Player[] players) {
-		Point2 to = direction.move(location);
+		Point2 to = direction.move(_location);
 		if (field.canMove(to) && !isCollideOtherPlayers(to, players)) {
-			location = to;
+			_location = to;
 		}
-		dir = direction;
+		_direction = direction;
 	}
 
 	private boolean isCollideOtherPlayers(Point2 point, Player[] players) {
@@ -67,7 +61,7 @@ public class Player {
 			if (!player.isAlive()) {
 				continue;
 			}
-			if (player != this && point.getManhattanDistance(player.location) <= COLLISION_DISTANCE) {
+			if (player != this && point.getManhattanDistance(player._location) <= Constants.COLLISION_DISTANCE) {
 				return true;
 			}
 		}
@@ -75,28 +69,40 @@ public class Player {
 	}
 
 	public void attack(Field field) {
-		waitTime = ATTACK_WAIT_TIME;
-		field.setLimit(location.x, location.y, dir);
+		_waitTime = Constants.ATTACK_WAIT_TIME;
+		field.dropBlocks(_location.x, _location.y, _direction);
 	}
 
 	public void fall() {
-		location = FALLEN_POINT;
+		_location = FALLEN_POINT;
 	}
 
 	public void refresh() {
-		if (waitTime > 0) {
-			waitTime--;
+		if (_waitTime > 0) {
+			_waitTime--;
 		}
 	}
 
 	public boolean isCollided(Point2 point) {
-		if (this.location == null) {
+		if (this._location == null) {
 			return false;
 		}
-		return point.getManhattanDistance(this.location) <= COLLISION_DISTANCE;
+		return point.getManhattanDistance(this._location) <= Constants.COLLISION_DISTANCE;
 	}
 
-	public String getStatus() {
-		return getPlaceAndDirection() + " " + waitTime;
+	public StringBuilder serializeOnlyLocation(StringBuilder builder) {
+		builder.append(_location.x);
+		builder.append(" ");
+		builder.append(_location.y);
+		builder.append(" ");
+		builder.append(_direction.name().charAt(0));
+		return builder;
+	}
+
+	public StringBuilder serialize(StringBuilder builder) {
+		serializeOnlyLocation(builder);
+		builder.append(" ");
+		builder.append(_waitTime);
+		return builder;
 	}
 }
