@@ -1,5 +1,9 @@
 # JavaChallenge2015
 
+## オンライン対戦サーバ
+
+http://arena.ai-comp.net:3333/
+
 ## 概要
 
 床を落として敵を落とせ！

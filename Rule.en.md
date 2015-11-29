@@ -1,5 +1,9 @@
 # JavaChallenge2015
 
+## Online Execution Server
+
+http://arena.ai-comp.net:3333/
+
 ## Overview
 
 Drop the block, and drop the enemies!
