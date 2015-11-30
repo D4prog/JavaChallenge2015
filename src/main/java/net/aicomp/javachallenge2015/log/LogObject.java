@@ -6,12 +6,12 @@ import java.util.List;
 public class LogObject {
 	private List<Object> log;
 	private int winner;
-	private Replay[] replay;
+	private Replay replay;
 
 	public LogObject() {
 		log = new ArrayList<Object>();
 		winner = -1;
-		replay = new Replay[] { new Replay() };
+		replay = new Replay();
 	}
 
 	public List<Object> getLog() {
@@ -26,7 +26,7 @@ public class LogObject {
 		winner = winnerId;
 	}
 
-	public Replay[] getReplay() {
+	public Replay getReplay() {
 		return replay;
 	}
 

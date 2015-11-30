@@ -46,11 +46,11 @@ public class Logger {
 	}
 
 	public static void outputInitialState(String[][] initialState) {
-		logObject.getReplay()[0].addInitialState(initialState);
+		logObject.getReplay().addInitialState(initialState);
 	}
 
 	public static void outputCommand(String command) {
-		logObject.getReplay()[0].addCommand(command);
+		logObject.getReplay().addCommand(command);
 	}
 
 	public static void outputLogObject(int winnerId) {
