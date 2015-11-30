@@ -15,10 +15,6 @@ public class AIRunner extends GameManipulator {
 	protected void runPreProcessing(Game game) {
 		Logger.outputLog("AI" + _index + ">>Writing to stdin, waiting for stdout");
 
-		String log = game.getLogInformation(_index);
-		Logger.outputLog(log);
-		Logger.outputReplay(log);
-
 		_line = "";
 	}
 

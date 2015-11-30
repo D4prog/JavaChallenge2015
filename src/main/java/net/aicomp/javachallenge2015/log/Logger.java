@@ -45,16 +45,18 @@ public class Logger {
 		_writer.flush();
 	}
 
-	public static void outputReplay(String replay) {
-		logObject.addReplay(replay);
+	public static void outputInitialState(String[][] initialState) {
+		logObject.getReplay()[0].addInitialState(initialState);
 	}
 
-	public static void outputLogObject(String lastReplay, int winnerId) {
-		outputReplay(lastReplay);
+	public static void outputCommand(String command) {
+		logObject.getReplay()[0].addCommand(command);
+	}
+
+	public static void outputLogObject(int winnerId) {
 		logObject.setWinner(winnerId);
 		try {
 			mapper.enable(SerializationFeature.INDENT_OUTPUT);
-			logObject.fillReplay();
 			String json = mapper.writeValueAsString(logObject);
 			System.out.println(json);
 		} catch (JsonProcessingException e) {
