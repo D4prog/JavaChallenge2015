@@ -1,6 +1,5 @@
 package net.aicomp.javachallenge2015;
 
-import java.util.Random;
 import java.util.Set;
 
 import net.aicomp.javachallenge2015.commands.CommandBuilder;
@@ -18,11 +17,9 @@ public class Player {
 	private ICommand command;
 	private int waitTime = 0;
 
-	public Player(Game game, Field field, Player[] players) {
-		Point2[] points = field.getSpawnablePoints(players).toArray(new Point2[0]);
-		Random random = game.getRandom();
-		location = points[random.nextInt(points.length)];
-		dir = Direction4.values()[random.nextInt(Direction4.values().length)];
+	public Player(Point2 initialLocation, Direction4 initialDirection) {
+		location = initialLocation;
+		dir = initialDirection;
 		command = CommandBuilder.createCommand("N");
 	}
 

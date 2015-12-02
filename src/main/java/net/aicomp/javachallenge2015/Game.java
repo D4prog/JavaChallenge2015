@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Random;
 
 import net.aicomp.javachallenge2015.log.Logger;
+import net.exkazuu.gameaiarena.api.Direction4;
+import net.exkazuu.gameaiarena.api.Point2;
 
 public class Game {
 	private static final String EOD = "EOD";
@@ -28,9 +30,16 @@ public class Game {
 		turn = 0;
 		field = new Field();
 		players = new Player[Bookmaker.PLAYERS_NUM];
+		String[][] initialState = new String[Bookmaker.PLAYERS_NUM][];
 		for (int i = 0; i < players.length; i++) {
-			players[i] = new Player(this, field, players);
+			Point2[] points = field.getSpawnablePoints(players).toArray(new Point2[0]);
+			Point2 initialLocation = points[random.nextInt(points.length)];
+			Direction4[] directions = Direction4.values();
+			Direction4 initialDirection = directions[random.nextInt(directions.length)];
+			players[i] = new Player(initialLocation, initialDirection);
+			initialState[i] = players[i].getPlaceAndDirection().split(" ");
 		}
+		Logger.outputInitialState(initialState);
 	}
 
 	public boolean isFinished() {
@@ -55,8 +64,7 @@ public class Game {
 		if (livingCount != 1) {
 			winnerId = -1;
 		}
-		String log = getLogInformation(turn % players.length);
-		Logger.outputLogObject(log, winnerId);
+		Logger.outputLogObject(winnerId);
 	}
 
 	public void processTurn(String[] commands) {
@@ -70,6 +78,7 @@ public class Game {
 			turnPlayer.doCommand(field, players);
 			turnPlayer.refresh();
 		}
+		Logger.outputCommand(turnPlayer.getCommandValue());
 		field.refresh(players);
 		turn++;
 	}
@@ -89,12 +98,7 @@ public class Game {
 	}
 
 	public String getLogInformation(int index) {
-		List<String> info = new ArrayList<String>();
-		info.add(Integer.toString(turn));
-		info.addAll(field.getBlockStatus());
-		info.addAll(getPlayersPlaceAndDirection());
-		info.add(getPlayersCommand());
-		return String.join(System.getProperty("line.separator"), info);
+		return players[index].getCommandValue();
 	}
 
 	public String getMessageInformation(int index) {
